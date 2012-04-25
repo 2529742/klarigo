@@ -1,9 +1,25 @@
+if (!window.kbAPI) {
+    window.kbAPI = {};
+}
 var xmlDoc;
 
-function initKB(){
-	xmlDoc = loadXMLDoc("utils/kb.xml");
-	return xmlDoc;
-}
+jQuery.extend(window.kbAPI, {
+	initKB: function(){
+		xmlDoc = loadXMLDoc("utils/kb.xml");
+		return xmlDoc;
+	},
+	saveKB: function (xmlDoc){
+		$.ajax({
+			type: 'POST',
+			url: 'utils/saveXML.php',
+			processData: false,
+			contentType: 'text/xml',
+			data: xmlDoc
+		});
+	},
+	getIEtype: function (id){
+	}
+});	
 
 function loadXMLDoc(docName){
 	if (window.XMLHttpRequest){
@@ -17,16 +33,3 @@ function loadXMLDoc(docName){
 	return xhttp.responseXML;
 }
 
-function saveKB(xmlDoc){
-	$.ajax({
-		type: 'POST',
-		url: 'utils/saveXML.php',
-		processData: false,
-		contentType: 'text/xml',
-		data: xmlDoc
-	});
-}
-
-function getIEtype(id){
-	
-}

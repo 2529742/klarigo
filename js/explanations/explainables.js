@@ -4,7 +4,7 @@ var predicate = {
 	"annotated": '[typeof="Person"],[typeof="Place"],[typeof="City"]',
 	"result": '.view-vieImageSearch-image'
 	};
-var kb;
+
 $(window).load(function () {
 	//eventsFilter('[about]');
 	this.renderSidePanel();
@@ -33,7 +33,7 @@ $('.view-vieImageSearch-image >img').live('load',function(){
 });
 
 function indexInterfaceElements(){
-	var xmlDoc = initKB();
+	var xmlDoc = kbAPI.initKB();
 	var iElements = xmlDoc.getElementsByTagName("InterfaceElements")[0];	
 	for(var type in predicate){
 		$(predicate[type]).each(function(){
@@ -52,7 +52,7 @@ function indexInterfaceElements(){
 			iElements.appendChild(kbElement);
 		});
 	}
-	saveKB(xmlDoc);
+	kbAPI.saveKB(xmlDoc);
 }
 
 
@@ -85,7 +85,7 @@ function assign_menu(element){
 		var explIcon = $('<div class = "explIcon"><img src="img/question.png" style="height: 15px; width:15px"></div>');
 		$(explIcon).insertAfter($(element));
 		var id = $(element).attr("id");
-		var xmlDoc = loadXMLDoc("utils/kb.xml");
+		var xmlDoc = kbAPI.init();
 		if(id){
 			var type = xmlDoc.getElementById(id).getAttributeNode("type").value;
 			var questions = [];

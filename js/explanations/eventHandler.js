@@ -1,3 +1,28 @@
+if (!window.mappingFunctionsAPI) {
+    window.mappingFunctionsAPI = {};
+}
+
+jQuery.extend(window.mappingFunctionsAPI, {
+	newID: function(phase){
+		var id = (phase? phase: 'id') + (new Date()).getTime();
+		return id;
+		},
+	startPoint: function(id){
+		var trace = printStackTrace();
+		var callStack = {id: id, phase: 'start', trace: trace};
+		return callStack;
+		},
+	endPoint: function(id){
+		var trace = printStackTrace();
+		var callStack = {id: id, phase: 'end', trace: trace};
+		return callStack;
+		},
+	bindStack: function(id){
+		var callStack = printStackTrace();
+		return callStack;
+		}
+});
+
 function eventsFilter(elements){
 	var trace = "";
 	if(!$.ajaxSettings.beforeSend){

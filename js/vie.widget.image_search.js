@@ -196,7 +196,7 @@
                                   widget._pageNum++;
                               }
                               var data = {service: service, time: new Date(), photos: photos};
-                              //widget._trigger('end_query', undefined, data);
+                              widget._trigger('end_query', undefined, data);
                               var render = (widget.options.render)? widget.options.render : widget._render;
                               render.call(widget, data);
                           };
@@ -289,8 +289,8 @@
             entity: undefined,
             
             // events
-            start_query: function () { console.log('start query');},
-            end_query: function () { console.log('end query');}
+            start_query: function (data) { console.log('start query ' + data);},
+            end_query: function (data) { console.log('end query' + data);}
         }
         
     });
