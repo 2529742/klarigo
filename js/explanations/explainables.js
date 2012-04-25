@@ -85,7 +85,7 @@ function assign_menu(element){
 		var explIcon = $('<div class = "explIcon"><img src="img/question.png" style="height: 15px; width:15px"></div>');
 		$(explIcon).insertAfter($(element));
 		var id = $(element).attr("id");
-		var xmlDoc = initKB();
+		var xmlDoc = loadXMLDoc("utils/kb.xml");
 		if(id){
 			var type = xmlDoc.getElementById(id).getAttributeNode("type").value;
 			var questions = [];
@@ -103,12 +103,8 @@ function assign_menu(element){
 				.click(function(event){
 						event.stopPropagation();
 						var contextMenu = $('#myMenu');
-						contextMenu
-						.empty()
-						.offset({
-							top : ($(this).offset().top + $(this).width()), 
-							left: ($(this).offset().left + $(this).height())
-							});
+						contextMenu.empty();
+						
 						for(var i = 0; i < questions.length; i++){
 							var q = questions[i];
 							var label = questions_mappings[q].label;
@@ -131,6 +127,10 @@ function assign_menu(element){
 						contextMenu
 						.show()
 						.addClass('show')
+						.offset({
+							top : ($(this).offset().top + $(this).width()), 
+							left: ($(this).offset().left + $(this).height())
+							})
 						.find('A')
 						.mouseover( function() {
 								$(contextMenu).find('LI.hover').removeClass('hover');
