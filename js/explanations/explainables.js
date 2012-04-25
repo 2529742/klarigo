@@ -85,7 +85,7 @@ function assign_menu(element){
 		var explIcon = $('<div class = "explIcon"><img src="img/question.png" style="height: 15px; width:15px"></div>');
 		$(explIcon).insertAfter($(element));
 		var id = $(element).attr("id");
-		var xmlDoc = kbAPI.init();
+		var xmlDoc = kbAPI.initKB();
 		if(id){
 			var type = xmlDoc.getElementById(id).getAttributeNode("type").value;
 			var questions = [];
