@@ -1,0 +1,188 @@
+<html>
+<head>
+		<title>VIE Widget - Image Search</title>
+    
+    <link href="./utils/style.css" media="screen" rel="stylesheet">
+    <link href="./lib/jquery.contextMenu.css" media="screen" rel="stylesheet">
+	
+    <!--  jQuery &amp; jQuery UI -->
+	<script type="text/javascript" src="./lib/jquery-1.6.1.js"></script>
+    <script type="text/javascript" src="./lib/jquery-ui-1.8.16.js"></script>
+        
+    <!-- jQuery TipTip plugin -->
+    <script type="text/javascript"          src="./utils/tiptip/jquery.tipTip.js"></script>
+    <link rel="stylesheet" type="text/css" href="./utils/tiptip/jquery.tipTip.css" media="screen" />
+    
+    <!--  VIE dependencies: Underscore &amp; Backbone -->
+    <script type="text/javascript" src="./lib/underscore.js"></script>        
+    <script type="text/javascript" src="./lib/backbone.js"></script>
+      
+    <!-- vie.js itself -->
+	<script type="text/javascript" src="./lib/vie.js"></script>
+	<script type="text/javascript" src="./utils/schemaOrg/schema.json"></script>
+	<script type="text/javascript" src="./utils/schemaOrg/wrapper.js"></script>
+	
+    <!--  the current VIE widget -->
+	<script type="text/javascript" src="./js/vie.widget.image_search.js"></script>
+	
+	<!-- context menu plugins -->
+	<script type="text/javascript" src="./lib/jquery.contextMenu.js"></script>
+    
+    <!-- DEMO-specific code -->
+	<!--script type="text/javascript" src="./js/explanations/explainables.js"></script-->
+	<script type="text/javascript" src="./js/explanations/jquery.tabSlideOut.v1.3.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            // initialize a global VIE object
+            var myVIE = window.myVIE = new VIE();
+            myVIE.loadSchemaOrg();
+            
+            // read RDFa from the text below
+            myVIE.use(new myVIE.RdfaService);
+            myVIE.load({element: $('[about]')})
+            .from('rdfa').execute();
+            
+            // set-up of the Flickr-widget
+            $('#image_container')
+            .vieImageSearch({
+                vie    : myVIE,
+                services : {
+                    flickr : {
+                        api_key : "ffd6f2fc41249feeddd8e62a531dc83e",
+                    	bin_size: 8,
+                    	use: true
+                    },
+                    europeana : {
+                        api_key : "xoxoxo",
+                    	bin_size: 8,
+                    	use: false
+                    }
+                }
+            });
+            
+            $('[about]')
+//            .attr("title", "Click on an entity to trigger a type-specific photo search.")
+//            .tipTip()
+            .click(function (ev) {
+                var uri = $(this).attr('about');
+                $('#image_container')
+                .vieImageSearch({
+                    entity: uri
+                });
+            });
+			
+			$('#question_input').focus(function(){
+				if($('#question_input').text()=="Ask your question here."){
+				$('#question_input').empty();}
+			});
+        });
+		function submit(){
+			var newEntry = $('<entry xmlns="http://www.w3.org/2005/Atom" xmlns:gsx="http://schemas.google.com/spreadsheets/2006/extended">'
+				+'<gsx:Question>this is just test</gsx:Question>'
+			+'</entry>');
+			//json = $.getJSON('https://spreadsheets.google.com/feeds/list/0AhnrBS0-fUl0dHZ6NHFLZWltTWxtemdtUGZyNTBJSWc/od6/private/values?alt=json-in-script&callback=submit');
+			$.ajax({
+				type: 'POST',
+				'Access-Control-Allow-Origin': 'me.at',
+				url: 'https://spreadsheets.google.com/feeds/list/0AhnrBS0-fUl0dHZ6NHFLZWltTWxtemdtUGZyNTBJSWc/od6/private/values',
+				data: newEntry
+			});
+	/*		
+			var table = document.createElement('table');
+			table.setAttribute('id', 'output');
+			var tbody = document.createElement('tbody');
+			var tr;
+			for (var i=0; i < json.feed.entry.length; i++) {
+				var entry = json.feed.entry[i];
+				if (entry.gs$cell.col == '1') {
+					if (tr != null) {
+						tbody.appendChild(tr);
+					}
+					tr = document.createElement('tr');
+				}
+	
+				var td = document.createElement('td');
+				td.appendChild(document.createTextNode(entry.content.$t));
+				tr.appendChild(td);
+			} 
+ 
+			tbody.appendChild(tr);
+			table.appendChild(tbody);
+			document.getElementById('data').appendChild(table);
+*/
+			alert("thank you!");
+		};
+    </script>
+    <!-- <script src="https://spreadsheets.google.com/feeds/list/0AhnrBS0-fUl0dHZ6NHFLZWltTWxtemdtUGZyNTBJSWc/od6/private/full?alt=json-in-script" id="jsonScript" type="text/javascript"></script> -->
+    <style>
+        #image_container {
+            max-height:300px;
+        }
+        
+        #image_container a img {
+            box-shadow: 0px 0px 10px #555;
+            margin: 1em 1em;
+            width: 6em;
+            height: 6em;
+        }
+		.slide-out-div {
+          padding: 20px;
+          width: 27%;
+		  height: 100%;
+          background: #ccc;
+          border: 1px solid #29216d;
+		  border-left: 2px solid #289e84;
+		}
+		#questionary {
+			display: block;
+		}
+		#question_input{
+			height:  80px;
+			word_wrap: break-word;
+		}
+    </style>
+    
+</head>
+<body>
+<div id="questionary">
+<p>Your question:</p>
+<textarea id="question_input" wrap="soft">Ask your question here.</textarea>
+<div id="data"></data>
+<p>
+<input type="submit" onclick = "submit()">
+</p>
+</div>
+<div id="wrapper">
+    <h1>VIE Widget - Image Search</h1>
+   <article>
+   <section>
+        <span about="http://dbpedia.org/resource/Washington,_D.C._metropolitan_area" typeof="Place"><span property="name">WASHINGTON, D.C.</span>
+        <span rel="geo"><span about="http://dbpedia.org/resource/Washington,_D.C._metropolitan_area_GEO" typeof="GeoCoordinates"><span property="latitude" content="38.886757"></span><span property="longitude" content="-77.041626"></span></span></span></span>
+        The House has passed a short-term spending bill that keeps the government 
+        running for six weeks and buys time for future budget negotiations. The 352-66 vote sends 
+        the measure to President <span about="http://dbpedia.org/resource/Barack_Obama" typeof="Person"><span property="name">Barack Obama</span></span> 
+        in time to avert a government shutdown at midnight. 
+        The legislation gives Congress and the White House more time to iron out their differences 
+        on a pile of unfinished budget work totaling more than $1 trillion. It also ends a fight 
+        over whether some aid for victims of Hurricane Irene and other natural disasters should 
+        have been offset by cuts elsewhere.
+    </section>
+    <br />
+    <section>
+        <span about="http://dbpedia.org/resource/Cupertino,_California" typeof="City"><span property="name">CUPERTINO, California</span>
+        <span rel="geo"><span about="http://dbpedia.org/resource/Cupertino,_California_GEO" typeof="GeoCoordinates"><span property="latitude" content="37.317501"></span><span property="longitude" content="-122.041946"></span></span></span></span>
+        It's the first time in years that Apple has unveiled a major new product
+        without <span about="http://dbpedia.org/resource/Steve_Jobs" typeof="Person"><span property="name">Steve Jobs</span></span> presiding over 
+        the announcement. The company's new CEO, <span about="http://dbpedia.org/resource/Tim_Cook" typeof="Person"><span property="name">Tim Cook</span></span>, was the one introducing the company's new iPhone 
+        today -- faster and more powerful than the previous version. Cook took over as CEO after Jobs, 
+        who has been battling health problems, resigned in August.
+    </section>
+    <br />
+    </article>
+        
+    <div id="image_container"></div>
+    
+    
+    </div>
+</body>
+</html>
