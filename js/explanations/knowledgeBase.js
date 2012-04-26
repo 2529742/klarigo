@@ -1,9 +1,9 @@
-if (!window.kbAPI) {
-    window.kbAPI = {};
+if (!kbAPI) {
+    kbAPI = {};
 }
 var xmlDoc;
 
-jQuery.extend(window.kbAPI, {
+jQuery.extend(kbAPI, {
 	kb: function(){	
 		return xmlDoc;
 	},
@@ -52,6 +52,7 @@ jQuery.extend(window.kbAPI, {
 				},
 			addRecord: function(record){
 				}
+		}
 });	
 
 function loadXMLDoc(docName){

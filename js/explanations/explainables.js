@@ -80,9 +80,9 @@ function assign_menu(element){
 		var explIcon = $('<div class = "explIcon"><img src="img/question.png" style="height: 15px; width:15px"></div>');
 		$(explIcon).insertAfter($(element));
 		var id = $(element).attr("id");
-		var xmlDoc = kbAPI.init();
+		kbAPI.init();
 		if(id){
-			var type = interfaceElementsKB.getElementType(id);
+			var type = kbAPI.interfaceElementsKB.getElementType(id);
 			var questions = [];
 			for(var q in questions_mappings){
 				var mapping_types = questions_mappings[q].types;
