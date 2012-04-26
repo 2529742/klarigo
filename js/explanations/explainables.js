@@ -33,8 +33,7 @@ $('.view-vieImageSearch-image >img').live('load',function(){
 });
 
 function indexInterfaceElements(){
-	var xmlDoc = kbAPI.init();
-	var iElements = xmlDoc.getElementsByTagName("InterfaceElements")[0];	
+	kbAPI.init();
 	for(var type in predicate){
 		$(predicate[type]).each(function(){
 			var id;
@@ -45,14 +44,10 @@ function indexInterfaceElements(){
 				id = 'explID'+counter++;
 				this.id = id;
 			}
-			var kbElement = xmlDoc.createElement("Element");
-			xmlDoc.createTextNode(id);
-			kbElement.setAttribute("id",id);
-			kbElement.setAttribute("type",type);
-			iElements.appendChild(kbElement);
+			kbAPI.interfaceElementsKB.addRecord(id,type);
 		});
 	}
-	kbAPI.save(xmlDoc);
+	kbAPI.save();
 }
 
 
@@ -87,7 +82,7 @@ function assign_menu(element){
 		var id = $(element).attr("id");
 		var xmlDoc = kbAPI.init();
 		if(id){
-			var type = xmlDoc.getElementById(id).getAttributeNode("type").value;
+			var type = interfaceElementsKB.getElementType(id);
 			var questions = [];
 			for(var q in questions_mappings){
 				var mapping_types = questions_mappings[q].types;

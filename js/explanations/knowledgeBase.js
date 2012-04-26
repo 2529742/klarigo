@@ -4,11 +4,14 @@ if (!window.kbAPI) {
 var xmlDoc;
 
 jQuery.extend(window.kbAPI, {
+	kb: function(){	
+		return xmlDoc;
+	},
 	init: function(){
 		xmlDoc = loadXMLDoc("utils/kb.xml");
 		return xmlDoc;
 	},
-	save: function (xmlDoc){
+	save: function (){
 		$.ajax({
 			type: 'POST',
 			url: 'utils/saveXML.php',
@@ -17,25 +20,39 @@ jQuery.extend(window.kbAPI, {
 			data: xmlDoc
 		});
 	},
-	staticKB: function(){
-			return xmlDoc.getElementsByTagName("Static")[0];
+	staticKB: {
+			getAll: function(){
+				return xmlDoc.getElementsByTagName("Static")[0];
+				},
+			addRecord: function(record){
+				},
+			updateRecord: function(oldR,newR){
+				}
 		},
-	IEKB: function(){
-			return xmlDoc.getElementsByTagName("InterfaceElements")[0];
+	interfaceElementsKB: {
+			getAll:	function(){
+				return xmlDoc.getElementsByTagName("InterfaceElements")[0];
+				},
+			addRecord: function(id,type){
+				var iElements = xmlDoc.getElementsByTagName("InterfaceElements")[0];
+				var kbElement = xmlDoc.createElement("Element");
+				xmlDoc.createTextNode(id);
+				kbElement.setAttribute("id",id);
+				kbElement.setAttribute("type",type);
+				iElements.appendChild(kbElement);
+				},	
+			getElementType: function (id){
+				var type = xmlDoc.getElementById(id).getAttributeNode("type").value;
+				return type;
+				},	
 		},
-	HistoryKB: function(){
-			return xmlDoc.getElementsByTagName("InteractionHistory")[0];
-		},
-	getIEtype: function (id){
-	}
+	historyKB: {
+			getAll: function(){
+				return xmlDoc.getElementsByTagName("InteractionHistory")[0];
+				},
+			addRecord: function(record){
+				}
 });	
-
-jQuery.extend(window.kbAPI.staticKB, {
-	addRecord: function(record){
-	},
-	updateRecord: function(oldR,newR){
-	}
-});
 
 function loadXMLDoc(docName){
 	if (window.XMLHttpRequest){
