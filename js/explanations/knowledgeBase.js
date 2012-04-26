@@ -33,7 +33,7 @@ jQuery.extend(window.kbAPI, {
 jQuery.extend(window.kbAPI.staticKB, {
 	addRecord: function(record){
 	},
-	updateRecord: function(old,new){
+	updateRecord: function(oldR,newR){
 	}
 });
 
