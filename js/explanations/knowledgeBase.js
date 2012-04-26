@@ -1,6 +1,4 @@
-if (!kbAPI) {
-    kbAPI = {};
-}
+var kbAPI = {};
 var xmlDoc;
 
 jQuery.extend(kbAPI, {
