@@ -4,11 +4,11 @@ if (!window.kbAPI) {
 var xmlDoc;
 
 jQuery.extend(window.kbAPI, {
-	initKB: function(){
+	init: function(){
 		xmlDoc = loadXMLDoc("utils/kb.xml");
 		return xmlDoc;
 	},
-	saveKB: function (xmlDoc){
+	save: function (xmlDoc){
 		$.ajax({
 			type: 'POST',
 			url: 'utils/saveXML.php',
@@ -17,9 +17,25 @@ jQuery.extend(window.kbAPI, {
 			data: xmlDoc
 		});
 	},
+	staticKB: function(){
+			return xmlDoc.getElementsByTagName("Static")[0];
+		},
+	IEKB: function(){
+			return xmlDoc.getElementsByTagName("InterfaceElements")[0];
+		},
+	HistoryKB: function(){
+			return xmlDoc.getElementsByTagName("InteractionHistory")[0];
+		},
 	getIEtype: function (id){
 	}
 });	
+
+jQuery.extend(window.kbAPI.staticKB, {
+	addRecord: function(record){
+	},
+	updateRecord: function(old,new){
+	}
+});
 
 function loadXMLDoc(docName){
 	if (window.XMLHttpRequest){

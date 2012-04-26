@@ -33,7 +33,7 @@ $('.view-vieImageSearch-image >img').live('load',function(){
 });
 
 function indexInterfaceElements(){
-	var xmlDoc = kbAPI.initKB();
+	var xmlDoc = kbAPI.init();
 	var iElements = xmlDoc.getElementsByTagName("InterfaceElements")[0];	
 	for(var type in predicate){
 		$(predicate[type]).each(function(){
@@ -52,7 +52,7 @@ function indexInterfaceElements(){
 			iElements.appendChild(kbElement);
 		});
 	}
-	kbAPI.saveKB(xmlDoc);
+	kbAPI.save(xmlDoc);
 }
 
 
@@ -85,7 +85,7 @@ function assign_menu(element){
 		var explIcon = $('<div class = "explIcon"><img src="img/question.png" style="height: 15px; width:15px"></div>');
 		$(explIcon).insertAfter($(element));
 		var id = $(element).attr("id");
-		var xmlDoc = kbAPI.initKB();
+		var xmlDoc = kbAPI.init();
 		if(id){
 			var type = xmlDoc.getElementById(id).getAttributeNode("type").value;
 			var questions = [];
