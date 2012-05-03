@@ -105,16 +105,19 @@ function assign_menu(element){
 							var label = questions_mappings[q].label;
 							var li = $('<li class="explain"><a href="#annotated">' + label + '</a></li>')
 							.click(function(){
-									var explHTML = '';
-									switch(q){
-										case 'metadata':
-											explHTML = element.innerHTML+'<br/><br/>' + label + ' explanation.<br/></br/>' + 
-											' This is annotated element of TYPE: <b>'+ $(element).attr('typeof') + '</b><br/></br/>' +
-											' It is referenced to: <b><a href = "'+ $(element).attr('about') + '">' + $(element).attr('about') + '</a></b>.';
-										break;
+								//backbone...
+								var metadata = new metadataModel({
+									element: element,
+									label: label,
+									id: $(element).attr('id'),
+									metadata: {
+										about: $(element).attr('about'),
+										type: $(element).attr('typeof')
 									}
-									$('.explanation_block').empty();
-									$('.explanation_block').append(explHTML);
+								});
+								var view = new metadataView({model: metadata});
+								$('.explanation_block').empty();
+								$('.explanation_block').append(view.el);
 								}
 							);
 							contextMenu.append(li);

@@ -24,7 +24,7 @@ jQuery.extend(kbAPI, {
 				},
 			addRecord: function(record){
 				},
-			updateRecord: function(oldR,newR){
+			updateRecord: function(record){
 				}
 		},
 	interfaceElementsKB: {
@@ -49,6 +49,14 @@ jQuery.extend(kbAPI, {
 				return xmlDoc.getElementsByTagName("InteractionHistory")[0];
 				},
 			addRecord: function(record){
+				var elementID = record.id;
+				var stack = record.stack;
+				var history = xmlDoc.getElementsByTagName("InteractionHistory")[0];
+				var kbElement = xmlDoc.createElement("Element");
+				xmlDoc.createTextNode(id);
+				kbElement.setAttribute("id",elementID);
+				kbElement.setAttribute("stack",stack);
+				history.appendChild(kbElement);
 				}
 		}
 });	
