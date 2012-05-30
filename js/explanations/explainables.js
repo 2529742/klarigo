@@ -1,12 +1,13 @@
 var history = [];
 var counter = 1;
 var predicate = {
+	"main": 'h1',
 	"annotated": '[typeof="Person"],[typeof="Place"],[typeof="City"]',
 	"result": '.view-vieImageSearch-image'
 	};
 
 $(window).load(function () {
-	//eventsFilter('[about]');
+	eventsFilter('[about]');
 	this.renderSidePanel();
 	var contextMenu = $('<ul id="myMenu" class="contextMenu"/>');
 	$('body')
@@ -19,6 +20,7 @@ $(window).load(function () {
 				.hide();
 			}
 	});
+	
 	this.indexInterfaceElements();
 	for(var type in predicate){
 		var explainable = $(predicate[type]);
@@ -44,7 +46,7 @@ function indexInterfaceElements(){
 				id = 'explID'+counter++;
 				this.id = id;
 			}
-			kbAPI.interfaceElementsKB.addRecord(id,type);
+			kbAPI.interfaceKB.addRecord(id,type);
 		});
 	}
 	kbAPI.save();
@@ -79,10 +81,13 @@ function assign_menu(element){
 		//version with indroduction of new interface elements: new icons to navigate explanation
 		var explIcon = $('<div class = "explIcon"><img src="img/question.png" style="height: 15px; width:15px"></div>');
 		$(explIcon).insertAfter($(element));
+		if(element instanceof HTMLHeadingElement){
+			$(element).css({'float':'left'});
+		}
 		var id = $(element).attr("id");
 		kbAPI.init();
 		if(id){
-			var type = kbAPI.interfaceElementsKB.getElementType(id);
+			var type = kbAPI.interfaceKB.getElementType(id);
 			var questions = [];
 			for(var q in questions_mappings){
 				var mapping_types = questions_mappings[q].types;
@@ -103,21 +108,15 @@ function assign_menu(element){
 						for(var i = 0; i < questions.length; i++){
 							var q = questions[i];
 							var label = questions_mappings[q].label;
-							var li = $('<li class="explain"><a href="#annotated">' + label + '</a></li>')
+							var li = $('<li class="explain"><a href="#' + q + '">' + label + '</a></li>')
 							.click(function(){
-								//backbone...
-								var metadata = new metadataModel({
-									element: element,
-									label: label,
-									id: $(element).attr('id'),
-									metadata: {
-										about: $(element).attr('about'),
-										type: $(element).attr('typeof')
-									}
-								});
-								var view = new metadataView({model: metadata});
-								$('.explanation_block').empty();
-								$('.explanation_block').append(view.el);
+								var q = '';
+								try{
+									q = $(this).find('a').attr('href').substring(1);}
+								catch(e){
+									window.console.log(e);}
+								explanationBuilder.build(q,element);	
+									
 								}
 							);
 							contextMenu.append(li);

@@ -19,6 +19,12 @@ jQuery.extend(window.mappingFunctionsAPI, {
 		},
 	bindStack: function(id){
 		var callStack = printStackTrace();
+		var elementId =  $(element).id();
+		var record = {
+			id: elementId,
+			stack: callStack
+		}
+		kbAPI.historyKB.addRecord(record);
 		return callStack;
 		}
 });
@@ -51,7 +57,7 @@ function listener(eventName,element){
 	console.warn(element);
 	console.log(eventName + '\n\n');
 	var trace = printStackTrace();
-	console.log(trace.join('\n\n'));
+	console.log(trace);
 }
 
 var eventTypes = {

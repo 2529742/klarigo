@@ -1,14 +1,24 @@
-window.templates = Backbone.Collection.extend({
-});
+var templateSet = window.templateSet;
 
-var metadataModel = Backbone.Model.extend({
-	element: '',
-	label: '',
-	id:'',
-	metadata: {
-		about:'',
-		type:''
-	}
+templateSet = Backbone.Collection.extend({
+	metadata_Model : Backbone.Model.extend({
+		id:'metadata',
+		element: '',
+		label: '',
+		metadata: {
+			about:'',
+			type:''
+		}
+	}),
+	whatIsIt_Model : Backbone.Model.extend({
+		id:'what_is_it',
+		element: '',
+		label: '',
+		metadata: {
+			about:'',
+			type:''
+		}
+	})
 });
 
 var metadataView = Backbone.View.extend({

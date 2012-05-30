@@ -32,6 +32,11 @@
 				console.log(trace.join('\n\n')); */
                 $(self.element).append(image);
             }
+			var explainable = $('.view-vieImageSearch-image');
+			explainable.each(function(){
+				assign_menu(this);}
+				mappingFunctionsAPI.bindStack(id,$(this).id());
+			);
 			
             if (photos.length) {
                 var button = $('<button>')
@@ -165,10 +170,12 @@
                         var url = this.base_url;
                         url += widget._getUrlMainPartFromEntity(entity, this);
                         url += this.tail_url(widget, this);
-						widget._trigger('start_query', undefined, {time: new Date()});
-                        $.getJSON(url, this.callback(widget, this));
+						var id = mappingFunctionsAPI.newID();
+						mappingFunctionsAPI.startPoint(id);
+						widget._trigger('start_query', undefined, {queryid: '!start'+id});
+                        $.getJSON(url, this.callback(id, widget, this));
                     },
-                    callback  : function (widget, service) {
+                    callback  : function (id, widget, service) {
                         return function (data) {
                             var photos = [];
                               if (data.stat === 'ok' && data.photos.total > 0) {
@@ -196,6 +203,7 @@
                                   widget._pageNum++;
                               }
                               var data = {service: service, time: new Date(), photos: photos};
+							  mappingFunctionsAPI.endPoint(id);
                               widget._trigger('end_query', undefined, data);
                               var render = (widget.options.render)? widget.options.render : widget._render;
                               render.call(widget, data);
@@ -289,8 +297,10 @@
             entity: undefined,
             
             // events
-            start_query: function (data) { console.log('start query ' + data);},
-            end_query: function (data) { console.log('end query' + data);}
+            start_query: function (event,time) { 
+			console.log('start query');
+			},
+            end_query: function () { console.log('end query');}
         }
         
     });

@@ -27,7 +27,7 @@ jQuery.extend(kbAPI, {
 			updateRecord: function(record){
 				}
 		},
-	interfaceElementsKB: {
+	interfaceKB: {
 			getAll:	function(){
 				return xmlDoc.getElementsByTagName("InterfaceElements")[0];
 				},
