@@ -28,16 +28,12 @@
                 var photo = photos[p];
                 var image = $('<a class="' + self.widgetBaseClass + '-image" target="_blank" href="' + photo.original + '"></a>')
                     .append($("<img src=\"" + photo.thumbnail + "\" />"));
-/* 				var trace = printStackTrace();
-				console.log(trace.join('\n\n')); */
                 $(self.element).append(image);
             }
 			var explainable = $('.view-vieImageSearch-image');
 			explainable.each(function(){
 				assign_menu(this);}
-				mappingFunctionsAPI.bindStack(id,$(this).id());
 			);
-			
             if (photos.length) {
                 var button = $('<button>')
                     .text(self.options.more_btn_txt)
@@ -137,7 +133,7 @@
                             debugger;
                             widget._pageNum++;
                             var data = {time: new Date(), photos: photos};
-                            widget._trigger('end_query', undefined, data);
+          //                  widget._trigger('end_query', undefined, data);
                             var render = (widget.options.render)? widget.options.render : widget._render;
                             render.call(widget, data);
                           };
@@ -171,8 +167,8 @@
                         url += widget._getUrlMainPartFromEntity(entity, this);
                         url += this.tail_url(widget, this);
 						var id = mappingFunctionsAPI.newID();
-						mappingFunctionsAPI.startPoint(id);
-						widget._trigger('start_query', undefined, {queryid: '!start'+id});
+//						mappingFunctionsAPI.startPoint(id);
+		//				widget._trigger('start_query', undefined, {queryid: '!start'+id});
                         $.getJSON(url, this.callback(id, widget, this));
                     },
                     callback  : function (id, widget, service) {
@@ -203,8 +199,8 @@
                                   widget._pageNum++;
                               }
                               var data = {service: service, time: new Date(), photos: photos};
-							  mappingFunctionsAPI.endPoint(id);
-                              widget._trigger('end_query', undefined, data);
+	//						  mappingFunctionsAPI.endPoint(id);
+     //                         widget._trigger('end_query', undefined, data);
                               var render = (widget.options.render)? widget.options.render : widget._render;
                               render.call(widget, data);
                           };
