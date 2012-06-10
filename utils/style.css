@@ -67,8 +67,26 @@ h2 {
 h3 {
     font-size: 26px;
     font-weight: bold;
-    text-align: center;
     padding: 0px 0 20px 0;
+    line-height: 1;
+}
+
+h4 {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+    line-height: 1;
+}
+
+h5 {
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+h5 {
+    font-size: 10px;
+    font-weight: bold;
     line-height: 1;
 }
 
@@ -102,4 +120,20 @@ h3 {
 [about]:hover {
  text-shadow: 0 0 0.2em #8F7, 0 0 0.2em #8F7;
  cursor: pointer;
+}
+
+#interfaceKB, #staticKB, #historyKB{
+	height: auto;
+}
+
+.record-attribute {
+	font-size: 11px;
+}
+
+.record-attribute  textarea{
+	height: 18px;
+}
+
+#explanation_editor {
+	width: 500px;
 }
