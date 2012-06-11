@@ -126,14 +126,27 @@ h5 {
 	height: auto;
 }
 
-.record-attribute {
+.explanation-record-attribute, .explanation-editor-add{
 	font-size: 11px;
 }
 
-.record-attribute  textarea{
+.explanation-record-attribute  textarea{
 	height: 18px;
 }
 
 #explanation_editor {
 	width: 500px;
+}
+
+.hidden{
+	display: none;
+}
+
+.show{
+	display: block;
+}
+
+.item-body{
+	padding-left: 20px;
+
 }
