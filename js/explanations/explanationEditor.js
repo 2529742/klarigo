@@ -28,7 +28,13 @@ jQuery.extend(explanationEditor,{
 		.append('<div class="item-body hidden">');
 
 		var add_button = $('<div class="explanation-editor-add">')
-		.append('<button>add record</button>')
+		.append('<button>add record</button>');
+		add_button.click(function(){
+			var id = kbAPI.staticKB.addRecord();
+			var record = kbAPI.staticKB.getRecord(id);
+			var record_div = render_record(record);
+			$('#staticKB').find('.item-body:first').append(record_div);
+		});
 		staticKB.find('.item-body:first').append(add_button);
 
 		
@@ -43,18 +49,18 @@ jQuery.extend(explanationEditor,{
 				.append('<td><textarea>' + attrs[a] + '</textarea></td>')
 				card.append(tr);
 			};
-			return card;
-		};
-		
-		for(var i = 0; i< records.length; i++){
-			var record = records[i];
-			var card = render_record(record);
 			var record_id = record.id? ('Record - ' + record.id.replace(/<|>/g,'')): 'Record';
 			var record_div = $('<div class="explanation-record">');
 			var record_header = $('<h5 class="item-header collapsed"><a href="#1">' + record_id + '</a></h5>');
 			record_div.append(record_header);
 			record_div.append(card);
-			
+			return record_div;
+		};
+		
+		for(var i = 0; i< records.length; i++){
+			var record = records[i];
+			var record_div = render_record(record);
+	
 			if(record.get('@type') =='<http://ontology.vie.js/explanation/static>'){
 				var item_body = staticKB.find('.item-body:first');
 				if(item_body){

@@ -11,11 +11,23 @@ jQuery.extend(kbAPI, {
 	},
 	save: function (){},
 	staticKB:  {
-		addRecord: function(subject){
+		idCount: 0,
+		newID: function(){
+			return "static"+this.idCount++;
+		},
+		addRecord: function(){
+			var subject = this.newID();
 			kbVIE.entities.add({
 				'@type': '<http://ontology.vie.js/explanation/static>', 
-				'@subject': subject
+				'@subject': subject,
+				'description':'',
+				'purpose':'',
+				'use':''
 			});
+			return subject;
+		},
+		getRecord: function(id){
+			return kbVIE.entities.get(id);
 		}
 	},
 	interfaceKB: {
