@@ -134,6 +134,15 @@ h5 {
 	height: 18px;
 }
 
+.explanation-record-delete{
+	cursor: pointer;
+}
+
+.explanation-record-header{
+	padding-left: 130px;
+	padding-bottom: 10px;
+}
+
 #explanation_editor {
 	width: 500px;
 }
