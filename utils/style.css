@@ -14,8 +14,12 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   font-style: inherit;
   font-size: 100%;
   font-family: inherit;
-  vertical-align: baseline;
 }
+
+td{
+	vertical-align: top;
+}
+
 body {
   line-height: 1;
   color: black;
@@ -139,7 +143,7 @@ h5 {
 }
 
 .explanation-record-header{
-	padding-left: 130px;
+	padding-left: 100px;
 	padding-bottom: 10px;
 }
 
