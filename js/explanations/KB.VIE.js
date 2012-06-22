@@ -30,31 +30,36 @@ jQuery.extend(kbAPI, {
 			catch (e){}
 			return records;
 		},
-		newRecord: function(){
-			var subject = this.newID();
-			kbVIE.entities.add({
+		newRecord: function(subject){
+			var record = kbVIE.entities.addOrUpdate({
 				'@type': '<http://ontology.vie.js/explanation/static>', 
 				'@subject': subject,
+				'title':'',
 				'description':'',
 				'purpose':'',
 				'use':'',
-				'elementType':''
+				'elementType':subject
 			});
-			return subject;
+			return record;
 		},
-		addRecord: function(id,attr){
+		addRecord: function(attr){
 			var desc = attr.desription;
 			var purp = attr.purpose;
 			var use = attr.use;
 			var elType = attr.elementType;
+			var title = attr.title;
 			kbVIE.entities.add({
 				'@type': '<http://ontology.vie.js/explanation/static>', 
-				'@subject': id,
+				'@subject': elType,
+				'title': title,
 				'description': desc,
 				'purpose': purp,
 				'use': use,
 				'elementType': elementType
 			});
+		},
+		updateRecord: function(record){
+			kbVIE.entities.addOrUpdate(record);
 		},
 		removeRecord: function(record){
 			kbVIE.entities.remove(record);

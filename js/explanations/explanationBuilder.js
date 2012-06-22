@@ -11,11 +11,26 @@ jQuery.extend(explanationBuilder,{
 					type:''
 				}
 			});
+			
 			var label = questions_mappings[question].label;
+
+			var elementID = $(element).attr('id');
+			var elementType = kbAPI.interfaceKB.getElementType(elementID);
+			var staticRecord = kbAPI.staticKB.getRecord(elementType);
+			var wit = new model({
+				element: element,
+				label: label,
+				id: elementID,
+				type: elementType,
+				title: staticRecord.get('title'),
+				desc: staticRecord.get("description"),
+				use: staticRecord.get("use")
+			});
+			
 			var metadata = new model({
 				element: element,
 				label: label,
-				id: $(element).attr('id'),
+				id: elementID,
 				metadata: {
 					about: $(element).attr('about'),
 					type: $(element).attr('typeof')
@@ -23,7 +38,7 @@ jQuery.extend(explanationBuilder,{
 			});
 			var view = undefined;
 			if(question == 'what_is_it'){
-				view = new witView({model: metadata});
+				view = new witView({model: wit});
 			}
 			else if(question == 'metadata'){
 				view = new metadataView({model: metadata});

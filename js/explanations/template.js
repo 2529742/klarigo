@@ -52,8 +52,7 @@ var witView = Backbone.View.extend({
 		var model = this.model;
 		var explHTML = '';
 		explHTML = model.get('element').innerHTML+'<br/><br/>' + model.get('label') + ' explanation.<br/></br/>' + 
-			' This is annotated element of TYPE: <b>'+ model.get('metadata').type + '</b><br/></br/>' +
-			' It is referenced to: <b><a href = "'+ model.get('metadata').about + '">' + model.get('metadata').about + '</a></b>.';
+			' This is '+ model.get('title') + '</b><br/></br/>' + model.get('desc') + model.get('use');
 		var $el = $(this.el);
 		$el.append(explHTML);
   }

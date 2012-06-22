@@ -31,10 +31,28 @@ jQuery.extend(explanationEditor,{
 		var add_button = $('<div class="explanation-editor-add">')
 		.append('<button>add record</button>');
 		add_button.click(function(){
-			var id = kbAPI.staticKB.newRecord();
-			var record = kbAPI.staticKB.getRecord(id);
-			var record_div = self.render_record(record,kbAPI.staticKB,{addControls: true}).el;
-			$('#staticKB').find('.item-body:first').append(record_div);
+			var add_dialog = $('<div>Please set the element type:<input id="record-type"></div>')
+						.dialog({
+							buttons:[
+								{
+									text: "OK",
+									click: function(){
+											var record = kbAPI.staticKB.newRecord($(this).find('input')[0].value);
+											var record_div = self.render_record(record,kbAPI.staticKB,{addControls: true}).el;
+											$('#staticKB').find('.item-body:first').append(record_div);
+											$(this).dialog('close');	
+									}
+								},
+								{
+									text: "Cancel",
+									click: function(){
+										$(this).dialog('close');
+									}
+								}
+							],
+							title: "New record"
+						});
+			
 		});
 		staticKB.find('.item-body:first').append(add_button);
 
@@ -148,6 +166,7 @@ jQuery.extend(explanationEditor,{
 												var value = $(this).find('.explanation-record-attribute-value textarea')[0].value;
 												record.setOrAdd(attr,value);
 											});
+											KB.updateRecord(record);
 											$(this).dialog('close');	
 									}
 								},
