@@ -23,7 +23,8 @@ jQuery.extend(explanationBuilder,{
 				id: elementID,
 				type: elementType,
 				title: staticRecord.get('title'),
-				desc: staticRecord.get("description"),
+				description: staticRecord.get("description"),
+				purpose: staticRecord.get("purpose"),
 				use: staticRecord.get("use")
 			});
 			

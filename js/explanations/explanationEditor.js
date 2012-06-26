@@ -56,11 +56,8 @@ jQuery.extend(explanationEditor,{
 		});
 		staticKB.find('.item-body:first').append(add_button);
 
-		
-		var records = kbAPI.getAll();
-		
-		
-		for(var r in kbAPI.staticKB.getAll()){
+		var records = kbAPI.staticKB.getAll();
+		for(var r in records){
 			var record = records[r];
 			var record_div = self.render_record(record,kbAPI.staticKB,{addControls: true}).el;
 			var item_body = staticKB.find('.item-body:first');
@@ -68,7 +65,8 @@ jQuery.extend(explanationEditor,{
 				item_body.append(record_div);
 			}
 		}
-		for(var r in kbAPI.interfaceKB.getAll()){
+		records = kbAPI.interfaceKB.getAll();
+		for(var r in records){
 			var record = records[r];
 			var record_div = self.render_record(record,kbAPI.interfaceKB,{addControls: false}).el;
 			var item_body = interfaceKB.find('.item-body:first');
@@ -76,7 +74,8 @@ jQuery.extend(explanationEditor,{
 				item_body.append(record_div);
 			}
 		}
-		for(var r in kbAPI.historyKB.getAll()){
+		records = kbAPI.historyKB.getAll();
+		for(var r in records){
 			var record = records[r];
 			var record_div = self.render_record(record,kbAPI.historyKB,{addControls: false}).el;
 			var item_body = staticKB.find('.item-body:first');

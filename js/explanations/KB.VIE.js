@@ -43,7 +43,7 @@ jQuery.extend(kbAPI, {
 			return record;
 		},
 		addRecord: function(attr){
-			var desc = attr.desription;
+			var desc = attr.description;
 			var purp = attr.purpose;
 			var use = attr.use;
 			var elType = attr.elementType;
@@ -55,7 +55,7 @@ jQuery.extend(kbAPI, {
 				'description': desc,
 				'purpose': purp,
 				'use': use,
-				'elementType': elementType
+				'elementType': elType
 			});
 		},
 		updateRecord: function(record){

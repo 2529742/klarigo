@@ -51,8 +51,8 @@ var witView = Backbone.View.extend({
 	render: function() {
 		var model = this.model;
 		var explHTML = '';
-		explHTML = model.get('element').innerHTML+'<br/><br/>' + model.get('label') + ' explanation.<br/></br/>' + 
-			' This is '+ model.get('title') + '</b><br/></br/>' + model.get('desc') + model.get('use');
+		explHTML = '<b>'+ model.get('element').innerHTML + '</b><br/><br/>' + model.get('label') + ' explanation.<br/></br/>' + 
+			' This is '+ model.get('title') + '<br/></br/>' + model.get('description') + '<br/>' + model.get('purpose') + '<br/>' + model.get('use');
 		var $el = $(this.el);
 		$el.append(explHTML);
   }

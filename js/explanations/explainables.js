@@ -22,6 +22,7 @@ $(window).load(function () {
 	});
 	
 	this.indexInterfaceElements();
+	loadSampleKB();
 	for(var type in predicate){
 		var explainable = $(predicate[type]);
 		explainable.each(function(){
