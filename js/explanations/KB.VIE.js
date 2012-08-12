@@ -48,6 +48,7 @@ jQuery.extend(kbAPI, {
 			var use = attr.use;
 			var elType = attr.elementType;
 			var title = attr.title;
+			var start = attr.start;
 			kbVIE.entities.add({
 				'@type': '<http://ontology.vie.js/explanation/static>', 
 				'@subject': elType,
@@ -55,7 +56,8 @@ jQuery.extend(kbAPI, {
 				'description': desc,
 				'purpose': purp,
 				'use': use,
-				'elementType': elType
+				'elementType': elType,
+				'start': start
 			});
 		},
 		updateRecord: function(record){
@@ -77,16 +79,21 @@ jQuery.extend(kbAPI, {
 			catch (e){}
 			return records;
 		},
-		addRecord:function(id,type){
+		addRecord:function(id,type,events){
 			kbVIE.entities.add({
 				'@type': '<http://ontology.vie.js/explanation/interface>', 
 				'@subject': id,
-				'elementType': type
+				'elementType': type,
+				'events': events
 			});
 		},
 		getElementType: function (id){
 			var type = kbVIE.entities.get(id).get('elementType');
 			return type;
+		},
+		getEvents: function (id){
+			var events = kbVIE.entities.get(id).get('events');
+			return events;
 		},
 		updateRecord: function(){}
 	},

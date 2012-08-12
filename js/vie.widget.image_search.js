@@ -30,10 +30,6 @@
                     .append($("<img src=\"" + photo.thumbnail + "\" />"));
                 $(self.element).append(image);
             }
-			var explainable = $('.view-vieImageSearch-image');
-			explainable.each(function(){
-				assign_menu(this);}
-			);
             if (photos.length) {
                 var button = $('<button>')
                     .text(self.options.more_btn_txt)

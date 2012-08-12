@@ -116,6 +116,13 @@ h5 {
   text-align: center;
 }
 
+.explIcon {
+	height: 16px;
+	width:16px;
+	background-image: url("img/question.png");
+	display: inline-block;
+}
+
 [about] {
  text-shadow: 0 0 0.2em #87F, 0 0 0.2em #87F;
  cursor: pointer;

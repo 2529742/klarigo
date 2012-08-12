@@ -15,6 +15,10 @@ questions_mappings = {
 		label : "What is it's relevance?",
 		types : ["result"]
 		},
+	"wrong_result" : {
+		label : "Why there is no/wrong result?",
+		types : ["results_set"]
+		},
 	"order" : {
 		label : "How are the results ordered?",
 		types : ["results_set"]
@@ -22,5 +26,9 @@ questions_mappings = {
 	"how_to_start" : {
 		label : "How to start?",
 		types : ["main"]
+		},
+	"possible_actions" : {
+		label : "What are the possible actions?",
+		types : ["main","annotated","result","results_set"]
 		}
 }

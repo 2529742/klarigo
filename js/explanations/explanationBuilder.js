@@ -37,12 +37,39 @@ jQuery.extend(explanationBuilder,{
 					type: $(element).attr('typeof')
 				}
 			});
+			
+			var hts = new model({
+				element: element,
+				label: label,
+				id: elementID,
+				type: elementType,
+				title: staticRecord.get('title'),
+				description: staticRecord.get("description"),
+				purpose: staticRecord.get("purpose"),
+				use: staticRecord.get("use"),
+				start: staticRecord.get("start")
+			});
+			
+			var actions = new model({
+				element: element,
+				label: label,
+				id: elementID,
+				type: elementType,
+				title: staticRecord.get('title'),
+				events: kbAPI.interfaceKB.getEvents(elementID)
+			});
 			var view = undefined;
 			if(question == 'what_is_it'){
 				view = new witView({model: wit});
 			}
 			else if(question == 'metadata'){
 				view = new metadataView({model: metadata});
+			}
+			else if(question == 'how_to_start'){
+				view = new htsView({model: hts});
+			}
+			else if(question == 'possible_actions'){
+				view = new actionsView({model: actions});
 			}
 			$('.explanation_block').empty();
 			

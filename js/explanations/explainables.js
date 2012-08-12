@@ -3,7 +3,8 @@ var counter = 1;
 var predicate = {
 	"main": 'h1',
 	"annotated": '[typeof="Person"],[typeof="Place"],[typeof="City"]',
-	"result": '.view-vieImageSearch-image'
+	"result": '.view-vieImageSearch-image',
+	"results_set": 'image_container'
 	};
 
 $(window).load(function () {
@@ -25,14 +26,10 @@ $(window).load(function () {
 	loadSampleKB();
 	for(var type in predicate){
 		var explainable = $(predicate[type]);
-		explainable.each(function(){
-			assign_menu(this);}
-		);
+		explainable.livequery(function(){
+				assign_menu(this);
+		});
 	};
-});
-
-$('.view-vieImageSearch-image >img').live('load',function(){
-	assign_menu(this);
 });
 
 function indexInterfaceElements(){
@@ -47,7 +44,11 @@ function indexInterfaceElements(){
 				id = 'explID'+counter++;
 				this.id = id;
 			}
-			kbAPI.interfaceKB.addRecord(id,type);
+			var events = [];
+			for(var e in $(this).data('events')){
+				events.push(e);
+			}
+			kbAPI.interfaceKB.addRecord(id,type,events);
 		});
 	}
 	kbAPI.save();
@@ -96,7 +97,7 @@ function renderSidePanel(){
 
 function assign_menu(element){
 		//version with indroduction of new interface elements: new icons to navigate explanation
-		var explIcon = $('<div class = "explIcon"><img src="img/question.png" style="height: 15px; width:15px"></div>');
+		var explIcon = $('<div class = "explIcon"></div>');
 		$(explIcon).insertAfter($(element));
 		if(element instanceof HTMLHeadingElement){
 			$(element).css({'float':'left'});
@@ -116,7 +117,6 @@ function assign_menu(element){
 			}
 			if(type){
 				$(explIcon)
-				.css('display','inline')		
 				.click(function(event){
 						event.stopPropagation();
 						var contextMenu = $('#myMenu');
