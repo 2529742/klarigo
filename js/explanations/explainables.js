@@ -59,7 +59,8 @@ function indexInterfaceElements(){
 function renderSidePanel(){
 	//add to the document's body new elements to control and display explanations
 	var userMode = '<p style="height:40px;"><input type ="checkbox" style="margin-bottom:50px;float:right;" checked><span style="float:right;">Advanced user mode</span></p>';
-	var kbButton = '<p><button id="kbButton" style="visibility:visible;">KnowledgeBase</button></p>';
+	var kbButton = '<p><button id="kbButton" class="admin_controls" style="visibility:visible;">KnowledgeBase</button></p>';
+	var templButton = '<p><button id="TEButton" class="admin_controls" style="visibility:visible;">Template Editor</button></p>';
 	var explDiv = '<div class="slide-out-div">'+
 					'<div class="handle"></div>'+
 				'<div class="explanation_block">EXPLANATIONS</div></div>';
@@ -67,19 +68,23 @@ function renderSidePanel(){
 	$(userMode)
 	.click(function(){
 		if($(this).find('input').attr('checked')){
-			$('#kbButton').css({visibility: 'visible'});
+			$('.admin_controls').css({visibility: 'visible'});
 		}
 		else{
-			$('#kbButton').css({visibility: 'hidden'});
+			$('.admin_controls').css({visibility: 'hidden'});
 		};
 	})
 	.prependTo($('.slide-out-div'));	
 	$(kbButton)
 	.click(function(){
-		explanationEditor.create();
-		$('.ui-accordion').accordion('refresh');
+		explanationEditor.open();
 	})
 	.prependTo($('.slide-out-div'));	
+	$(templButton)
+	.click(function(){
+		templateEditor.open();
+	})
+	.prependTo($('.slide-out-div'));
     $('.slide-out-div').tabSlideOut({
             tabHandle: '.handle',                     //class of the element that will become your tab
             pathToTabImage: 'img/explanation.png', //path to the image for the tab //Optionally can be set using css

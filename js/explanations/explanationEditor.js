@@ -5,14 +5,18 @@ jQuery.extend(explanationEditor,{
 		var dialogEl = undefined;
 		if(jQuery('#explanation_editor').length > 0){
 			dialogEl = $('#explanation_editor');
-			dialogEl.dialog('open');
 		}
 		else{
 			dialogEl = $('<div id="explanation_editor">')
 			.dialog({title:'Knowledge Base', width: '500px'});
-			this.render(dialogEl);
 		}
-		
+		dialogEl.dialog('open');		
+	},
+	
+	open: function(){
+		dialogEl = $('#explanation_editor');
+		this.render(dialogEl);
+		dialogEl.dialog('open');
 	},
 	
 	render: function(dialogEl){
