@@ -64,7 +64,7 @@ var witView = Backbone.View.extend({
   }
 
 });
-
+/* How to start? explanation */
 var htsView = Backbone.View.extend({
 	tagName : "div",
 	className : "explanation",

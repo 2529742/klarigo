@@ -4,7 +4,7 @@ var predicate = {
 	"main": 'h1',
 	"annotated": '[typeof="Person"],[typeof="Place"],[typeof="City"]',
 	"result": '.view-vieImageSearch-image',
-	"results_set": 'image_container'
+	"results_set": '#image_container'
 	};
 
 $(window).load(function () {
@@ -24,18 +24,12 @@ $(window).load(function () {
 	
 	this.indexInterfaceElements();
 	loadSampleKB();
-	for(var type in predicate){
-		var explainable = $(predicate[type]);
-		explainable.livequery(function(){
-				assign_menu(this);
-		});
-	};
 });
 
 function indexInterfaceElements(){
-	kbAPI.init();
 	for(var type in predicate){
-		$(predicate[type]).each(function(){
+		var explainable = $(predicate[type]);
+		explainable.livequery(function(){
 			var id;
 			if(this.id){
 				id = this.id;
@@ -49,9 +43,9 @@ function indexInterfaceElements(){
 				events.push(e);
 			}
 			kbAPI.interfaceKB.addRecord(id,type,events);
+			assign_menu(this);
 		});
 	}
-	kbAPI.save();
 }
 
 
