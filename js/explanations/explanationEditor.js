@@ -2,19 +2,16 @@ var explanationEditor = {};
 
 jQuery.extend(explanationEditor,{
 	create: function(){
-		var dialogEl = undefined;
-		if(jQuery('#explanation_editor').length > 0){
-			dialogEl = $('#explanation_editor');
-		}
-		else{
-			dialogEl = $('<div id="explanation_editor">')
-			.dialog({title:'Knowledge Base', width: '500px'});
-		}
-		dialogEl.dialog('open');		
+		var dialogEl = $('<div id="explanation_editor">')
+		.dialog({title:'Knowledge Base', width: '500px'});
 	},
 	
 	open: function(){
-		dialogEl = $('#explanation_editor');
+		if(jQuery('#explanation_editor').length == 0){
+			this.create();
+		};
+		var dialogEl = $('#explanation_editor');
+		dialogEl.empty();
 		this.render(dialogEl);
 		dialogEl.dialog('open');
 	},
@@ -22,16 +19,27 @@ jQuery.extend(explanationEditor,{
 	render: function(dialogEl){
 		var self = this;
 		var list =  $('<ul>');
-		var staticKB = $('<li id="staticKB"></li>')
-		.append('<h5 class="item-header collapsed"><a href="#1">Static descriptive knowledge</a></h5>')
-		.append('<div class="item-body hidden">');
-		var interfaceKB = $('<li id="interfaceKB"></li>')
-		.append('<h5 class="item-header collapsed"><a href="#1">Interface elements</a></h5>')
-		.append('<div class="item-body hidden">');
-		var historyKB = $('<li id="historyKB"></li>')
-		.append('<h5 class="item-header collapsed"><a href="#1">Interaction history</a></h5>')
+		var staticKB = $('<li id="staticKB"></li>');
+		var sKBh = $('<h5 class="item-header collapsed"><a href="#1">Static descriptive knowledge</a></h5>');
+		accordion(sKBh);
+		staticKB
+		.append(sKBh)
 		.append('<div class="item-body hidden">');
 
+		var interfaceKB = $('<li id="interfaceKB"></li>');
+		var iKBh = $('<h5 class="item-header collapsed"><a href="#1">Interface elements</a></h5>');
+		accordion(iKBh);
+		interfaceKB
+		.append(iKBh)
+		.append('<div class="item-body hidden">');
+
+		var historyKB = $('<li id="historyKB"></li>');
+		var hKBh = $('<h5 class="item-header collapsed"><a href="#1">Interaction history</a></h5>');
+		accordion(hKBh);
+		historyKB
+		.append(hKBh)
+		.append('<div class="item-body hidden">');
+		
 		var add_button = $('<div class="explanation-editor-add">')
 		.append('<button>add record</button>');
 		add_button.click(function(){
@@ -64,7 +72,7 @@ jQuery.extend(explanationEditor,{
 		for(var r in records){
 			var record = records[r];
 			var record_div = self.render_record(record,kbAPI.staticKB,{addControls: true}).el;
-			var item_body = staticKB.find('.item-body:first');
+			var item_body = staticKB.find(' .item-body:first');
 			if(item_body){
 				item_body.append(record_div);
 			}
@@ -73,7 +81,7 @@ jQuery.extend(explanationEditor,{
 		for(var r in records){
 			var record = records[r];
 			var record_div = self.render_record(record,kbAPI.interfaceKB,{addControls: false}).el;
-			var item_body = interfaceKB.find('.item-body:first');
+			var item_body = interfaceKB.find(' .item-body:first');
 			if(item_body){
 				item_body.append(record_div);
 			}
@@ -82,34 +90,11 @@ jQuery.extend(explanationEditor,{
 		for(var r in records){
 			var record = records[r];
 			var record_div = self.render_record(record,kbAPI.historyKB,{addControls: false}).el;
-			var item_body = staticKB.find('.item-body:first');
+			var item_body = historyKB.find(' .item-body:first');
 			if(item_body){
 				item_body.append(record_div);
 			}
 		}
-		
-		$('.item-header').livequery('click',function(){
-			if($(this).hasClass('collapsed')){
-				$(this).addClass('expanded');
-				$(this).removeClass('collapsed');
-				var data = $(this).parent().find('.item-body:first');
-				if(data){
-					data
-					.removeClass('hidden')
-					.addClass('show');
-				}
-			}
-			else{
-				$(this).removeClass('expanded');
-				$(this).addClass('collapsed');
-				var data = $(this).parent().find('.item-body:first');
-				if(data){
-					data
-					.addClass('hidden')
-					.removeClass('show');
-				}
-			}	
-		});
 		
 		list
 		.append(staticKB)
@@ -129,6 +114,7 @@ jQuery.extend(explanationEditor,{
 					var $el = $(this.el);
 					var record_id = record.id? ('Record - ' + record.id.replace(/<|>/g,'')): 'Record';
 					var record_header = $('<h5 class="item-header collapsed"><a href="#1">' + record_id + '</a></h5>');
+					accordion(record_header);
 					var delete_btn = $('<div class="explanation-record-delete ui-icon ui-icon-trash">del</div>');
 					delete_btn.click(function(){
 						var confirm_dialog = $('<div>Attention!!!<br/> The record will be deleted!<br/> Do you want to proceed?</div>')
@@ -205,3 +191,28 @@ jQuery.extend(explanationEditor,{
 			return new recordView({model:record});
 		}
 });
+
+function accordion(element){
+	element.click(function(){
+		if($(this).hasClass('collapsed')){
+			$(this).addClass('expanded');
+			$(this).removeClass('collapsed');
+			var data = $(this).parent().find('.item-body:first');
+			if(data){
+				data
+				.removeClass('hidden')
+				.addClass('show');
+			}
+		}
+		else{
+			$(this).removeClass('expanded');
+			$(this).addClass('collapsed');
+			var data = $(this).parent().find('.item-body:first');
+			if(data){
+				data
+				.addClass('hidden')
+				.removeClass('show');
+			}
+		}
+	});		
+};
