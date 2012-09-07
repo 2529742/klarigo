@@ -158,6 +158,18 @@ h5 {
 	width: 500px;
 }
 
+#template_editor{
+	width: 1000px;
+}
+
+.explanation-template-editor-kb{
+	float: left;
+	margin-right: 10px;
+	border: 1px solid gray;
+	border-radius: 4px;
+	padding: 10px;
+}
+
 .hidden{
 	display: none;
 }
