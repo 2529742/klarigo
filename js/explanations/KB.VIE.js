@@ -19,6 +19,18 @@ jQuery.extend(kbAPI, {
 	},
 	staticKB:  {
 		idCount: 0,
+		schema: {
+			attributes:[
+				'@type',
+				'@subject',
+				'title',
+				'description',
+				'purpose',
+				'use',
+				'start',
+				'elementType'
+				]
+		},
 		newID: function(){
 			return "static"+this.idCount++;
 		},
@@ -38,7 +50,8 @@ jQuery.extend(kbAPI, {
 				'description':'',
 				'purpose':'',
 				'use':'',
-				'elementType':subject
+				'elementType':subject,
+				'start':''
 			});
 			return record;
 		},
@@ -71,6 +84,14 @@ jQuery.extend(kbAPI, {
 		}
 	},
 	interfaceKB: {
+		schema: {
+			attributes:[
+				'@type', 
+				'@subject',
+				'elementType',
+				'events'
+			]
+		},
 		getAll: function(){	
 			var records = [];
 			try{
@@ -98,6 +119,13 @@ jQuery.extend(kbAPI, {
 		updateRecord: function(){}
 	},
 	historyKB: {
+		schema: {
+			attributes:[
+				'@type', 
+				'@subject',
+				'stack'
+			]
+		},
 		getAll: function(){	
 			var records =  [];
 			try{

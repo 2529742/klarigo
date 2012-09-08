@@ -160,14 +160,39 @@ h5 {
 
 #template_editor{
 	width: 1000px;
+	height: 500px;
 }
 
 .explanation-template-editor-kb{
 	float: left;
+	width: 25%;
+	
+}
+
+.explanation-template-editor-kb-schema{
 	margin-right: 10px;
 	border: 1px solid gray;
 	border-radius: 4px;
 	padding: 10px;
+	height: 500px;
+}
+
+.explanation-template-editor-KB-node{
+	cursor: move;
+}
+
+.explanation-template-editor-canvas{
+	display: inline-block;
+	width: 65%;
+	
+}
+
+.explanation-template-editor-canvas-field{
+	margin-right: 10px;
+	border: 1px solid gray;
+	border-radius: 4px;
+	padding: 10px;
+	height: 500px ;
 }
 
 .hidden{

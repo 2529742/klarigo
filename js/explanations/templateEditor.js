@@ -27,12 +27,83 @@ jQuery.extend(templateEditor,{
 	
 	render_kb: function(){
 		var kbDiv = $('<div class="explanation-template-editor-kb">');
-		explanationEditor.render(kbDiv);
+		var kbSchema = $('<div class="explanation-template-editor-kb-schema">');
+		kbDiv
+		.append('<h4>KB Schema</h4>')
+		.append(kbSchema);
+		var self = this;
+		var list =  $('<ul>');
+		
+		var staticKB = $('<li id="explanation-template-editor-staticKB"></li>');
+		var sKBh = $('<h5 class="item-header collapsed"><a href="#1">Static descriptive knowledge</a></h5>');
+		accordion(sKBh);
+		staticKB
+		.append(sKBh)
+		.append('<div class="item-body hidden">');
+		
+		var attr = kbAPI.staticKB.schema.attributes;
+		var item_body = staticKB.find(' .item-body:first');
+		self.render_nodes(attr, item_body);
+		
+		var interfaceKB = $('<li id="explanation-template-editor-interfaceKB"></li>');
+		var iKBh = $('<h5 class="item-header collapsed"><a href="#1">Interface elements</a></h5>');
+		accordion(iKBh);
+		interfaceKB
+		.append(iKBh)
+		.append('<div class="item-body hidden">');
+
+		attr = kbAPI.interfaceKB.schema.attributes;
+		item_body = interfaceKB.find(' .item-body:first');
+		self.render_nodes(attr, item_body);
+		
+		var historyKB = $('<li id="explanation-template-editor-historyKB"></li>');
+		var hKBh = $('<h5 class="item-header collapsed"><a href="#1">Interaction history</a></h5>');
+		accordion(hKBh);
+		historyKB
+		.append(hKBh)
+		.append('<div class="item-body hidden">');
+		
+		attr = kbAPI.historyKB.schema.attributes;
+		item_body = historyKB.find(' .item-body:first');
+		self.render_nodes(attr, item_body);
+		
+		list
+		.append(staticKB)
+		.append(interfaceKB)
+		.append(historyKB)
+		.appendTo(kbSchema);
+
 		return kbDiv;
+	},
+	
+	render_nodes: function(attr,body){
+		for(var a in attr){
+			var node = $('<div class="explanation-template-editor-KB-node">')
+			.append('<h5>' + attr[a] + '</h5>')
+			.draggable({
+				stop: function(){
+						var entry = $(this).clone();
+						$(this).css({
+							left: '',
+							top: ''
+						});
+					}
+			});
+			body.append(node);
+		};
 	},
 	
 	render_canvas: function(){
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">');
+		canvasDiv.append('<h4>Template</h4>');
+		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
+		canvasField
+		.appendTo(canvasDiv)
+		.droppable({
+			drop: function(event, ui){
+				
+			}
+		});
 		return canvasDiv;
 	}
 });
