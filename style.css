@@ -195,6 +195,14 @@ h5 {
 	height: 500px ;
 }
 
+.explanation-template-editor-canvas-field-line{
+	height: 15px;
+	border-top: 1px dashed gray;
+	border-left: 1px dashed gray;
+	border-right: 1px dashed gray;
+	display: block;
+}
+
 .hidden{
 	display: none;
 }

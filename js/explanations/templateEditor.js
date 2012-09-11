@@ -82,7 +82,6 @@ jQuery.extend(templateEditor,{
 			.append('<h5>' + attr[a] + '</h5>')
 			.draggable({
 				stop: function(){
-						var entry = $(this).clone();
 						$(this).css({
 							left: '',
 							top: ''
@@ -97,13 +96,57 @@ jQuery.extend(templateEditor,{
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">');
 		canvasDiv.append('<h4>Template</h4>');
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
+		for(var i=1; i<30; i++){
+			var line = $('<span class="explanation-template-editor-canvas-field-line">')
+			.droppable({
+				drop: function(event, ui){
+					var entry = ui.draggable.clone()
+					.removeClass()
+					.css({
+						left: '',
+						top: ''
+					});
+					var input = $(this).find('input');
+					if(input.val().length>0){
+						input.css({
+							'float': 'left',
+							'width': 'auto'
+						}); 
+					}
+					else{
+						$(this).empty();
+					}
+					$(this).append(entry);					
+				}
+			});
+			var textInput = $('<input>')
+			.css({
+				height: '14px',
+				width: '100%',
+				border: 'none',
+				'font-size': '12px'
+			});
+			line.append(textInput);
+			canvasField.append(line);
+		}
 		canvasField
-		.appendTo(canvasDiv)
-		.droppable({
-			drop: function(event, ui){
-				
-			}
-		});
+		.appendTo(canvasDiv);
+		
 		return canvasDiv;
+	},
+	
+	save_template: function(){
+		var template_object = {};
+		var canvasField = $('.explanation-template-editor-canvas-field');
+		
+		return template_object;
+	},
+	
+	open_template: function(){
+	},
+	
+	new_template: function(){
+	
 	}
+	
 });
