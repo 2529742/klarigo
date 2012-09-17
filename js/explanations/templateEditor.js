@@ -3,7 +3,11 @@ var templateEditor = {};
 jQuery.extend(templateEditor,{
 	create: function(){
 		var dialogEl = $('<div id="template_editor">')
-		.dialog({title:'Template editor', width: '1000px'});
+		.dialog({
+			title:'Template editor', 
+			width: '1000px',
+			
+		});
 	},
 	
 	open: function(){
@@ -95,6 +99,8 @@ jQuery.extend(templateEditor,{
 	render_canvas: function(){
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">');
 		canvasDiv.append('<h4>Template</h4>');
+		var canvasControls = this.render_controls();
+		canvasDiv.append(canvasControls);
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
 		for(var i=1; i<30; i++){
 			var line = $('<span class="explanation-template-editor-canvas-field-line">')
@@ -135,10 +141,40 @@ jQuery.extend(templateEditor,{
 		return canvasDiv;
 	},
 	
+	render_controls: function(){
+		var self = this;
+		var controls_div = $('<div class="explanation-template-editor-canvas-controls">');
+		
+		var new_btn = $('<button>New</button>')
+		.click(function(){
+			self.new_template();
+		})
+		.appendTo(controls_div);
+		
+		var open_btn = $('<button>Open</button>')
+		.click(function(){
+			self.open_template();
+		})
+		.appendTo(controls_div);
+		
+		var save_btn = $('<button>Save</button>')
+		.click(function(){
+			var template_object = self.save_template();
+		})
+		.appendTo(controls_div);
+		
+		return controls_div;
+	},
+	
 	save_template: function(){
 		var template_object = {};
 		var canvasField = $('.explanation-template-editor-canvas-field');
-		
+		canvasField.children().each(function(){
+			var node = $(this);
+			var i = 0;
+			i++;
+			$.extend(template_object,{i:'type'});
+		});
 		return template_object;
 	},
 	
