@@ -28,22 +28,25 @@ jQuery.extend(window.mappingFunctionsAPI, {
 		return callStack;
 		}
 });
-
+var ajaxID = 0;
 function eventsFilter(elements){
 	var trace = "";
 	if(!$.ajaxSettings.beforeSend){
-		$.ajaxSetup({beforeSend: function(){
-			console.log('Start query');
-			trace = printStackTrace();
-			console.log(trace);}
+		$.ajaxSetup({
+			beforeSend: function(){
+				ajaxID++;
+				this.ajaxID = ajaxID;
+				console.log('Start query'+ajaxID);
+				trace = printStackTrace();
+				console.log(trace);
+				}
 		});
 	}
 	if(!$.ajaxSettings.success){
-		$.ajaxSetup({complete: function(result){
-			console.log('End query');
-			trace = printStackTrace();
-			//console.log(trace);
-			}
+		$.ajaxSetup({
+			complete: function(result){
+				console.log('End query'+this.ajaxID);
+				}
 		});
 	}
 	for(var eventName in eventTypes){
@@ -56,8 +59,8 @@ function eventsFilter(elements){
 function listener(eventName,element){
 	console.warn(element);
 	console.log(eventName + '\n\n');
-	var trace = printStackTrace();
-	console.log(trace);
+	//var trace = printStackTrace();
+	//console.log(trace);
 }
 
 var eventTypes = {
