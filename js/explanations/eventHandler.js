@@ -29,6 +29,8 @@ jQuery.extend(window.mappingFunctionsAPI, {
 		}
 });
 var ajaxID = 0;
+Error.stackTraceLimit = 100;
+
 function eventsFilter(elements){
 	var trace = "";
 	if(!$.ajaxSettings.beforeSend){
@@ -37,16 +39,18 @@ function eventsFilter(elements){
 				ajaxID++;
 				this.ajaxID = ajaxID;
 				console.log('Start query'+ajaxID);
-				trace = printStackTrace();
+				trace = printStackTrace({
+					e: new Error()
+				});
 				console.log(trace);
-				}
+			}
 		});
 	}
 	if(!$.ajaxSettings.success){
 		$.ajaxSetup({
 			complete: function(result){
 				console.log('End query'+this.ajaxID);
-				}
+			}
 		});
 	}
 	for(var eventName in eventTypes){
