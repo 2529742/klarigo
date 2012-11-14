@@ -100,9 +100,9 @@ jQuery.extend(templateEditor,{
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">');
 		canvasDiv.append('<h4>Template</h4>');
 		var canvasControls = this.render_controls();
-		canvasDiv.append(canvasControls);
+		//canvasDiv.append(canvasControls);
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
-		for(var i=1; i<30; i++){
+		for(var i=1; i<32; i++){
 			var line = $('<span class="explanation-template-editor-canvas-field-line">')
 			.droppable({
 				drop: function(event, ui){
