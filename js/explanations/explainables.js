@@ -9,7 +9,7 @@ var predicate = {
 	};
 
 $(window).load(function () {
-	eventsFilter('[about]');
+	
 	this.renderSidePanel();
 	var contextMenu = $('<ul id="myMenu" class="contextMenu"/>');
 	$('body')
@@ -29,6 +29,7 @@ $(window).load(function () {
 
 function indexInterfaceElements(){
 	for(var type in predicate){
+		eventsFilter(predicate[type]);
 		var explainable = $(predicate[type]);
 		explainable.livequery(function(){
 			var explType = type;

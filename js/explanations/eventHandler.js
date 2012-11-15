@@ -55,7 +55,21 @@ function eventsFilter(elements){
 	}
 	for(var eventName in eventTypes){
 		if(eventTypes[eventName]){
-			$('body').delegate(elements,eventName,function(){listener(eventName,this);});
+			$('body').delegate(
+				elements,
+				eventName,
+				function(event){
+					event.stopPropagation();
+					var element;
+					if(event.type == 'DOMNodeInserted' || 'DOMNodeRemoved'){
+						element = event.target;
+					}
+					else{
+						element = this;
+					}
+					listener(event.type,element);
+				}
+			);
 		}
 	};
 }
@@ -63,14 +77,19 @@ function eventsFilter(elements){
 function listener(eventName,element){
 	console.warn(element);
 	console.log(eventName + '\n\n');
-	//var trace = printStackTrace();
-	//console.log(trace);
+	var trace = printStackTrace({
+		e: new Error()
+	});
+	console.log(trace);
 }
 
 var eventTypes = {
 //doc events
 load: false,
 onunload: false,
+//DOM Nodes events
+DOMNodeInserted: true,
+DOMNodeRemoved: true,
 //form events
 onblur: false,
 onchange: false,

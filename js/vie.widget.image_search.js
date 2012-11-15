@@ -289,10 +289,8 @@
             entity: undefined,
             
             // events
-            start_query: function (event,time) { 
-			console.log('start query');
-			},
-            end_query: function () { console.log('end query');}
+            start_query: {},
+            end_query: {}
         }
         
     });
