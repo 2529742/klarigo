@@ -77,6 +77,9 @@ function eventsFilter(elements){
 function listener(eventName,element){
 	console.warn(element);
 	console.log(eventName + '\n\n');
+	console.trace(function(e){
+	debugger;})
+	
 	var trace = printStackTrace({
 		e: new Error()
 	});
@@ -89,7 +92,7 @@ load: false,
 onunload: false,
 //DOM Nodes events
 DOMNodeInserted: true,
-DOMNodeRemoved: true,
+DOMNodeRemoved: false,
 //form events
 onblur: false,
 onchange: false,
