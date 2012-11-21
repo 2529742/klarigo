@@ -77,13 +77,26 @@ function eventsFilter(elements){
 function listener(eventName,element){
 	console.warn(element);
 	console.log(eventName + '\n\n');
-	console.trace(function(e){
-	debugger;})
+	traceStack();
 	
 	var trace = printStackTrace({
 		e: new Error()
 	});
 	console.log(trace);
+}
+
+//trace through function's call stack to the root
+function traceStack(){
+	var callee = arguments.callee.caller;
+	while(callee.caller){
+		callee = callee.caller;
+	}
+	var args = callee.arguments;
+	for(var a in args){
+		if(args[a] instanceof Event){
+			console.log('Root event: ' + args[a]);
+		}
+	}
 }
 
 var eventTypes = {
