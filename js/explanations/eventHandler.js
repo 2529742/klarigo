@@ -37,12 +37,21 @@ function eventsFilter(elements){
 		$.ajaxSetup({
 			beforeSend: function(){
 				ajaxID++;
-				this.ajaxID = ajaxID;
+				this.ajaxID = 'ajaxID'+ajaxID;
 				console.log('Start query'+ajaxID);
 				trace = printStackTrace({
 					e: new Error()
 				});
 				console.log(trace);
+				var rootEvent = traceStack();
+				//TODO: recognize a root event (click) by its timeStamp, type and target attrs.
+				var record = {id: 'eventID'+eventID++};
+				record.eventType = 'ajax';
+				record.ajaxID = this.ajaxID;
+				record.stack = trace;
+				if(rootEvent){record.rootEvent = rootEvent;}
+				record.timeStamp = new Date().getTime();
+				kbAPI.historyKB.addRecord(record);
 			}
 		});
 	}
@@ -59,7 +68,7 @@ function eventsFilter(elements){
 				eventName,
 				function(event){
 					var element = event.delegateTarget;
-					if(event.type == 'DOMNodeInserted' || event.type == 'DOMNodeRemoved'){
+					if(event.type == 'DOMNodeInserted' || event.type == 'DOMNodeRemoved'){ //TODO: check another event types
 						element = event.target;
 					}
 					listener(event,element);
@@ -74,7 +83,9 @@ function listener(event,element){
 	var trace = printStackTrace({
 		e: new Error()
 	});
-	var rootEvent = traceStack(event);
+	//TODO: exclude first items in trace which are related only to the printStackTrace call.
+	
+	var rootEvent = traceStack();
 
 	var record = {id: 'eventID'+eventID++};
 	record.eventType = event.type;
@@ -100,7 +111,7 @@ function listener(event,element){
 }
 
 //trace through function's call stack to the root
-function traceStack(event){
+function traceStack(){
 	var rootEvent = undefined;
 	var callee = arguments.callee.caller;
 	var i = 0;
@@ -116,6 +127,7 @@ function traceStack(event){
 			rootEvent.name = args[a].type;
 			rootEvent.target = (args[a].target.id)? args[a].target.id: (explElementsCounter)? 'explID'+explElementsCounter++: undefined;
 			console.log('Root event: ' + args[a]);
+			//TODO: recognize ajax requests events and address the eventID
 		}
 	}
 	return rootEvent;
