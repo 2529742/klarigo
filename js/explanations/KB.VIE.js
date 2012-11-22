@@ -55,23 +55,15 @@ jQuery.extend(kbAPI, {
 			});
 			return record;
 		},
-		addRecord: function(attr){
-			var desc = attr.description;
-			var purp = attr.purpose;
-			var use = attr.use;
-			var elType = attr.elementType;
-			var title = attr.title;
-			var start = attr.start;
-			kbVIE.entities.add({
+		addRecord: function(record){
+			var attributes = {
 				'@type': '<http://ontology.vie.js/explanation/static>', 
-				'@subject': elType,
-				'title': title,
-				'description': desc,
-				'purpose': purp,
-				'use': use,
-				'elementType': elType,
-				'start': start
-			});
+				'@subject': record.elementType
+			};
+			for(var a in record){
+				attributes[a] = record[a];
+			}
+			kbVIE.entities.add(attributes);
 		},
 		updateRecord: function(record){
 			kbVIE.entities.addOrUpdate(record);
@@ -89,7 +81,8 @@ jQuery.extend(kbAPI, {
 				'@type', 
 				'@subject',
 				'elementType',
-				'events'
+				'events',
+				'status'
 			]
 		},
 		getAll: function(){	
@@ -100,13 +93,15 @@ jQuery.extend(kbAPI, {
 			catch (e){}
 			return records;
 		},
-		addRecord:function(id,type,events){
-			kbVIE.entities.add({
+		addRecord:function(record){
+			var attributes = {
 				'@type': '<http://ontology.vie.js/explanation/interface>', 
-				'@subject': id,
-				'elementType': type,
-				'events': events
-			});
+				'@subject': record.id
+			};
+			for(var a in record){
+				attributes[a] = record[a];
+			}
+			kbVIE.entities.add(attributes);
 		},
 		getElementType: function (id){
 			var type = kbVIE.entities.get(id).get('elementType');
@@ -123,7 +118,12 @@ jQuery.extend(kbAPI, {
 			attributes:[
 				'@type', 
 				'@subject',
-				'stack'
+				'timeStamp',
+				'eventType',
+				'element',
+				'relatedNode',
+				'callstack',
+				'rootEvent'
 			]
 		},
 		getAll: function(){	
@@ -134,12 +134,15 @@ jQuery.extend(kbAPI, {
 			catch (e) {}
 			return records;
 		},
-		addRecord: function(id,stack){
-			kbVIE.entities.add({
+		addRecord: function(record){
+			var attributes = {
 				'@type': '<http://ontology.vie.js/explanation/history>', 
-				'@subject': id,
-				'stack': stack 
-			});
+				'@subject': record.id
+			};
+			for(var a in record){
+				attributes[a] = record[a];
+			}
+			kbVIE.entities.add(attributes);
 
 		},
 		updateRecord: function(){}

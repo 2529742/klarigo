@@ -73,20 +73,33 @@ function eventsFilter(elements){
 		}
 	};
 }
+var eventID = 0;
 
 function listener(event,element){
-	console.warn(element);
-	console.log(event.name + '\n\n');
-	traceStack(event);
-	
 	var trace = printStackTrace({
 		e: new Error()
 	});
+	var rootEvent = traceStack(event);
+
+	var record = {id: 'eventID '+eventID++};
+	record.eventType = event.type;
+	record.timeStamp = event.timeStamp;
+	record.element = element.id;
+	record.stack = trace;
+	if(event.relatedNode){record.relatedNode = event.relatedNode.id;}
+	if(rootEvent){record.rootEvent = traceStack(event);}
+	
+	kbAPI.historyKB.addRecord(record);
+
+	console.warn(element);
+	console.log(event.name + '\n\n');
 	console.log(trace);
+	return record;
 }
 
 //trace through function's call stack to the root
 function traceStack(event){
+	var rootEvent = undefined;
 	var callee = arguments.callee.caller;
 	var i = 0;
 	while(callee.caller && i<Error.stackTraceLimit){
@@ -96,9 +109,14 @@ function traceStack(event){
 	var args = callee.arguments;
 	for(var a in args){
 		if(args[a] instanceof Event){
+			rootEvent = {};
+			rootEvent.timeStamp = args[a].timeStamp;
+			rootEvent.name = args[a].type;
+			rootEvent.target = args[a].target.id;
 			console.log('Root event: ' + args[a]);
 		}
 	}
+	return rootEvent;
 }
 
 var eventTypes = {

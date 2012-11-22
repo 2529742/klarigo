@@ -32,10 +32,10 @@ function indexInterfaceElements(){
 		eventsFilter(predicate[type]);
 		var explainable = $(predicate[type]);
 		explainable.livequery(function(){
-			var explType = type;
+			var elType = type;
 			for(var t in predicate){
 				if($(this).is(predicate[t])){
-					explType = t;
+					elType = t;
 				}
 			}
 			var id;
@@ -50,7 +50,13 @@ function indexInterfaceElements(){
 			for(var e in $(this).data('events')){
 				events.push(e);
 			}
-			kbAPI.interfaceKB.addRecord(id,explType,events);
+			var record = {
+				id: id,
+				events: events,
+				elementType: elType,
+				status: 'added'
+			};
+			kbAPI.interfaceKB.addRecord(record);
 			assign_menu(this);
 		});
 	}
