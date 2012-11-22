@@ -29,7 +29,7 @@ jQuery.extend(window.mappingFunctionsAPI, {
 		}
 });
 var ajaxID = 0;
-Error.stackTraceLimit = 100;
+Error.stackTraceLimit = 30;
 
 function eventsFilter(elements){
 	var trace = "";
@@ -67,17 +67,17 @@ function eventsFilter(elements){
 					else{
 						element = this;
 					}
-					listener(event.type,element);
+					listener(event,element);
 				}
 			);
 		}
 	};
 }
 
-function listener(eventName,element){
+function listener(event,element){
 	console.warn(element);
-	console.log(eventName + '\n\n');
-	traceStack();
+	console.log(event.name + '\n\n');
+	traceStack(event);
 	
 	var trace = printStackTrace({
 		e: new Error()
@@ -86,10 +86,12 @@ function listener(eventName,element){
 }
 
 //trace through function's call stack to the root
-function traceStack(){
+function traceStack(event){
 	var callee = arguments.callee.caller;
-	while(callee.caller){
+	var i = 0;
+	while(callee.caller && i<Error.stackTraceLimit){
 		callee = callee.caller;
+		i++;
 	}
 	var args = callee.arguments;
 	for(var a in args){
