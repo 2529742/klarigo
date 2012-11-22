@@ -55,17 +55,12 @@ function eventsFilter(elements){
 	}
 	for(var eventName in eventTypes){
 		if(eventTypes[eventName]){
-			$('body').delegate(
-				elements,
+			$(elements).livequery(
 				eventName,
 				function(event){
-					event.stopPropagation();
-					var element;
-					if(event.type == 'DOMNodeInserted' || 'DOMNodeRemoved'){
+					var element = event.delegateTarget;
+					if(event.type == 'DOMNodeInserted' || event.type == 'DOMNodeRemoved'){
 						element = event.target;
-					}
-					else{
-						element = this;
 					}
 					listener(event,element);
 				}
@@ -81,13 +76,20 @@ function listener(event,element){
 	});
 	var rootEvent = traceStack(event);
 
-	var record = {id: 'eventID '+eventID++};
+	var record = {id: 'eventID'+eventID++};
 	record.eventType = event.type;
 	record.timeStamp = event.timeStamp;
-	record.element = element.id;
+	//index element if it has no id
+	if(element.id){
+		record.element = element.id;
+	}
+	else{
+		element.id = (explElementsCounter)? 'explID'+explElementsCounter++: undefined;
+		record.element = element.id;
+	}
 	record.stack = trace;
 	if(event.relatedNode){record.relatedNode = event.relatedNode.id;}
-	if(rootEvent){record.rootEvent = traceStack(event);}
+	if(rootEvent){record.rootEvent = rootEvent;}
 	
 	kbAPI.historyKB.addRecord(record);
 
@@ -112,7 +114,7 @@ function traceStack(event){
 			rootEvent = {};
 			rootEvent.timeStamp = args[a].timeStamp;
 			rootEvent.name = args[a].type;
-			rootEvent.target = args[a].target.id;
+			rootEvent.target = (args[a].target.id)? args[a].target.id: (explElementsCounter)? 'explID'+explElementsCounter++: undefined;
 			console.log('Root event: ' + args[a]);
 		}
 	}

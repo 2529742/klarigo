@@ -1,5 +1,5 @@
 var history = [];
-var counter = 1;
+var explElementsCounter = 1;
 var predicate = {
 	"main": 'h1',
 	"annotated": '[typeof="Person"],[typeof="Place"],[typeof="City"]',
@@ -22,7 +22,7 @@ $(window).load(function () {
 				.hide();
 			}
 	});
-	
+	kbAPI.init();
 	this.indexInterfaceElements();
 	loadSampleKB();
 });
@@ -43,12 +43,12 @@ function indexInterfaceElements(){
 				id = this.id;
 			}
 			else{
-				id = 'explID'+counter++;
+				id = 'explID'+explElementsCounter++;
 				this.id = id;
 			}
 			var events = [];
 			for(var e in $(this).data('events')){
-				events.push(e);
+				events.push(e);//TODO: exclude system events
 			}
 			var record = {
 				id: id,

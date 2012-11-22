@@ -3,8 +3,9 @@ kbVIE.namespaces.add('explanation','http://ontology.vie.js/explanation/');
 var kbAPI = {};
 
 jQuery.extend(kbAPI, {
+	kbVIE: '',
 	kb: function(){	
-		return kbVIE;
+		return this.kbVIE;
 	},
 	init: function(){
 		return kbVIE;
