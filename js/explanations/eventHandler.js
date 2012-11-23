@@ -49,7 +49,7 @@ function eventsFilter(elements){
 				record.eventType = 'ajax';
 				record.ajaxID = this.ajaxID;
 				record.stack = trace;
-				if(rootEvent){record.rootEvent = rootEvent;}
+				if(rootEvent){record.rootEvent = generateEventID(rootEvent);}
 				record.timeStamp = new Date().getTime();
 				kbAPI.historyKB.addRecord(record);
 			}
@@ -86,8 +86,8 @@ function listener(event,element){
 	//TODO: exclude first items in trace which are related only to the printStackTrace call.
 	
 	var rootEvent = traceStack();
-
-	var record = {id: 'eventID'+eventID++};
+	
+	var record = {};
 	record.eventType = event.type;
 	record.timeStamp = event.timeStamp;
 	//index element if it has no id
@@ -98,9 +98,10 @@ function listener(event,element){
 		element.id = (explElementsCounter)? 'explID'+explElementsCounter++: undefined;
 		record.element = element.id;
 	}
+	record.id = generateEventID(record);
 	record.stack = trace;
 	if(event.relatedNode){record.relatedNode = event.relatedNode.id;}
-	if(rootEvent){record.rootEvent = rootEvent;}
+	if(rootEvent){record.rootEvent = generateEventID(rootEvent);}
 	
 	kbAPI.historyKB.addRecord(record);
 
@@ -124,13 +125,33 @@ function traceStack(){
 		if(args[a] instanceof Event){
 			rootEvent = {};
 			rootEvent.timeStamp = args[a].timeStamp;
-			rootEvent.name = args[a].type;
-			rootEvent.target = (args[a].target.id)? args[a].target.id: (explElementsCounter)? 'explID'+explElementsCounter++: undefined;
+			rootEvent.eventType = args[a].type;
+			rootEvent.element = (args[a].currentTarget.id)? args[a].currentTarget.id: (explElementsCounter)? 'explID'+explElementsCounter++: undefined;
 			console.log('Root event: ' + args[a]);
 			//TODO: recognize ajax requests events and address the eventID
+			
 		}
 	}
 	return rootEvent;
+}
+
+function parseEventID(id){
+	var eventObject = {};
+	var attrs = id.split('@');
+	if(attrs.length == 3){
+		eventObject.element = attrs[0];
+		eventObject.type = attrs[1];
+		eventObject.timeStamp = attrs[2];
+	}
+	else{
+		throw new Exception('Failed to parse event ID: '+id);
+	}
+	return eventObject;
+}
+
+function generateEventID(eventObject){
+	var id = eventObject.element + '@' + eventObject.eventType + '@' +  eventObject.timeStamp;
+	return id;
 }
 
 var eventTypes = {
