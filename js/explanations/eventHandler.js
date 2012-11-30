@@ -71,7 +71,9 @@ function eventsFilter(elements){
 					if(event.type == 'DOMNodeInserted' || event.type == 'DOMNodeRemoved'){ //TODO: check another event types
 						element = event.target;
 					}
-					listener(event,element);
+					if(!$(element).hasClass("explIcon")){
+						listener(event,element);
+					}
 				}
 			);
 		}
