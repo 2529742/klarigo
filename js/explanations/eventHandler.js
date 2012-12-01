@@ -38,6 +38,7 @@ function eventsFilter(elements){
 			beforeSend: function(){
 				ajaxID++;
 				this.ajaxID = 'ajaxID'+ajaxID;
+				$.ajaxSettings.ajaxID = ajaxID;
 				console.log('Start query'+ajaxID);
 				trace = printStackTrace({
 					e: new Error()
