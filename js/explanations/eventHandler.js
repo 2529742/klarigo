@@ -45,8 +45,8 @@ function eventsFilter(elements){
 				});
 				console.log(trace);
 				var rootEvent = traceStack();
-				//TODO: recognize a root event (click) by its timeStamp, type and target attrs.
-				var record = {id: 'eventID'+eventID++};
+				var record = {id: this.ajaxID};
+				
 				record.eventType = 'ajax';
 				record.ajaxID = this.ajaxID;
 				record.stack = trace;
@@ -80,7 +80,6 @@ function eventsFilter(elements){
 		}
 	};
 }
-var eventID = 0;
 
 function listener(event,element){
 	var trace = printStackTrace({
@@ -104,7 +103,11 @@ function listener(event,element){
 	record.id = generateEventID(record);
 	record.stack = trace;
 	if(event.relatedNode){record.relatedNode = event.relatedNode.id;}
-	if(rootEvent){record.rootEvent = generateEventID(rootEvent);}
+				//TODO: test with different callstacks, e.g. which have a click rootevent and also contain a ajax request reference somethere in the callstack.
+//				Then it's probably better to store separately the generated rootEventID and the ajaxID
+	if(rootEvent){
+		record.rootEvent = rootEvent.ajaxID? rootEvent.ajaxID: generateEventID(rootEvent);
+	}
 	
 	kbAPI.historyKB.addRecord(record);
 
@@ -117,24 +120,34 @@ function listener(event,element){
 //trace through function's call stack to the root
 function traceStack(){
 	var rootEvent = undefined;
+	var ajaxID = undefined;
 	var callee = arguments.callee.caller;
 	var i = 0;
+	var args = callee.arguments;
 	while(callee.caller && i<Error.stackTraceLimit){
 		callee = callee.caller;
+		//If a callstack contains a ajax request reference, then save the ajaxID
+		for(var a in args){
+			if(args[a] && args[a].ajaxID){
+				ajaxID = args[a].ajaxID;
+			}
+		}
 		i++;
+		args = callee.arguments;
 	}
-	var args = callee.arguments;
 	for(var a in args){
 		if(args[a] instanceof Event){
 			rootEvent = {};
 			rootEvent.timeStamp = args[a].timeStamp;
 			rootEvent.eventType = args[a].type;
 			rootEvent.element = (args[a].currentTarget.id)? args[a].currentTarget.id: (explElementsCounter)? 'explID'+explElementsCounter++: undefined;
+			if(ajaxID){
+				rootEvent.ajaxID = ajaxID;
+			}
 			console.log('Root event: ' + args[a]);
-			//TODO: recognize ajax requests events and address the eventID
-			
 		}
 	}
+	
 	return rootEvent;
 }
 
