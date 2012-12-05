@@ -24,9 +24,11 @@ jQuery.extend(templateEditor,{
 		var self = this;
 		var kbDiv = self.render_kb();
 		var canvasDiv = self.render_canvas();
+		var canvasControls = self.render_controls();
 		dialogEl
 		.append(kbDiv)
-		.append(canvasDiv);
+		.append(canvasDiv)
+		.append(canvasControls);
 	},
 	
 	render_kb: function(){
@@ -97,12 +99,13 @@ jQuery.extend(templateEditor,{
 	},
 	
 	render_canvas: function(){
-		var canvasDiv = $('<div class="explanation-template-editor-canvas">');
+		var canvasDiv = $('<div class="explanation-template-editor-canvas">')
+		.css({float:'left'});
 		canvasDiv.append('<h4>Template</h4>');
-		var canvasControls = this.render_controls();
-		//canvasDiv.append(canvasControls);
+		var label = $('<input class="explanation-template-label">')
+		canvasDiv.append(label);
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
-		for(var i=1; i<32; i++){
+		for(var i=1; i<31; i++){
 			var line = $('<span class="explanation-template-editor-canvas-field-line">')
 			.droppable({
 				drop: function(event, ui){
@@ -137,7 +140,7 @@ jQuery.extend(templateEditor,{
 		}
 		canvasField
 		.appendTo(canvasDiv);
-		
+
 		return canvasDiv;
 	},
 	
@@ -167,14 +170,22 @@ jQuery.extend(templateEditor,{
 	},
 	
 	save_template: function(){
-		var template_object = {};
+		var label = $('.explanation-template-label')[0].value;
+		var template_object = {
+				id: '<http://ontology.vie.js/explanation/template/'+label.replace(/ /g,'_')+'>',
+				label: label
+		};
+		var context = [];
 		var canvasField = $('.explanation-template-editor-canvas-field');
 		canvasField.children().each(function(){
 			var node = $(this);
-			var i = 0;
-			i++;
-			$.extend(template_object,{i:'type'});
+			var value = node.text();
+			if(value.length > 0){
+				context.push(node.text());
+			}
 		});
+		template_object.context = context;
+		kbAPI.templates.addRecord(template_object);
 		return template_object;
 	},
 	

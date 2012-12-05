@@ -147,6 +147,43 @@ jQuery.extend(kbAPI, {
 
 		},
 		updateRecord: function(){}
+	},
+	
+	templates: {
+		schema: {
+			attributes:[
+				'@type', 
+				'@subject',
+				'title',
+				'label',
+				'context'
+			]
+		},
+		getAll: function(){	
+			var records =  [];
+			try{
+				records = kbVIE.entities.filter(function(c){return c.isof('<http://ontology.vie.js/explanation/template>')});
+			}
+			catch (e) {}
+			return records;
+		},
+		
+		getRecord: function(id){
+			return kbVIE.entities.get(id);
+		},
+		
+		addRecord: function(record){
+			var attributes = {
+				'@type': '<http://ontology.vie.js/explanation/template>', 
+				'@subject': record.id
+			};
+			for(var a in record){
+				attributes[a] = record[a];
+			}
+			kbVIE.entities.add(attributes);
+
+		},
+		updateRecord: function(){}
 	}
 	
 	

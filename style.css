@@ -203,6 +203,10 @@ h5 {
 	display: block;
 }
 
+.explanation-template-editor-canvas-controls button{
+	width: 80px;
+}
+
 .hidden{
 	display: none;
 }
