@@ -2,6 +2,43 @@ var explanationBuilder = {};
 
 jQuery.extend(explanationBuilder,{
 	build: function(question,element){
+		var elementID = $(element).attr('id');
+		var interfaceRecord = kbAPI.interfaceKB.getRecord(elementID);
+		var elementType = kbAPI.interfaceKB.getElementType(elementID);
+		var staticRecord = kbAPI.staticKB.getRecord(elementType);
+		var history = kbAPI.historyKB.getHistory(elementID);
+		
+		var attributes = [];
+		var schemaAttr = kbAPI.staticKB.schema.attributes;
+		for(var a in schemaAttr){
+			if(schemaAttr[a] != '@type' && schemaAttr[a] != '@subject'){
+				attributes.push(schemaAttr[a]);
+			}
+		};
+		schemaAttr = kbAPI.interfaceKB.schema.attributes;
+		for(var a in schemaAttr){
+			if(schemaAttr[a] != '@type' && schemaAttr[a] != '@subject'){
+				attributes.push(schemaAttr[a]);
+			}
+		};
+		
+		var explanationModel = Backbone.Model.extend({
+				element: undefined,
+				type: undefined,
+				title: undefined,
+				descr: undefined,
+				type: undefined,
+				type: undefined,
+				type: undefined,
+				type: undefined,
+				type: undefined,
+				element: '',
+				label: '',
+		});
+	},
+	
+	
+	build_: function(question,element){
 			var model = Backbone.Model.extend({
 				type:'metadata',
 				element: '',

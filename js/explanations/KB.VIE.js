@@ -135,6 +135,19 @@ jQuery.extend(kbAPI, {
 			catch (e) {}
 			return records;
 		},
+		
+		getHistory: function(elementID){
+			var records =  [];
+			try{
+				records = kbVIE.entities.filter(
+					function(c){
+						return c.isof('<http://ontology.vie.js/explanation/history>') && c.get('element')==elementID 
+					}
+				);
+			}
+			catch (e) {}
+			return records;
+		},
 		addRecord: function(record){
 			var attributes = {
 				'@type': '<http://ontology.vie.js/explanation/history>', 

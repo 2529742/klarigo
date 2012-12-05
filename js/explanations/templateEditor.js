@@ -109,11 +109,13 @@ jQuery.extend(templateEditor,{
 			var line = $('<span class="explanation-template-editor-canvas-field-line">')
 			.droppable({
 				drop: function(event, ui){
+					var item = $('<div class="explanation-template-editor-canvas-field-line-item">');
 					var entry = ui.draggable.clone()
 					.removeClass()
 					.css({
 						left: '',
-						top: ''
+						top: '',
+						'float': 'left'
 					});
 					var input = $(this).find('input');
 					if(input.val().length>0){
@@ -125,7 +127,14 @@ jQuery.extend(templateEditor,{
 					else{
 						$(this).empty();
 					}
-					$(this).append(entry);					
+					item.append(entry);
+					var removeBtn = $('<div class="ui-icon ui-icon-circle-close" style="cursor:pointer;">');
+					removeBtn.click(function(){
+						entry.remove();
+						$(this).remove();
+					});
+					item.append(removeBtn);
+					$(this).append(item);					
 				}
 			});
 			var textInput = $('<input>')
@@ -170,7 +179,7 @@ jQuery.extend(templateEditor,{
 	},
 	
 	save_template: function(){
-		var label = $('.explanation-template-label')[0].value;
+		var label = $('.explanation-template-label').val();
 		var template_object = {
 				id: '<http://ontology.vie.js/explanation/template/'+label.replace(/ /g,'_')+'>',
 				label: label
