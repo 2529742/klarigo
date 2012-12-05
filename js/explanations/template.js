@@ -57,7 +57,8 @@ var witView = Backbone.View.extend({
 		var description = model.get('description');
 		var purpose = model.get('purpose');
 		var use = model.get('use');
-		explHTML = '<b>'+ model.get('element').innerHTML + '</b><br/><br/>' + label + ' explanation.<br/></br/>' + 
+		var element = $('#'+model.get('id'))[0];
+		explHTML = '<b>'+ element.innerHTML + '</b><br/><br/>' + label + ' explanation.<br/></br/>' + 
 			' This is '+ title + '<br/></br/>' + description + '<br/>' + purpose + '<br/>' + use;
 		var $el = $(this.el);
 		$el.append(explHTML);

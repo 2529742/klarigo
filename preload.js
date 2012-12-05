@@ -22,4 +22,15 @@ function loadSampleKB(){
 		purpose: purp,
 		use: use
 	});
+	
+	kbAPI.templates.addRecord({
+		id: 'what_is_it',
+		label: 'What is it?',
+		context: [
+					['This is ','title'],
+					['description'],
+					['purpose'],
+					['use']
+				]
+	});
 }

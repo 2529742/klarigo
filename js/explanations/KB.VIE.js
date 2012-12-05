@@ -11,6 +11,11 @@ jQuery.extend(kbAPI, {
 		return kbVIE;
 	},
 	save: function (){},
+
+	getRecord: function(id){
+		id = VIE.Util.isUri? id: "<"+id+">";
+		return kbVIE.entities.get(id);
+	},
 	
 	removeRecord: function(record){
 		kbVIE.entities.remove(record);
@@ -71,9 +76,6 @@ jQuery.extend(kbAPI, {
 		},
 		removeRecord: function(record){
 			kbVIE.entities.remove(record);
-		},
-		getRecord: function(id){
-			return kbVIE.entities.get(id);
 		}
 	},
 	interfaceKB: {
