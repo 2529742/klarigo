@@ -198,6 +198,18 @@ jQuery.extend(kbAPI, {
 			kbVIE.entities.add(attributes);
 
 		},
+		
+		newRecord: function(subject){
+			var record = kbVIE.entities.addOrUpdate({
+				'@type': '<http://ontology.vie.js/explanation/template>', 
+				'@subject': subject,
+				'title': '',
+				'label': '',
+				'context': []
+			});
+			return record;
+		},
+		
 		updateRecord: function(){}
 	}
 	

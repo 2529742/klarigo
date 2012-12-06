@@ -6,8 +6,9 @@ jQuery.extend(templateEditor,{
 		.dialog({
 			title:'Template editor', 
 			width: '1000px',
-			
+			position: {my: 'left bottom',at: 'left'} 			
 		});
+		this.render_main(dialogEl);
 	},
 	
 	open: function(){
@@ -15,20 +16,42 @@ jQuery.extend(templateEditor,{
 			this.create();
 		};
 		var dialogEl = $('#template_editor');
-		dialogEl.empty();
-		this.render(dialogEl);
 		dialogEl.dialog('open');
 	},
 	
-	render: function(dialogEl){
+	render_main: function(dialogEl){
+		dialogEl.empty();
+		//***** Add new template *****
+		var new_btn = $('<div style="padding: 6px; width: 90px;" class="ui-corner-all"><div class="ui-icon ui-icon-circle-plus" style="float:right"></div>add new</div>')
+		.click(function(){
+			var template = kbVIE.templates.newRecord();
+			self.new_template(template);
+		});
+		dialogEl.append(new_btn);
+		
+		//***** Open existing templates *****
+		var templates_list = $('<ul>Open template:</ul>');
+		var templates = kbAPI.templates.getAll();
+		$(templates).each(function(){
+			var name = this.get('id');
+			var t = $('<li style="cursor:pointer;">' + name + '</li>');
+			t.click(function(){
+				self.open_template(name);
+			});
+			templates_list.append(t);
+		});
+		dialogEl.append(templates_list);
+	},
+	
+	render_editor: function(dialogEl){
 		var self = this;
+		dialogEl.empty();
 		var kbDiv = self.render_kb();
 		var canvasDiv = self.render_canvas();
-		var canvasControls = self.render_controls();
+		
 		dialogEl
 		.append(kbDiv)
-		.append(canvasDiv)
-		.append(canvasControls);
+		.append(canvasDiv);
 	},
 	
 	render_kb: function(){
