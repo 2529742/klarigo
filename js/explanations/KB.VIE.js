@@ -169,6 +169,7 @@ jQuery.extend(kbAPI, {
 			attributes:[
 				'@type', 
 				'@subject',
+				'related_elements',
 				'title',
 				'label',
 				'context'
@@ -199,7 +200,11 @@ jQuery.extend(kbAPI, {
 
 		},
 		
-		newRecord: function(subject){
+		newRecord: function(subject,type,attributes){
+			if(type){
+				type = (type!='<http://ontology.vie.js/explanation/template>')? [type].push('<http://ontology.vie.js/explanation/template>'): type;
+			};
+			
 			var record = kbVIE.entities.addOrUpdate({
 				'@type': '<http://ontology.vie.js/explanation/template>', 
 				'@subject': subject,

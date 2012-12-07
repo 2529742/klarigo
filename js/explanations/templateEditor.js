@@ -22,12 +22,28 @@ jQuery.extend(templateEditor,{
 	render_main: function(dialogEl){
 		dialogEl.empty();
 		//***** Add new template *****
-		var new_btn = $('<div style="padding: 6px; width: 90px;" class="ui-corner-all"><div class="ui-icon ui-icon-circle-plus" style="float:right"></div>add new</div>')
-		.click(function(){
-			var template = kbVIE.templates.newRecord();
-			self.new_template(template);
-		});
-		dialogEl.append(new_btn);
+		var template_types = {
+			'what': {label: 'What..?'},
+			'how': {label: 'How..?'},
+			'why': {label:'Why..?'},
+			'custom': {label:'Custom explanation:'}
+		};
+		var add_new = $('<ul>Add new template of type:</ul>');
+		for(var type in template_types){
+			var entry = $('<li>'+template_types[type].label+'</li>');
+			if(type == 'custom'){
+				entry.append($('<input style="float:right;">'));
+			};
+			var add_btn = $('<div class="ui-icon ui-icon-circle-plus" style="cursor:pointer;">');
+			entry.append(add_btn);
+			add_btn.click(function(){
+				var template = kbVIE.templates.newRecord(subject,type);
+				self.new_template(template);
+			})
+			entry.appendTo(add_new);
+		};
+		
+		dialogEl.append(add_new);
 		
 		//***** Open existing templates *****
 		var templates_list = $('<ul>Open template:</ul>');
@@ -129,7 +145,7 @@ jQuery.extend(templateEditor,{
 		canvasDiv.append(label);
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
 		for(var i=1; i<31; i++){
-			var line = $('<span class="explanation-template-editor-canvas-field-line">')
+			var line = $('<div class="explanation-template-editor-canvas-field-line">')
 			.droppable({
 				drop: function(event, ui){
 					var item = $('<div class="explanation-template-editor-canvas-field-line-item">');
