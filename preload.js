@@ -27,10 +27,37 @@ function loadSampleKB(){
 		id: 'what_is_it',
 		label: 'What is it?',
 		context: [
-					['This is ','title'],
-					['description'],
-					['purpose'],
-					['use']
+					[{value:'This is ', type: 'manual'},{value:'title',type:"reference"}],
+					[{value:'description',type:"reference"}],
+					[{value:'purpose',type:"reference"}],
+					[{value:'use',type:"reference"}]
+				]
+	});
+	
+	kbAPI.templates.addRecord({
+		id: 'metadata',
+		label: 'What data are stored as metadata?',
+		context: [
+					[{value:'The general view of the hidden markup is the following:',type:"manual"}],
+					[{value:'This is annotated element of TYPE:',type:"manual"}],
+					[{value:'It is referenced to: ',type:"manual"}]
+				]
+	});
+	
+	kbAPI.templates.addRecord({
+		id: 'how_to_start',
+		label: 'How to start?',
+		context: [
+					[{value:'start',type:"reference"}],
+					[{value:'use',type:"reference"}]
+				]
+	});
+	
+	kbAPI.templates.addRecord({
+		id: 'possible_actions',
+		label: 'What are the possible actions?',
+		context: [
+					['The possible actions are: ', 'actions']
 				]
 	});
 }

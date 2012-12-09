@@ -120,11 +120,14 @@ function assign_menu(element){
 		if(id){
 			var type = kbAPI.interfaceKB.getElementType(id);
 			var questions = [];
-			for(var q in questions_mappings){
-				var mapping_types = questions_mappings[q].types;
-				for(var i = 0; i < mapping_types.length; i++){
-					if(mapping_types[i] == type){
-						questions.push(q);
+			
+			for(var category in questions_mappings){
+				for(var q in questions_mappings[category]){
+					var mapping_types = questions_mappings[category][q].types;
+					for(var i = 0; i < mapping_types.length; i++){
+						if(mapping_types[i] == type){
+							questions.push(q);
+						}
 					}
 				}
 			}
@@ -137,7 +140,7 @@ function assign_menu(element){
 						
 						for(var i = 0; i < questions.length; i++){
 							var q = questions[i];
-							var label = questions_mappings[q].label;
+							var label = kbAPI.templates.getRecord('<'+q+'>').get('label');//TODO consider the right place for this part of the script
 							var li = $('<li class="explain"><a href="#' + q + '">' + label + '</a></li>')
 							.click(function(){
 								var q = '';

@@ -184,6 +184,16 @@ jQuery.extend(kbAPI, {
 			return records;
 		},
 		
+		getQuestionsMappings: function(){
+			var questions_mappings =  {};
+			try{
+				//records = kbVIE.entities.filter(function(c){return c.isof('<http://ontology.vie.js/explanation/template>') && c.get('category')=='how'});
+				
+			}
+			catch (e) {}
+			return questions_mappings;
+		},
+		
 		getRecord: function(id){
 			return kbVIE.entities.get(id);
 		},
@@ -200,18 +210,15 @@ jQuery.extend(kbAPI, {
 
 		},
 		
-		newRecord: function(subject,type,attributes){
-			if(type){
-				type = (type!='<http://ontology.vie.js/explanation/template>')? [type].push('<http://ontology.vie.js/explanation/template>'): type;
-			};
-			
-			var record = kbVIE.entities.addOrUpdate({
-				'@type': '<http://ontology.vie.js/explanation/template>', 
-				'@subject': subject,
+		newRecord: function(attributes){
+			var record = {
 				'title': '',
 				'label': '',
 				'context': []
-			});
+			};
+			for(var a in attributes){
+				record[a] = attributes[a];
+			}
 			return record;
 		},
 		

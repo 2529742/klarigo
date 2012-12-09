@@ -26,24 +26,7 @@ jQuery.extend(explanationBuilder,{
 		};
 		var explanationModel = new Backbone.Model(attributes);
 		
-		var view = undefined;
-		if(question == 'what_is_it'){
-			view = new witView({model: explanationModel});
-		}
-		else if(question == 'metadata'){
-			view = new metadataView({model: explanationModel});
-		}
-		else if(question == 'how_to_start'){
-			view = new htsView({model: explanationModel});
-		}
-		else if(question == 'possible_actions'){
-			view = new actionsView({model: explanationModel});
-		}
-		$('.explanation_block').empty();
-		
-		if(view){
-			$('.explanation_block').append(view.el)
-		}
+		this.render(question,explanationModel);
 	},
 	
 	

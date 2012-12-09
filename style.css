@@ -207,6 +207,12 @@ h5 {
 	width: 80px;
 }
 
+.explanation-template-editor-canvas-field-line-input{
+	height: '14px',
+	border: 'none',
+	'font-size': '12px'
+}
+
 .hidden{
 	display: none;
 }

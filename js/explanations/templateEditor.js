@@ -20,6 +20,7 @@ jQuery.extend(templateEditor,{
 	},
 	
 	render_main: function(dialogEl){
+		var self = this;
 		dialogEl.empty();
 		//***** Add new template *****
 		var template_types = {
@@ -37,8 +38,8 @@ jQuery.extend(templateEditor,{
 			var add_btn = $('<div class="ui-icon ui-icon-circle-plus" style="cursor:pointer;">');
 			entry.append(add_btn);
 			add_btn.click(function(){
-				var template = kbVIE.templates.newRecord(subject,type);
-				self.new_template(template);
+				var templateObject = kbAPI.templates.newRecord();
+				self.render_editor(dialogEl,templateObject);
 			})
 			entry.appendTo(add_new);
 		};
@@ -52,18 +53,26 @@ jQuery.extend(templateEditor,{
 			var name = this.get('id');
 			var t = $('<li style="cursor:pointer;">' + name + '</li>');
 			t.click(function(){
-				self.open_template(name);
+				var id = '<'+$(this).text()+'>';
+				var attributes = kbAPI.templates.schema.attributes;
+				var template = kbAPI.templates.getRecord(id);
+				var templateObject = {};
+				for(var a in attributes){
+					var attr = attributes[a];
+					templateObject[attr] = template.get(attr);
+				};
+				self.render_editor(dialogEl,templateObject);
 			});
 			templates_list.append(t);
 		});
 		dialogEl.append(templates_list);
 	},
 	
-	render_editor: function(dialogEl){
+	render_editor: function(dialogEl, templateObject){
 		var self = this;
 		dialogEl.empty();
 		var kbDiv = self.render_kb();
-		var canvasDiv = self.render_canvas();
+		var canvasDiv = self.render_canvas(templateObject);
 		
 		dialogEl
 		.append(kbDiv)
@@ -137,18 +146,18 @@ jQuery.extend(templateEditor,{
 		};
 	},
 	
-	render_canvas: function(){
+	render_canvas: function(templateObject){
+		var self = this;
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">')
-		.css({float:'left'});
-		canvasDiv.append('<h4>Template</h4>');
+		.css({float:'left'})
+		.append('<h4>Template</h4>');
 		var label = $('<input class="explanation-template-label">')
-		canvasDiv.append(label);
+		
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
 		for(var i=1; i<31; i++){
 			var line = $('<div class="explanation-template-editor-canvas-field-line">')
 			.droppable({
 				drop: function(event, ui){
-					var item = $('<div class="explanation-template-editor-canvas-field-line-item">');
 					var entry = ui.draggable.clone()
 					.removeClass()
 					.css({
@@ -156,40 +165,72 @@ jQuery.extend(templateEditor,{
 						top: '',
 						'float': 'left'
 					});
-					var input = $(this).find('input');
-					if(input.val().length>0){
-						input.css({
-							'float': 'left',
-							'width': 'auto'
-						}); 
-					}
-					else{
-						$(this).empty();
-					}
-					item.append(entry);
-					var removeBtn = $('<div class="ui-icon ui-icon-circle-close" style="cursor:pointer;">');
-					removeBtn.click(function(){
-						entry.remove();
-						$(this).remove();
-					});
-					item.append(removeBtn);
-					$(this).append(item);					
+					var item = self.render_field_item(this,entry);
 				}
 			});
-			var textInput = $('<input>')
+			var textInput = $('<input class="explanation-template-editor-canvas-field-line-input">')
 			.css({
 				height: '14px',
-				width: '100%',
 				border: 'none',
 				'font-size': '12px'
 			});
+			
 			line.append(textInput);
 			canvasField.append(line);
-		}
-		canvasField
-		.appendTo(canvasDiv);
+		};
+		
+		var save_btn = $('<button>Save</button>')
+		.click(function(){
+			var template_object = self.save_template();
+			kbAPI.templates.addRecord(template_object);
+		});		
+		
+		//Fill the field this template's context
+		label.val(templateObject.label);
+		canvasDiv
+		.append(label)
+		.append(save_btn);
+		
+		var context  = templateObject.context;
+		for(var i = 0; i < context.length; i++){
+			var context_entry = context[i];
+			var line = canvasField.children()[i];
+			for(var j in context_entry){
+				var val = context_entry[j].value;
+				var entry = (context_entry[j].type == "reference")? $('<h5>'+val+'</h5>'):$('<input class="explanation-template-editor-canvas-field-line-input" value="'+val+'">');
+				entry.css({
+					height: '14px',
+					border: 'none',
+					'font-size': '12px',
+					'float': 'left'
+				});
+				self.render_field_item(line,entry); 			
+			}
 
+		};
+		canvasField.appendTo(canvasDiv);
+		
 		return canvasDiv;
+	},
+	
+	render_field_item: function(line,entry){
+		var item = $('<div class="explanation-template-editor-canvas-field-line-item">');
+		item
+		.css({'float':'left'})
+		.append(entry);
+		var removeBtn = $('<div class="ui-icon ui-icon-circle-close" style="cursor:pointer;">');
+		removeBtn.click(function(){
+			item.remove();
+		});
+		item.append(removeBtn);
+		
+		var input = $(line).children().last();
+		input.css({
+			'width': 'auto'
+		});
+		
+		//TODO: check if the input contains a text, then need to insert one blank input as last child
+		item.insertBefore($(line).children().last());
 	},
 	
 	render_controls: function(){
@@ -220,28 +261,23 @@ jQuery.extend(templateEditor,{
 	save_template: function(){
 		var label = $('.explanation-template-label').val();
 		var template_object = {
-				id: '<http://ontology.vie.js/explanation/template/'+label.replace(/ /g,'_')+'>',
+				id: label.replace(/ /g,'_').replace('?',''),
 				label: label
 		};
 		var context = [];
 		var canvasField = $('.explanation-template-editor-canvas-field');
 		canvasField.children().each(function(){
 			var node = $(this);
+			var type = node.is('input')? 'manual': 'reference';
 			var value = node.text();
 			if(value.length > 0){
-				context.push(node.text());
+				context.push({value: value, type: type});
 			}
 		});
 		template_object.context = context;
 		kbAPI.templates.addRecord(template_object);
 		return template_object;
-	},
-	
-	open_template: function(){
-	},
-	
-	new_template: function(){
-	
 	}
+	
 	
 });
