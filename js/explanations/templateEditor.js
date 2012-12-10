@@ -5,7 +5,7 @@ jQuery.extend(templateEditor,{
 		var dialogEl = $('<div id="template_editor">')
 		.dialog({
 			title:'Template editor', 
-			width: '1000px',
+			width: '700px',
 			position: {my: 'left bottom',at: 'left'} 			
 		});
 		this.render_main(dialogEl);
@@ -16,6 +16,7 @@ jQuery.extend(templateEditor,{
 			this.create();
 		};
 		var dialogEl = $('#template_editor');
+		this.render_main(dialogEl);
 		dialogEl.dialog('open');
 	},
 	
@@ -29,29 +30,41 @@ jQuery.extend(templateEditor,{
 			'why': {label:'Why..?'},
 			'custom': {label:'Custom explanation:'}
 		};
-		var add_new = $('<ul>Add new template of type:</ul>');
+		var add_new = $('<ul class="ui-corner-all"></ul>')
+		.css({
+			padding: '10px 0px 10px 30px',
+			'-webkit-box-shadow': 'rgba(0, 0, 0, 0.2) 0 2px 4px 0'
+		});
 		for(var type in template_types){
-			var entry = $('<li>'+template_types[type].label+'</li>');
-			if(type == 'custom'){
-				entry.append($('<input style="float:right;">'));
-			};
-			var add_btn = $('<div class="ui-icon ui-icon-circle-plus" style="cursor:pointer;">');
-			entry.append(add_btn);
-			add_btn.click(function(){
+			var entry = $('<li  style="cursor:pointer;">');
+			var label_div = $('<div class="ui-state-default ui-corner-all" style="width:190px; min-height: 20px; margin-bottom: 2px;">'+template_types[type].label+'</div>');
+			entry.append(label_div);
+			var add_btn = $('<div class="ui-icon ui-icon-plus">')
+			.css({
+				position: 'relative',
+				left: '170px',
+				'margin-top': '-20px'
+			});
+			label_div.append(add_btn);
+			entry.click(function(){
 				var templateObject = kbAPI.templates.newRecord();
 				self.render_editor(dialogEl,templateObject);
 			})
 			entry.appendTo(add_new);
 		};
-		
+		dialogEl.append('Add a new template of type:');
 		dialogEl.append(add_new);
 		
 		//***** Open existing templates *****
-		var templates_list = $('<ul>Open template:</ul>');
+		var templates_list = $('<ul class="ui-corner-all"></ul>')
+		.css({
+			padding: '10px 0px 10px 30px',
+			'-webkit-box-shadow': 'rgba(0, 0, 0, 0.2) 0 2px 4px 0'
+		});
 		var templates = kbAPI.templates.getAll();
 		$(templates).each(function(){
 			var name = this.get('id');
-			var t = $('<li style="cursor:pointer;">' + name + '</li>');
+			var t = $('<li style="cursor:pointer;text-decoration: underline;color: darkblue;">' + name + '</li>');
 			t.click(function(){
 				var id = '<'+$(this).text()+'>';
 				var attributes = kbAPI.templates.schema.attributes;
@@ -65,6 +78,8 @@ jQuery.extend(templateEditor,{
 			});
 			templates_list.append(t);
 		});
+		
+		dialogEl.append('Open a template:');
 		dialogEl.append(templates_list);
 	},
 	

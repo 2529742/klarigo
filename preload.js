@@ -57,7 +57,7 @@ function loadSampleKB(){
 		id: 'possible_actions',
 		label: 'What are the possible actions?',
 		context: [
-					['The possible actions are: ', 'actions']
+					[{value:'The possible actions are: ',type:'manual'},{type: 'reference',value: 'actions'}]
 				]
 	});
 }
