@@ -116,6 +116,15 @@ h5 {
   text-align: center;
 }
 
+.slide-out-div {
+  padding: 20px;
+  width: 25%;
+  height: 100%;
+  background: #ccc;
+  border: 1px solid #29216d;
+  border-left: 2px solid #289e84;
+}
+
 .explIcon {
 	height: 16px;
 	width:16px;
@@ -183,7 +192,7 @@ h5 {
 
 .explanation-template-editor-canvas{
 	display: inline-block;
-	width: 65%;
+	width: 70%;
 	
 }
 
@@ -203,14 +212,20 @@ h5 {
 	display: block;
 }
 
+.explanation-template-editor-canvas-field-line-item{
+	padding-left: 5px;
+	float: left;
+}
+
 .explanation-template-editor-canvas-controls button{
 	width: 80px;
 }
 
 .explanation-template-editor-canvas-field-line-input{
-	height: '14px',
-	border: 'none',
-	'font-size': '12px'
+	height: 14px;
+	border: none;
+	font-size: 12px;
+	float: left;
 }
 
 .hidden{

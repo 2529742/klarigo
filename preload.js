@@ -24,8 +24,10 @@ function loadSampleKB(){
 	});
 	
 	kbAPI.templates.addRecord({
-		id: 'what_is_it',
+		id: 'What_is_it',
 		label: 'What is it?',
+		types : ["main","annotated","result"],
+		category: "what",
 		context: [
 					[{value:'This is ', type: 'manual'},{value:'title',type:"reference"}],
 					[{value:'description',type:"reference"}],
@@ -35,18 +37,22 @@ function loadSampleKB(){
 	});
 	
 	kbAPI.templates.addRecord({
-		id: 'metadata',
+		id: 'What_data_are_stored_as_metadata',
 		label: 'What data are stored as metadata?',
+		types : ["annotated"],
+		category: "what",
 		context: [
 					[{value:'The general view of the hidden markup is the following:',type:"manual"}],
-					[{value:'This is annotated element of TYPE:',type:"manual"}],
-					[{value:'It is referenced to: ',type:"manual"}]
+					[{value:'This is annotated element of TYPE:',type:"manual"},{value:"metadata_type", type:"reference"}],
+					[{value:'It is referenced to: <a href="',type:"manual"},{value:"metadata_about", type:"reference"},{value:'">',type:'manual'},{value:"metadata_about", type:"reference"},{value:'</a>', type:"manual"}]
 				]
 	});
 	
 	kbAPI.templates.addRecord({
-		id: 'how_to_start',
+		id: 'How_to_start',
 		label: 'How to start?',
+		types : ["main"],
+		category: "how",
 		context: [
 					[{value:'start',type:"reference"}],
 					[{value:'use',type:"reference"}]
@@ -54,10 +60,13 @@ function loadSampleKB(){
 	});
 	
 	kbAPI.templates.addRecord({
-		id: 'possible_actions',
+		id: 'What_are_the_possible_actions',
 		label: 'What are the possible actions?',
+		types : ["main","annotated","result","results_set"],
+		category: "what",
 		context: [
-					[{value:'The possible actions are: ',type:'manual'},{type: 'reference',value: 'actions'}]
+					[{value:'The possible actions are: ',type:'manual'},{type: 'reference',value: 'events'}],
+					[]
 				]
 	});
 }

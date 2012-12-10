@@ -96,6 +96,43 @@ jQuery.extend(kbAPI, {
 			catch (e){}
 			return records;
 		},
+		
+		getWhat: function(){	
+			var records = [];
+			try{
+				records = kbVIE.entities.filter(function(c){return c.isof('<http://ontology.vie.js/explanation/interface>') && c.get('category') == 'what'});
+			}
+			catch (e){}
+			return records;
+		},
+		
+		getHow: function(){	
+			var records = [];
+			try{
+				records = kbVIE.entities.filter(function(c){return c.isof('<http://ontology.vie.js/explanation/interface>') && c.get('category') == 'how'});
+			}
+			catch (e){}
+			return records;
+		},
+		
+		getWhy: function(){	
+			var records = [];
+			try{
+				records = kbVIE.entities.filter(function(c){return c.isof('<http://ontology.vie.js/explanation/interface>') && c.get('category') == 'why'});
+			}
+			catch (e){}
+			return records;
+		},
+		
+		getCustom: function(){	
+			var records = [];
+			try{
+				records = kbVIE.entities.filter(function(c){return c.isof('<http://ontology.vie.js/explanation/interface>') && c.get('category') == 'custom'});
+			}
+			catch (e){}
+			return records;
+		},
+		
 		addRecord:function(record){
 			var attributes = {
 				'@type': '<http://ontology.vie.js/explanation/interface>', 
@@ -206,7 +243,7 @@ jQuery.extend(kbAPI, {
 			for(var a in record){
 				attributes[a] = record[a];
 			}
-			kbVIE.entities.add(attributes);
+			kbVIE.entities.addOrUpdate(attributes);
 
 		},
 		
@@ -222,7 +259,12 @@ jQuery.extend(kbAPI, {
 			return record;
 		},
 		
-		updateRecord: function(){}
+		updateRecord: function(attributes){
+			var template = kbVIE.entities.get(attributes.id);
+			for(var attr in attributes){
+				template.set(attr,attributes[attr]);
+			}
+		}
 	}
 	
 	

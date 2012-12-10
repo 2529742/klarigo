@@ -9,7 +9,7 @@ var predicate = {
 	};
 
 $(window).load(function () {
-	
+	loadSampleKB();	
 	this.renderSidePanel();
 	var contextMenu = $('<ul id="myMenu" class="contextMenu"/>');
 	$('body')
@@ -24,7 +24,6 @@ $(window).load(function () {
 	});
 	kbAPI.init();
 	this.indexInterfaceElements();
-	loadSampleKB();
 });
 
 function indexInterfaceElements(){
@@ -120,10 +119,22 @@ function assign_menu(element){
 		if(id){
 			var type = kbAPI.interfaceKB.getElementType(id);
 			var questions = [];
-			
+			var questions_mappings = {};
+			$(kbAPI.templates.getAll()).each(function(){ 
+				var cat = this.get('category');
+				if(cat){
+					var q = this.getSubjectUri();
+					questions_mappings[cat] = questions_mappings[cat]? questions_mappings[cat]: {};
+					questions_mappings[cat][q] = {label: this.get('label'), types: this.get('types')};
+				}
+				else{
+					questions_mappings['custom'][this.getSubjectUri()] = {label: this.get('label'), types: this.get('types')};
+				}
+			});
 			for(var category in questions_mappings){
 				for(var q in questions_mappings[category]){
 					var mapping_types = questions_mappings[category][q].types;
+					mapping_types = $.isArray(mapping_types)? mapping_types: [mapping_types];
 					for(var i = 0; i < mapping_types.length; i++){
 						if(mapping_types[i] == type){
 							questions.push(q);

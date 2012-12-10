@@ -136,10 +136,22 @@ jQuery.extend(templateEditor,{
 		item_body = historyKB.find(' .item-body:first');
 		self.render_nodes(attr, item_body);
 		
+		var annotationsKB = $('<li id="explanation-template-editor-annotationsKB"></li>');
+		var aKBh = $('<h5 class="item-header collapsed"><a href="#1">Annotations</a></h5>');
+		accordion(aKBh);
+		annotationsKB
+		.append(aKBh)
+		.append('<div class="item-body hidden">');
+		
+		attr = ["metadata_about","metadata_type"];
+		item_body = annotationsKB.find(' .item-body:first');
+		self.render_nodes(attr, item_body);
+		
 		list
 		.append(staticKB)
 		.append(interfaceKB)
 		.append(historyKB)
+		.append(annotationsKB)
 		.appendTo(kbSchema);
 
 		return kbDiv;
@@ -229,9 +241,7 @@ jQuery.extend(templateEditor,{
 	
 	render_field_item: function(line,entry){
 		var item = $('<div class="explanation-template-editor-canvas-field-line-item">');
-		item
-		.css({'float':'left'})
-		.append(entry);
+		item.append(entry);
 		var removeBtn = $('<div class="ui-icon ui-icon-circle-close" style="cursor:pointer;">');
 		removeBtn.click(function(){
 			item.remove();
@@ -244,7 +254,17 @@ jQuery.extend(templateEditor,{
 		});
 		
 		//TODO: check if the input contains a text, then need to insert one blank input as last child
-		item.insertBefore($(line).children().last());
+		if(input.val()){
+			if(input.val().length>0){
+				input.remove();
+				$(line).append($('<input class="explanation-template-editor-canvas-field-line-input">'));
+				this.render_field_item(line,input);
+				item.insertBefore($(line).children().last());
+			}
+		}
+		else{
+			item.insertBefore($(line).children().last());
+		}
 	},
 	
 	render_controls: function(){
@@ -281,15 +301,28 @@ jQuery.extend(templateEditor,{
 		var context = [];
 		var canvasField = $('.explanation-template-editor-canvas-field');
 		canvasField.children().each(function(){
-			var node = $(this);
-			var type = node.is('input')? 'manual': 'reference';
-			var value = node.text();
-			if(value.length > 0){
-				context.push({value: value, type: type});
+			var line = $(this);
+			var context_line = [];
+			line.children().each(function(){
+				var item = $(this);
+				var node = item.hasClass('explanation-template-editor-canvas-field-line-input')? item[0]:item.children().first();
+				var type = $(node).is('input')? 'manual': 'reference';
+				var value = $(node).is('input')? $(node).val(): $(node).text();
+				if(value.length > 0){
+					context_line.push({value: value, type: type});
+				}
+			});	
+			if(context_line.length > 0){
+				context.push(context_line);
 			}
 		});
 		template_object.context = context;
-		kbAPI.templates.addRecord(template_object);
+		if(kbAPI.templates.getRecord(template_object.id)){
+			kbAPI.templates.updateRecord(template_object);
+		}
+		else{
+			kbAPI.templates.addRecord(template_object);
+		}
 		return template_object;
 	}
 	

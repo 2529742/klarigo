@@ -7,11 +7,20 @@ jQuery.extend(explanationBuilder,{
 		var elementType = kbAPI.interfaceKB.getElementType(elementID);
 		var staticRecord = kbAPI.getRecord(elementType);
 		var history = kbAPI.historyKB.getHistory(elementID);
-		
+
 		var attributes = {
 			label: question,
 			id: elementID
 		};
+		//Get data about hidden markup	
+		if(elementType == 'annotated'){
+			attributes.metadata_about = $(element).attr('about');
+		
+			if($(element).attr('typeof')){
+				attributes.metadata_type = $(element).attr('typeof');
+			}
+		}
+		
 		var schemaAttr = kbAPI.staticKB.schema.attributes;
 		for(var a in schemaAttr){
 			if(schemaAttr[a] != '@type' && schemaAttr[a] != '@subject'){
@@ -119,12 +128,17 @@ jQuery.extend(explanationBuilder,{
 			var item = "";
 			if($.isArray(line)){
 				for(var i in line){
-					item = model.get(line[i]);
-					if(item){
-						contextHTML = contextHTML + item;
+					var context_item = line[i];
+					if(context_item.type == 'reference'){
+						item = model.get(context_item.value);
+						if(item){
+							
+							contextHTML = contextHTML + item;
+						}
 					}
 					else{
-						contextHTML = contextHTML + line[i];
+						item = context_item.value;
+						contextHTML = contextHTML + item;
 					}
 				}
 			}
