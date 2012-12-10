@@ -181,8 +181,7 @@ jQuery.extend(templateEditor,{
 		
 		var save_btn = $('<button>Save</button>')
 		.click(function(){
-			var template_object = self.save_template();
-			kbAPI.templates.addRecord(template_object);
+			self.save_template();
 		});		
 		
 		//Fill the field this template's context
