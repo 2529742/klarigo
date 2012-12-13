@@ -1,4 +1,5 @@
 var explanationBuilder = {};
+var explanationInstanceIDcounter = 0;
 
 jQuery.extend(explanationBuilder,{
 	build: function(question,element){
@@ -7,8 +8,11 @@ jQuery.extend(explanationBuilder,{
 		var elementType = kbAPI.interfaceKB.getElementType(elementID);
 		var staticRecord = kbAPI.getRecord(elementType);
 		var history = kbAPI.historyKB.getHistory(elementID);
-
+		
+		explanationInstanceIDcounter++;
 		var attributes = {
+			'@type': '<http://ontology.vie.js/explanation/explanation>',
+			'@subject': 'explanationInstanceID' + explanationInstanceIDcounter,
 			label: question,
 			id: elementID
 		};
@@ -33,13 +37,13 @@ jQuery.extend(explanationBuilder,{
 				attributes[schemaAttr[a]] = interfaceRecord.get(schemaAttr[a]);
 			}
 		};
-		var explanationModel = new Backbone.Model(attributes);
-		
-		return this.construct_explanation(question,explanationModel);
+		var explanationModel = kbAPI.explanations.addRecord(attributes);
+		return this.construct_explanation(explanationModel);
 	},
 	
-	construct_explanation: function(question,model) {
+	construct_explanation: function(model) {
 		var explanation = $('<div>');
+		var question = model.get('label');
 		var explantionStructure = kbAPI.templates.getRecord('<'+question+'>');
 		var element = $('#'+model.get('id'))[0];
 		var label = explantionStructure.get('label');

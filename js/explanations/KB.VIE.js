@@ -265,6 +265,26 @@ jQuery.extend(kbAPI, {
 				template.set(attr,attributes[attr]);
 			}
 		}
+	},
+	
+	explanations: {
+		getAll: function(){	
+			var records =  [];
+			try{
+				records = kbVIE.entities.filter(function(c){return c.isof('<http://ontology.vie.js/explanation/explanation>')});
+			}
+			catch (e) {}
+			return records;
+		},
+		
+		getRecord: function(id){
+			return kbVIE.entities.get(id);
+		},
+		
+		addRecord: function(record){
+			kbVIE.entities.addOrUpdate(record);
+			return kbVIE.entities.get(record['@subject']);
+		}
 	}
 	
 	

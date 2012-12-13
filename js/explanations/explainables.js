@@ -67,34 +67,42 @@ function indexInterfaceElements(){
 
 function renderSidePanel(){
 	//add to the document's body new elements to control and display explanations
-	var userMode = '<p style="height:40px;"><input type ="checkbox" style="margin-bottom:50px;float:right;" checked><span style="float:right;">Advanced user mode</span></p>';
-	var kbButton = '<p><button id="kbButton" class="admin_controls" style="visibility:visible;">KnowledgeBase</button></p>';
-	var templButton = '<p><button id="TEButton" class="admin_controls" style="visibility:visible;">Template Editor</button></p>';
-	var explDiv = '<div class="slide-out-div">'+
-					'<div class="handle"></div>'+
-				'<div class="explanation_block">EXPLANATIONS</div></div>';
+	var userMode = $('<div id="explanation-usermode"><input type ="checkbox" checked>Advanced user mode</div>');
+	var kbButton = $('<button id="kbButton" class="admin_controls show">KnowledgeBase</button>');
+	var templButton = $('<button id="TEButton" class="admin_controls show">Template Editor</button>');
+	var explDiv = $('<div class="slide-out-div">'+
+					   '<div class="handle"></div>'+
+					'</div>');
 	$('body').append(explDiv);
-	$(userMode)
+	
+	userMode.find('input')
 	.click(function(){
-		if($(this).find('input').attr('checked')){
-			$('.admin_controls').css({visibility: 'visible'});
+		if($(this).attr('checked')){
+			$('.admin_controls').addClass('show');
+			$('.admin_controls').removeClass('hidden');
 		}
 		else{
-			$('.admin_controls').css({visibility: 'hidden'});
+			$('.admin_controls').addClass('hidden');
+			$('.admin_controls').removeClass('show');
 		};
-	})
-	.prependTo($('.slide-out-div'));	
-	$(kbButton)
+	});
+	userMode.prependTo($('.slide-out-div'));	
+	
+	kbButton
 	.click(function(){
 		explanationEditor.open();
 	})
 	.prependTo($('.slide-out-div'));	
-	$(templButton)
+	
+	templButton
 	.click(function(){
 		templateEditor.open();
 	})
 	.prependTo($('.slide-out-div'));
-    $('.slide-out-div').tabSlideOut({
+    var nav_controls = render_navigation_controls();
+	explDiv.append(nav_controls);
+	explDiv.append('<div class="explanation-block">EXPLANATIONS</div>');
+	$('.slide-out-div').tabSlideOut({
             tabHandle: '.handle',                     //class of the element that will become your tab
             pathToTabImage: 'img/explanation.png', //path to the image for the tab //Optionally can be set using css
             imageHeight: '199px',                     //height of tab image           //Optionally can be set using css
@@ -110,7 +118,6 @@ function renderSidePanel(){
 }
 
 function assign_menu(element){
-		//version with indroduction of new interface elements: new icons to navigate explanation
 		var explIcon = $('<div class = "explIcon"></div>');
 		$(explIcon).insertAfter($(element));
 		if(element instanceof HTMLHeadingElement){
@@ -162,9 +169,19 @@ function render_questions(element,questions,target){
 			catch(e){
 				console.log(e);
 			}
-			var explanation = explanationBuilder.build(q,element);	
-			$('.explanation_block').empty();
-			$('.explanation_block').append(explanation);
+			var explanation = explanationBuilder.build(q,element);
+			navigationCounter = explanationInstanceIDcounter;
+			$('.explanation-navigation-forward').removeClass('show');
+			$('.explanation-navigation-forward').addClass('hidden');	
+			if(navigationCounter>1){
+				$('.explanation-navigation-backward').removeClass('hidden');
+				$('.explanation-navigation-backward').addClass('show');	
+			}	
+			$('.explanation-block').empty();
+			$('.explanation-block').append(explanation);
+			if(!$('.slide-out-div').hasClass('open')){
+				$('.handle').click();
+			}
 		});
 		target.append(li);
 	};
@@ -201,4 +218,45 @@ function get_elementRelated_questions(id){
 		}
 	}
 	return questions;
+}
+
+var navigationCounter = 0;
+
+function render_navigation_controls(){
+	var nav_panel = $('<div class="explanation-navigation">');
+	var forward = $('<div class="explanation-navigation-forward ui-icon ui-icon-seek-next hidden">');
+	var backward = $('<div class="explanation-navigation-backward ui-icon ui-icon-seek-prev hidden">');
+	forward.click(function(){
+		navigationCounter++;
+		var explanationModel = kbAPI.explanations.getRecord('<explanationInstanceID'+navigationCounter+'>');
+		var explanation = explanationBuilder.construct_explanation(explanationModel);	
+		$('.explanation-block').empty();
+		$('.explanation-block').append(explanation);
+		if(navigationCounter == explanationInstanceIDcounter){
+			$(this).removeClass('show');
+			$(this).addClass('hidden');
+		}
+		if(navigationCounter > 1){
+			$('.explanation-navigation-backward').removeClass('hidden');
+			$('.explanation-navigation-backward').addClass('show');
+		}
+	});
+	backward.click(function(){
+		navigationCounter--;
+		var explanationModel = kbAPI.explanations.getRecord('<explanationInstanceID'+navigationCounter+'>');
+		var explanation = explanationBuilder.construct_explanation(explanationModel);	
+		$('.explanation-block').empty();
+		$('.explanation-block').append(explanation);
+		if(navigationCounter == 1){
+			$(this).removeClass('show');
+			$(this).addClass('hidden');
+		}
+		if(navigationCounter < explanationInstanceIDcounter){
+			$('.explanation-navigation-forward').removeClass('hidden');
+			$('.explanation-navigation-forward').addClass('show');
+		}
+	});
+	nav_panel.append(backward);
+	nav_panel.append(forward);
+	return nav_panel;
 }

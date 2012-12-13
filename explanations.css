@@ -23,9 +23,33 @@ h5 {
   border-left: 2px solid #289e84;
 }
 
+#explanation-usermode{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+#explanation-usermode input{
+	float: right;
+}
+
+.explanation-navigation{
+	position: absolute;
+	top: 90px;
+}
+
+.explanation-navigation-backward{
+	float: left;
+	margin-right: 30px;
+}
+
 .explanation-block{
 	word-wrap: break-word;
+	position: absolute;
+	top: 110px;
 }
+
+
 
 .explanation-breakline{
 	width: 100%;
@@ -152,3 +176,4 @@ h5 {
 	padding-left: 20px;
 
 }
+
