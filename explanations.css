@@ -1,3 +1,13 @@
+[about] {
+ text-shadow: 0 0 0.2em #87F, 0 0 0.2em #87F;
+ cursor: pointer;
+}
+
+[about]:hover {
+ text-shadow: 0 0 0.2em #8F7, 0 0 0.2em #8F7;
+ cursor: pointer;
+}
+
 h5 {
     font-size: 10px;
     font-weight: bold;
@@ -13,6 +23,16 @@ h5 {
   border-left: 2px solid #289e84;
 }
 
+.explanation-block{
+	word-wrap: break-word;
+}
+
+.explanation-breakline{
+	width: 100%;
+	border-bottom: 1px solid;
+	margin-top: 20px;
+}
+
 .explIcon {
 	height: 16px;
 	width:16px;
@@ -20,14 +40,10 @@ h5 {
 	display: inline-block;
 }
 
-[about] {
- text-shadow: 0 0 0.2em #87F, 0 0 0.2em #87F;
- cursor: pointer;
-}
+/*Explanation knowledge base editor:*/
 
-[about]:hover {
- text-shadow: 0 0 0.2em #8F7, 0 0 0.2em #8F7;
- cursor: pointer;
+#explanation_editor {
+	width: 500px;
 }
 
 #interfaceKB, #staticKB, #historyKB{
@@ -51,9 +67,7 @@ h5 {
 	padding-bottom: 10px;
 }
 
-#explanation_editor {
-	width: 500px;
-}
+/*Template editor:*/
 
 #template_editor{
 	width: 1000px;
@@ -125,6 +139,7 @@ h5 {
 	width: auto;
 }
 
+/* For collapsing/expanding lists*/
 .hidden{
 	display: none;
 }

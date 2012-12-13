@@ -35,89 +35,11 @@ jQuery.extend(explanationBuilder,{
 		};
 		var explanationModel = new Backbone.Model(attributes);
 		
-		this.render(question,explanationModel);
+		return this.construct_explanation(question,explanationModel);
 	},
 	
-	
-	build_: function(question,element){
-			var model = Backbone.Model.extend({
-				type:'metadata',
-				element: '',
-				label: '',
-				metadata: {
-					about:'',
-					type:''
-				}
-			});
-			
-			var label = questions_mappings[question].label;
-
-			var elementID = $(element).attr('id');
-			var elementType = kbAPI.interfaceKB.getElementType(elementID);
-			var staticRecord = kbAPI.staticKB.getRecord(elementType);
-			var wit = new model({
-				element: element,
-				label: label,
-				id: elementID,
-				type: elementType,
-				title: staticRecord.get('title'),
-				description: staticRecord.get("description"),
-				purpose: staticRecord.get("purpose"),
-				use: staticRecord.get("use")
-			});
-			
-			var metadata = new model({
-				element: element,
-				label: label,
-				id: elementID,
-				metadata: {
-					about: $(element).attr('about'),
-					type: $(element).attr('typeof')
-				}
-			});
-			
-			var hts = new model({
-				element: element,
-				label: label,
-				id: elementID,
-				type: elementType,
-				title: staticRecord.get('title'),
-				description: staticRecord.get("description"),
-				purpose: staticRecord.get("purpose"),
-				use: staticRecord.get("use"),
-				start: staticRecord.get("start")
-			});
-			
-			var actions = new model({
-				element: element,
-				label: label,
-				id: elementID,
-				type: elementType,
-				title: staticRecord.get('title'),
-				events: kbAPI.interfaceKB.getEvents(elementID)
-			});
-			var view = undefined;
-			if(question == 'what_is_it'){
-				view = new witView({model: wit});
-			}
-			else if(question == 'metadata'){
-				view = new metadataView({model: metadata});
-			}
-			else if(question == 'how_to_start'){
-				view = new htsView({model: hts});
-			}
-			else if(question == 'possible_actions'){
-				view = new actionsView({model: actions});
-			}
-			$('.explanation_block').empty();
-			
-			if(view){
-				$('.explanation_block').append(view.el)
-			}
-	},
-	
-	render: function(question,model) {
-		var explHTML = '';
+	construct_explanation: function(question,model) {
+		var explanation = $('<div>');
 		var explantionStructure = kbAPI.templates.getRecord('<'+question+'>');
 		var element = $('#'+model.get('id'))[0];
 		var label = explantionStructure.get('label');
@@ -154,9 +76,18 @@ jQuery.extend(explanationBuilder,{
 			contextHTML = contextHTML + '<br/>';
 		}
 		
-		explHTML = '<b>'+ element.innerHTML + '</b><br/><br/>' + label + ' explanation.<br/></br/>' + contextHTML;
+		explanation.append('<b>'+ element.innerHTML + '</b><br/><br/>' + label + ' explanation.<br/></br/>' + contextHTML + '<div class="explanation-breakline">');
 		
-		$('.explanation_block').empty();
-		$('.explanation_block').append(explHTML);
+		//List other questions related to the element:
+		var other_questions = $('<ul></ul>');
+		var questions = get_elementRelated_questions(element.id);
+		questions.splice(questions.indexOf(question),1);
+		if(questions.length>0){
+			explanation.append('<div style="margin: 10px;">This information might be also interesting:</div>');
+		}
+		render_questions(element,questions,other_questions);
+		explanation.append(other_questions);
+		
+		return explanation;
   }
 });

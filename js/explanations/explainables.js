@@ -7,10 +7,12 @@ var predicate = {
 	"results_set": '#image_container'
 	
 	};
+var questions_mappings = {};
+	
 
 $(window).load(function () {
 	loadSampleKB();	
-	this.renderSidePanel();
+	renderSidePanel();
 	var contextMenu = $('<ul id="myMenu" class="contextMenu"/>');
 	$('body')
 	.append(contextMenu)
@@ -22,8 +24,8 @@ $(window).load(function () {
 				.hide();
 			}
 	});
-	kbAPI.init();
-	this.indexInterfaceElements();
+	construct_questions_mappings();
+	indexInterfaceElements();
 });
 
 function indexInterfaceElements(){
@@ -115,56 +117,18 @@ function assign_menu(element){
 			$(element).css({'float':'left'});
 		}
 		var id = $(element).attr("id");
-		kbAPI.init();
 		if(id){
+			var questions = get_elementRelated_questions(id);
 			var type = kbAPI.interfaceKB.getElementType(id);
-			var questions = [];
-			var questions_mappings = {};
-			$(kbAPI.templates.getAll()).each(function(){ 
-				var cat = this.get('category');
-				if(cat){
-					var q = this.getSubjectUri();
-					questions_mappings[cat] = questions_mappings[cat]? questions_mappings[cat]: {};
-					questions_mappings[cat][q] = {label: this.get('label'), types: this.get('types')};
-				}
-				else{
-					questions_mappings['custom'][this.getSubjectUri()] = {label: this.get('label'), types: this.get('types')};
-				}
-			});
-			for(var category in questions_mappings){
-				for(var q in questions_mappings[category]){
-					var mapping_types = questions_mappings[category][q].types;
-					mapping_types = $.isArray(mapping_types)? mapping_types: [mapping_types];
-					for(var i = 0; i < mapping_types.length; i++){
-						if(mapping_types[i] == type){
-							questions.push(q);
-						}
-					}
-				}
-			}
 			if(type){
 				$(explIcon)
 				.click(function(event){
 						event.stopPropagation();
 						var contextMenu = $('#myMenu');
 						contextMenu.empty();
-						
-						for(var i = 0; i < questions.length; i++){
-							var q = questions[i];
-							var label = kbAPI.templates.getRecord('<'+q+'>').get('label');//TODO consider the right place for this part of the script
-							var li = $('<li class="explain"><a href="#' + q + '">' + label + '</a></li>')
-							.click(function(){
-								var q = '';
-								try{
-									q = $(this).find('a').attr('href').substring(1);}
-								catch(e){
-									window.console.log(e);}
-								explanationBuilder.build(q,element);	
-									
-								}
-							);
-							contextMenu.append(li);
-						}
+
+						render_questions(element,questions,contextMenu);
+
 						contextMenu
 						.show()
 						.addClass('show')
@@ -180,37 +144,61 @@ function assign_menu(element){
 						.mouseout( function() {
 								$(contextMenu).find('LI.hover').removeClass('hover');
 							});
-/* 					function(action, el, pos) {
-						
-						switch(action){
-							case 'annotated': //'What Is It?' explanation
-								explHtml = element.innerHTML+'<br/><br/>"What is it?" explanation.<br/></br/>'+(dynamic? 'This is an image from the Flickr image library.':('This is annotated element of TYPE: <b>'+$(element).attr('typeof')+'</b>.'));
-							break;
-							case 'dynamic':
-								explHtml = element.innerHTML+'<br/><br/>"Why is it here?" explanation.<br/><br/>This is a <b>'+ (dynamic? 'dynamic':'static')+'</b> element. '+
-								(dynamic? 'It is a result of image search query.':'');
-							break;
-						}
-						$('.explanation_block').empty();
-						$('.explanation_block').append(explHtml);
- */				});
+			});
 				
 			}
 		}
-		/*$(this).contextMenu({
-			menu: 'myMenu'
-			},
-			function(action, el, pos) {
-				var explHtml;
-				switch(action){
-					case 'wii': //'What Is It?' explanation
-						explHtml = '"What is it?" explanation should come here.';
-					break;
-					case 'htui':
-						explHtml = '"How to use it?" explanation should come here.';
-					break;
+}
+
+function render_questions(element,questions,target){
+	for(var i = 0; i < questions.length; i++){
+		var q = questions[i];
+		var label = kbAPI.templates.getRecord('<'+q+'>').get('label');//TODO consider the right place for this part of the script
+		var li = $('<li class="explain"><a href="#' + q + '">' + label + '</a></li>')
+		.click(function(){
+			var q = '';
+			try{
+				q = $(this).find('a').attr('href').substring(1);}
+			catch(e){
+				console.log(e);
+			}
+			var explanation = explanationBuilder.build(q,element);	
+			$('.explanation_block').empty();
+			$('.explanation_block').append(explanation);
+		});
+		target.append(li);
+	};
+}
+
+function construct_questions_mappings(){
+	$(kbAPI.templates.getAll()).each(function(){ 
+		var cat = this.get('category');
+		if(cat){
+			var q = this.getSubjectUri();
+			questions_mappings[cat] = questions_mappings[cat]? questions_mappings[cat]: {};
+			questions_mappings[cat][q] = {label: this.get('label'), types: this.get('types')};
+		}
+		else{
+			questions_mappings['custom'][this.getSubjectUri()] = {label: this.get('label'), types: this.get('types')};
+		}
+	});
+	return questions_mappings;
+}
+
+function get_elementRelated_questions(id){
+	var type = kbAPI.interfaceKB.getElementType(id);
+	var questions = [];
+
+	for(var category in questions_mappings){
+		for(var q in questions_mappings[category]){
+			var mapping_types = questions_mappings[category][q].types;
+			mapping_types = $.isArray(mapping_types)? mapping_types: [mapping_types];
+			for(var i = 0; i < mapping_types.length; i++){
+				if(mapping_types[i] == type){
+					questions.push(q);
 				}
-				$('.explanation_block').empty();
-				$('.explanation_block').append(explHtml);		
-		});*/
+			}
+		}
+	}
+	return questions;
 }
