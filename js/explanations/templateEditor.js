@@ -5,8 +5,9 @@ jQuery.extend(templateEditor,{
 		var dialogEl = $('<div id="template_editor">')
 		.dialog({
 			title:'Template editor', 
-			width: '700px',
-			position: {my: 'left bottom',at: 'left'} 			
+			width: 'auto',
+			position: {my: 'left bottom',at: 'left'},
+			resizable: 'false'
 		});
 		this.render_main(dialogEl);
 	},
@@ -178,10 +179,10 @@ jQuery.extend(templateEditor,{
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">')
 		.css({float:'left'})
 		.append('<h4>Template</h4>');
-		var label = $('<input class="explanation-template-label">')
+		var label = $('<input class="explanation-template-editor-canvas-label">')
 		
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
-		for(var i=1; i<31; i++){
+		for(var i=1; i<25; i++){
 			var line = $('<div class="explanation-template-editor-canvas-field-line">')
 			.droppable({
 				drop: function(event, ui){
@@ -195,18 +196,13 @@ jQuery.extend(templateEditor,{
 					var item = self.render_field_item(this,entry);
 				}
 			});
-			var textInput = $('<input class="explanation-template-editor-canvas-field-line-input">')
-			.css({
-				height: '14px',
-				border: 'none',
-				'font-size': '12px'
-			});
+			var textInput = $('<input class="explanation-template-editor-canvas-field-line-input">');
 			
 			line.append(textInput);
 			canvasField.append(line);
 		};
 		
-		var save_btn = $('<button>Save</button>')
+		var save_btn = $('<button class="explanation-template-editor-canvas-save">Save</button>')
 		.click(function(){
 			self.save_template();
 		});		
@@ -265,31 +261,6 @@ jQuery.extend(templateEditor,{
 		else{
 			item.insertBefore($(line).children().last());
 		}
-	},
-	
-	render_controls: function(){
-		var self = this;
-		var controls_div = $('<div class="explanation-template-editor-canvas-controls">');
-		
-		var new_btn = $('<button>New</button>')
-		.click(function(){
-			self.new_template();
-		})
-		.appendTo(controls_div);
-		
-		var open_btn = $('<button>Open</button>')
-		.click(function(){
-			self.open_template();
-		})
-		.appendTo(controls_div);
-		
-		var save_btn = $('<button>Save</button>')
-		.click(function(){
-			var template_object = self.save_template();
-		})
-		.appendTo(controls_div);
-		
-		return controls_div;
 	},
 	
 	save_template: function(){
