@@ -17,6 +17,7 @@ h5 {
 .slide-out-div {
   padding: 20px;
   width: 25%;
+  min-width: 270px;
   height: 100%;
   background: #ccc;
   border: 1px solid #29216d;
