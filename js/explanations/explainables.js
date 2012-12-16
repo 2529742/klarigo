@@ -49,14 +49,25 @@ function indexInterfaceElements(){
 			}
 			var events = [];
 			for(var e in $(this).data('events')){
-				events.push(e);//TODO: exclude system events
-			}
+				if(e == "click" || e == "ondblclick"){
+					events.push(e);//TODO: exclude system events
+				}
+			};
+			
 			var record = {
 				id: id,
 				events: events,
 				elementType: elType,
 				status: 'added'
 			};
+			//Get data about hidden markup	
+			if(elType == 'annotated'){
+				record.metadata_about = $(this).attr('about');
+				if($(this).attr('typeof')){
+					record.metadata_type = $(this).attr('typeof');
+				}
+			};
+			
 			kbAPI.interfaceKB.addRecord(record);
 			assign_menu(this);
 		});
@@ -101,7 +112,7 @@ function renderSidePanel(){
 	.prependTo($('.slide-out-div'));
     var nav_controls = render_navigation_controls();
 	explDiv.append(nav_controls);
-	explDiv.append('<div class="explanation-block">EXPLANATIONS</div>');
+	explDiv.append('<div class="explanation-block">You can click blue question mark icons near the explainable interface element to request for information related to this element</div>');
 	$('.slide-out-div').tabSlideOut({
             tabHandle: '.handle',                     //class of the element that will become your tab
             pathToTabImage: 'img/explanation.png', //path to the image for the tab //Optionally can be set using css

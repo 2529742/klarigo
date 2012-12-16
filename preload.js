@@ -14,13 +14,21 @@ function loadSampleKB(){
 	
 	desc = 'This annotated element represents an entity.';
 	purp = 'Hidded semantics allows to get more information about the entity, than it\'s shawn in text. For example, use entity type (such as "Person", "Place") and its attributes to search for related images.';
-	use = 'You can click an entity to start image search. If any image will be found, it will be placed below the article.';
+	use = 'You can click the entity to start image search. If any image will be found, it will be placed below the article.';
 	kbAPI.staticKB.addRecord({
 		elementType: 'annotated',
-		title: 'Annotated text',
+		title: 'an annotated text',
 		description: desc,
 		purpose: purp,
 		use: use
+	});
+	
+	kbAPI.staticKB.addRecord({
+		elementType: 'result',
+		title: 'a result',
+		description: 'This result is a thumbnail (a small version) of the image that has been found in FLICKR image database.',
+		purpose: 'The image is relevant to the clicked entity.',
+		use: 'You can click it to open the full-sized version at the original location of the image.'
 	});
 	
 	kbAPI.templates.addRecord({
@@ -65,7 +73,7 @@ function loadSampleKB(){
 		types : ["main","annotated","result","results_set"],
 		category: "what",
 		context: [
-					[{value:'The possible actions are: ',type:'manual'},{type: 'reference',value: 'events'}],
+					[{value:'The following event(s) can be handled: ',type:'manual'},{type: 'reference',value: 'events'}],
 					[]
 				]
 	});

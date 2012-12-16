@@ -174,7 +174,7 @@ var eventTypes = {
 //doc events
 load: false,
 onunload: false,
-//DOM Nodes events
+//DOM mutation events
 DOMNodeInserted: true,
 DOMNodeRemoved: false,
 //form events

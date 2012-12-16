@@ -16,27 +16,31 @@ jQuery.extend(explanationBuilder,{
 			label: question,
 			id: elementID
 		};
-		//Get data about hidden markup	
-		if(elementType == 'annotated'){
-			attributes.metadata_about = $(element).attr('about');
-		
-			if($(element).attr('typeof')){
-				attributes.metadata_type = $(element).attr('typeof');
-			}
-		}
 		
 		var schemaAttr = kbAPI.staticKB.schema.attributes;
-		for(var a in schemaAttr){
-			if(schemaAttr[a] != '@type' && schemaAttr[a] != '@subject'){
-				attributes[schemaAttr[a]] = staticRecord.get(schemaAttr[a]);
+		if(staticRecord){
+			for(var a in schemaAttr){
+				if(schemaAttr[a] != '@type' && schemaAttr[a] != '@subject'){
+					var value = staticRecord.get(schemaAttr[a]);
+					if(value){
+						value = (value.isEntity)? value.getSubjectUri(): value;
+					}
+					attributes[schemaAttr[a]] = value;
+				}
 			}
-		};
+		}
 		schemaAttr = kbAPI.interfaceKB.schema.attributes;
-		for(var a in schemaAttr){
-			if(schemaAttr[a] != '@type' && schemaAttr[a] != '@subject'){
-				attributes[schemaAttr[a]] = interfaceRecord.get(schemaAttr[a]);
+		if(interfaceRecord){
+			for(var a in schemaAttr){
+				if(schemaAttr[a] != '@type' && schemaAttr[a] != '@subject'){
+					var value = interfaceRecord.get(schemaAttr[a]);
+					if(value){
+						value = (value.isEntity)? value.getSubjectUri(): value;
+					}
+					attributes[schemaAttr[a]] = value;
+				}
 			}
-		};
+		}
 		var explanationModel = kbAPI.explanations.addRecord(attributes);
 		return this.construct_explanation(explanationModel);
 	},
@@ -58,7 +62,7 @@ jQuery.extend(explanationBuilder,{
 					if(context_item.type == 'reference'){
 						item = model.get(context_item.value);
 						if(item){
-							
+							item = (item.isEntity)? item.getSubjectUri(): item;
 							contextHTML = contextHTML + item;
 						}
 					}
@@ -71,6 +75,7 @@ jQuery.extend(explanationBuilder,{
 			else{
 				item = model.get(line[i]);
 				if(item){
+					item = (item.isEntity)? item.getSubjectUri(): item;
 					contextHTML = contextHTML + item;
 				}
 				else{

@@ -85,7 +85,9 @@ jQuery.extend(kbAPI, {
 				'@subject',
 				'elementType',
 				'events',
-				'status'
+				'status',
+				'metadata_about',
+				'metadata_type'
 			]
 		},
 		getAll: function(){	
