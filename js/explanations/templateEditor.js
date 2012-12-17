@@ -219,12 +219,14 @@ jQuery.extend(templateEditor,{
 			var line = canvasField.children()[i];
 			for(var j in context_entry){
 				var val = context_entry[j].value;
+				var width = (context_entry[j].type == "reference")? 'auto': val.length*7 + 'px';
 				var entry = (context_entry[j].type == "reference")? $('<h5>'+val+'</h5>'):$('<input class="explanation-template-editor-canvas-field-line-input" value="'+val+'">');
 				entry.css({
 					height: '14px',
 					border: 'none',
 					'font-size': '12px',
-					'float': 'left'
+					'float': 'left',
+					width: width
 				});
 				self.render_field_item(line,entry); 			
 			}

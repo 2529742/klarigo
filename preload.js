@@ -52,7 +52,7 @@ function loadSampleKB(){
 		context: [
 					[{value:'The general view of the hidden markup is the following:',type:"manual"}],
 					[{value:'This is annotated element of TYPE:',type:"manual"},{value:"metadata_type", type:"reference"}],
-					[{value:'It is referenced to: <a href="',type:"manual"},{value:"metadata_about", type:"reference"},{value:'">',type:'manual'},{value:"metadata_about", type:"reference"},{value:'</a>', type:"manual"}]
+					[{value:'It is referenced to: <a href=',type:"manual"},{value:"metadata_about", type:"reference"},{value:'>',type:'manual'},{value:"metadata_about", type:"reference"},{value:'</a>', type:"manual"}]
 				]
 	});
 	
