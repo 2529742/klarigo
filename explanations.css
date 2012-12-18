@@ -25,6 +25,10 @@ h5 {
   border-left: 2px solid #289e84;
 }
 
+.slide-out-div-handle{
+    background-image: url("https://github.com/2529742/klarigo/blob/master/img/explanation.png?raw=true");
+}
+
 #explanation-usermode{
 	position: absolute;
 	top: 20px;
@@ -63,7 +67,7 @@ h5 {
 .explIcon {
 	height: 16px;
 	width:16px;
-	background-image: url("img/question.png");
+	background-image: url("https://github.com/2529742/klarigo/blob/master/img/question.png?raw=true");
 	display: inline-block;
 }
 

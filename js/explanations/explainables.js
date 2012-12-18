@@ -82,7 +82,7 @@ function renderSidePanel(){
 	var kbButton = $('<button id="kbButton" class="admin_controls show">KnowledgeBase</button>');
 	var templButton = $('<button id="TEButton" class="admin_controls show">Template Editor</button>');
 	var explDiv = $('<div class="slide-out-div">'+
-					   '<div class="handle"></div>'+
+					   '<div class="slide-out-div-handle"></div>'+
 					'</div>');
 	$('body').append(explDiv);
 	
@@ -114,7 +114,7 @@ function renderSidePanel(){
 	explDiv.append(nav_controls);
 	explDiv.append('<div class="explanation-block">You can click blue question mark icons near the explainable interface element to request for information related to this element</div>');
 	$('.slide-out-div').tabSlideOut({
-            tabHandle: '.handle',                     //class of the element that will become your tab
+            tabHandle: '.slide-out-div-handle',                     //class of the element that will become your tab
             pathToTabImage: 'img/explanation.png', //path to the image for the tab //Optionally can be set using css
             imageHeight: '199px',                     //height of tab image           //Optionally can be set using css
             imageWidth: '44px',                       //width of tab image            //Optionally can be set using css
