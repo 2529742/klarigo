@@ -214,6 +214,9 @@ jQuery.extend(templateEditor,{
 		.append(save_btn);
 		
 		var context  = templateObject.context;
+		if(context[0]){
+			context = ($.isArray(context[0]))? context: [context];
+		}
 		for(var i = 0; i < context.length; i++){
 			var context_entry = context[i];
 			var line = canvasField.children()[i];

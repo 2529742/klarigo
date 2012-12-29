@@ -17,6 +17,20 @@ jQuery.extend(explanationBuilder,{
 			id: elementID
 		};
 		
+		var trace = [];
+		if(history.length>0){
+			var last_record = history[history.length-1];
+			var rootEventID = last_record.get('rootEvent');
+			var rootEvent = kbAPI.getRecord(rootEventID);
+			while(rootEventID != rootEvent.getSubjectUri()){
+				var rootEvent = kbAPI.getRecord(rootEventID);
+				var relatedElement = rootEvent.get('element')? $('#'+rootEvent.get('element'))[0].innerHTML: '';
+				trace.push(relatedElement + ' ' + rootEvent.get(type));
+			}	
+		}
+		
+		attributes.trace = trace;
+		
 		var schemaAttr = kbAPI.staticKB.schema.attributes;
 		if(staticRecord){
 			for(var a in schemaAttr){
@@ -53,6 +67,9 @@ jQuery.extend(explanationBuilder,{
 		var label = explantionStructure.get('label');
 		var context = explantionStructure.get('context');
 		var contextHTML = '';
+		if(context[0]){
+			context = ($.isArray(context[0]))? context: [context];
+		}
 		for(var c in context){
 			var line = context[c];
 			var item = "";

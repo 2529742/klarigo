@@ -46,7 +46,20 @@ function eventsFilter(elements){
 				console.log(trace);
 				var rootEvent = traceStack();
 				var record = {id: this.ajaxID};
-				
+				var url = this.url;
+				record.url = url;
+				if(url.indexOf('?')>=0){
+					var query_parameters = url.substr(url.indexOf('?')+1,url.length-url.indexOf('?'));
+					query_parameters = query_parameters.split('&');
+					z = {};
+					for(var p in query_parameters){
+						d = query_parameters[p]; 
+						e = d.substr(d.indexOf('=')+1,d.length-d.indexOf('='));
+						g = d.substr(0,d.indexOf('='));
+						z[g] = e;
+					}
+					record.query = z;
+ 				}
 				record.eventType = 'ajax';
 				record.ajaxID = this.ajaxID;
 				record.stack = trace;

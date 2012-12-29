@@ -73,8 +73,17 @@ function loadSampleKB(){
 		types : ["main","annotated","result","results_set"],
 		category: "what",
 		context: [
-					[{value:'The following event(s) can be handled: ',type:'manual'},{type: 'reference',value: 'events'}],
-					[]
+					[{value:'The following event(s) can be handled: ',type:'manual'},{type: 'reference',value: 'events'}]
+				]
+	});
+	
+	kbAPI.templates.addRecord({
+		id: 'How_was_it_found',
+		label: 'How was it found?',
+		types : ["result"],
+		category: "how",
+		context: [
+					[{value:'The following sequence has been passed:',type:'manual'},{type: 'reference',value: 'trace'}]
 				]
 	});
 }
