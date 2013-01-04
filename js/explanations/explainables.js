@@ -199,6 +199,8 @@ function render_questions(element,questions,target){
 	};
 }
 
+
+//Based on saved templates constructs mapping of questions to the interface elements
 function construct_questions_mappings(){
 	$(kbAPI.templates.getAll()).each(function(){ 
 		var cat = this.get('category');
@@ -214,6 +216,7 @@ function construct_questions_mappings(){
 	return questions_mappings;
 }
 
+//Returns questions related to the element type by it's ID
 function get_elementRelated_questions(id){
 	var type = kbAPI.interfaceKB.getElementType(id);
 	var questions = [];
@@ -234,6 +237,7 @@ function get_elementRelated_questions(id){
 
 var navigationCounter = 0;
 
+//Renders arrows for navigating the already rendered explanations
 function render_navigation_controls(){
 	var nav_panel = $('<div class="explanation-navigation">');
 	var forward = $('<div class="explanation-navigation-forward ui-icon ui-icon-seek-next hidden">');
