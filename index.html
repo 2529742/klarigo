@@ -14,6 +14,8 @@
 	
 	<script type="text/javascript" src="./lib/jquery.livequery.js"></script>
 	
+	<script type="text/javascript" src="./lib/jquery.rdfquery.js"></script>
+	
     <!-- jQuery TipTip plugin -->
     <script type="text/javascript"          src="./utils/tiptip/jquery.tipTip.js"></script>
     <link rel="stylesheet" type="text/css" href="./utils/tiptip/jquery.tipTip.css" media="screen" />
@@ -26,7 +28,7 @@
     <script type="text/javascript" src="./lib/backbone.js"></script>
       
     <!-- vie.js itself -->
-	<script type="text/javascript" src="./lib/vie-latest.debug.js"></script>
+	<script type="text/javascript" src="./lib/vie-2.1.0.debug.js"></script>
 	<script type="text/javascript" src="./utils/schemaOrg/schema.json"></script>
 	<script type="text/javascript" src="./utils/schemaOrg/wrapper.js"></script>
 	
@@ -60,8 +62,7 @@
             
             // read RDFa from the text below
             myVIE.use(new myVIE.RdfaService);
-            myVIE.load({element: $('[about]')})
-            .from('rdfa').execute();
+            myVIE.load({element: $('[about]')}).from('rdfa').execute();
             
             // set-up of the Flickr-widget
             $('#image_container')

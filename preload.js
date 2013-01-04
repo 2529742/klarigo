@@ -83,7 +83,7 @@ function loadSampleKB(){
 		types : ["result"],
 		category: "how",
 		context: [
-					[{value:'The following sequence has been passed:',type:'manual'},{type: 'reference',value: 'trace'}]
+					[{value:'The following events sequence has been passed:',type:'manual'},{type: 'reference',value: 'trace'}]
 				]
 	});
 }

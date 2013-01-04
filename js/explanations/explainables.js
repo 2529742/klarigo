@@ -26,6 +26,7 @@ $(window).load(function () {
 	});
 	construct_questions_mappings();
 	indexInterfaceElements();
+	$('.slide-out-div-handle').click();
 });
 
 function indexInterfaceElements(){

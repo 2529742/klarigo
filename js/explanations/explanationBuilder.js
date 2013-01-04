@@ -20,16 +20,40 @@ jQuery.extend(explanationBuilder,{
 		var trace = [];
 		if(history.length>0){
 			var last_record = history[history.length-1];
+			var history_record = last_record;
 			var rootEventID = last_record.get('rootEvent');
 			var rootEvent = kbAPI.getRecord(rootEventID);
-			while(rootEventID != rootEvent.getSubjectUri()){
-				var rootEvent = kbAPI.getRecord(rootEventID);
-				var relatedElement = rootEvent.get('element')? $('#'+rootEvent.get('element'))[0].innerHTML: '';
-				trace.push(relatedElement + ' ' + rootEvent.get(type));
-			}	
+			do{
+				if(history_record.get('eventType')=='ajax'){
+					var query = history_record.get('query');
+					query = (query.isEntity || query.isCollection)? query.models[0].attributes: query;
+					var query_string = '';
+					for(var q in query){
+						if(q!='@type' && q!='@subject'){
+							query_string = query_string + '<li>' + q + ': ' + query[q] + '</li>';
+						}
+					}
+					trace.push('<li>Ajax query with parameters: <ul>' + query_string + '</ul></li>');
+				}
+				else{
+					var relatedElement = history_record.get('element')? $('#'+history_record.get('element'))[0].innerHTML: '';
+					trace.push('<li><b>' + relatedElement + '</b> - ' + history_record.get('eventType') + '</li>');
+				}
+				rootEventID = history_record.get('rootEvent');
+				history_record = rootEvent;
+				rootEvent = kbAPI.getRecord(rootEventID);
+			}
+			while(rootEventID != rootEvent.get('rootEvent'))
+			history_record = rootEvent;
+			relatedElement = history_record.get('element')? $('#'+history_record.get('element'))[0].innerHTML: '';
+			trace.push('<li><b>' + relatedElement + '</b> - ' + history_record.get('eventType') + '</li>');	
 		}
 		
-		attributes.trace = trace;
+		var trace_string = '';
+		for(var i = trace.length-1; i>=0; i--){	
+			trace_string = trace_string + trace[i];
+		}
+		attributes.trace = '<ul>' + trace_string + '</ul>';
 		
 		var schemaAttr = kbAPI.staticKB.schema.attributes;
 		if(staticRecord){
