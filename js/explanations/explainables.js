@@ -240,8 +240,8 @@ var navigationCounter = 0;
 //Renders arrows for navigating the already rendered explanations
 function render_navigation_controls(){
 	var nav_panel = $('<div class="explanation-navigation">');
-	var forward = $('<div class="explanation-navigation-forward ui-icon ui-icon-seek-next hidden">');
-	var backward = $('<div class="explanation-navigation-backward ui-icon ui-icon-seek-prev hidden">');
+	var forward = $('<div class="explanation-navigation-forward hidden">>></div>');
+	var backward = $('<div class="explanation-navigation-backward hidden"><<</div>');
 	forward.click(function(){
 		navigationCounter++;
 		var explanationModel = kbAPI.explanations.getRecord('<explanationInstanceID'+navigationCounter+'>');

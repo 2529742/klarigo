@@ -42,11 +42,17 @@ h5 {
 .explanation-navigation{
 	position: absolute;
 	top: 90px;
+	width: 80px;
 }
 
 .explanation-navigation-backward{
 	float: left;
 	margin-right: 30px;
+	font-size: 20;
+}
+
+.explanation-navigation-forward{
+	font-size: 20;
 }
 
 .explanation-block{
@@ -54,6 +60,7 @@ h5 {
 	position: absolute;
 	top: 110px;
 	margin-right: 10px;
+	margin-top: 20px;
 }
 
 
