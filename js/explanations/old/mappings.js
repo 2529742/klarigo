@@ -9,7 +9,7 @@ questions_mappings = {
 			types : ["annotated"]
 			},
 		"relevance" : {
-			label : "What is it's relevance?",
+			label : "What is its relevance?",
 			types : ["result"]
 			},
 		"possible_actions" : {

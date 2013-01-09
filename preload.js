@@ -86,4 +86,14 @@ function loadSampleKB(){
 					[{value:'The following events sequence has been passed:',type:'manual'},{type: 'reference',value: 'trace'}]
 				]
 	});
+	
+	kbAPI.templates.addRecord({
+	id: 'What_is_its_relevance',
+	label: 'What is its relevance?',
+	types : ["result"],
+	category: "what",
+	context: [
+				[{value:'Its relevance is:',type:'manual'},{type: 'reference',value: 'relevance'}]
+			]
+	});
 }

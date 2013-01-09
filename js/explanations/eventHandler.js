@@ -43,7 +43,6 @@ function eventsFilter(elements){
 				trace = printStackTrace({
 					e: new Error()
 				});
-				console.log(trace);
 				var rootEvent = traceStack();
 				var record = {id: this.ajaxID};
 				var url = this.url;
