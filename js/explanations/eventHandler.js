@@ -52,6 +52,7 @@ function eventsFilter(elements){
 					var query_parameters = url.substr(url.indexOf('?')+1,url.length-url.indexOf('?'));
 					query_parameters = query_parameters.split('&');
 					z = {};
+					z.url = url.substr(0, url.indexOf('?'));
 					for(var p in query_parameters){
 						d = query_parameters[p]; 
 						e = d.substr(d.indexOf('=')+1,d.length-d.indexOf('='));

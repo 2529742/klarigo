@@ -49,10 +49,12 @@ h5 {
 	float: left;
 	margin-right: 30px;
 	font-size: 20;
+	cursor: pointer;
 }
 
 .explanation-navigation-forward{
 	font-size: 20;
+	cursor: pointer;
 }
 
 .explanation-block{

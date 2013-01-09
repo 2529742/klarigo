@@ -30,7 +30,7 @@ jQuery.extend(explanationBuilder,{
 					var query_string = '';
 					for(var q in query){
 						if(q!='@type' && q!='@subject'){
-							query_string = query_string + '<li>' + q + ': ' + query[q] + '</li>';
+							query_string = query_string + '<li>' + q.replace("http://schema.org/",'').replace(/[<>]/g,'') + ': ' + query[q] + '</li>';
 						}
 					}
 					trace.push('<li>Ajax query with parameters: <ul>' + query_string + '</ul></li>');
