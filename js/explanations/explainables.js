@@ -79,9 +79,9 @@ function indexInterfaceElements(){
 
 function renderSidePanel(){
 	//add to the document's body new elements to control and display explanations
-	var userMode = $('<div id="explanation-usermode"><input type ="checkbox" checked>Advanced user mode</div>');
-	var kbButton = $('<button id="kbButton" class="admin_controls show">KnowledgeBase</button>');
-	var templButton = $('<button id="TEButton" class="admin_controls show">Template Editor</button>');
+	var userMode = $('<div id="explanation-usermode"><input type ="checkbox">Advanced user mode</div>');
+	var kbButton = $('<button id="kbButton" class="admin_controls hidden">KnowledgeBase</button>');
+	var templButton = $('<button id="TEButton" class="admin_controls hidden">Template Editor</button>');
 	var explDiv = $('<div class="slide-out-div">'+
 					   '<div class="slide-out-div-handle"></div>'+
 					'</div>');
