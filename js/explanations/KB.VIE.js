@@ -210,7 +210,8 @@ jQuery.extend(kbAPI, {
 				'related_elements',
 				'title',
 				'label',
-				'context'
+				'context',
+				'types'
 			]
 		},
 		getAll: function(){	
@@ -252,7 +253,8 @@ jQuery.extend(kbAPI, {
 			var record = {
 				'title': '',
 				'label': '',
-				'context': []
+				'context': [],
+				'types': []
 			};
 			for(var a in attributes){
 				record[a] = attributes[a];

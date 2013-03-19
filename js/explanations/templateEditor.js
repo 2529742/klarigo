@@ -152,7 +152,7 @@ jQuery.extend(templateEditor,{
 		.append(staticKB)
 		.append(interfaceKB)
 		.append(historyKB)
-		.append(annotationsKB)
+//		.append(annotationsKB)
 		.appendTo(kbSchema);
 
 		return kbDiv;
@@ -180,7 +180,7 @@ jQuery.extend(templateEditor,{
 		.css({float:'left'})
 		.append('<h4>Template</h4>');
 		var label = $('<input class="explanation-template-editor-canvas-label">')
-		
+		var typesList = $('<input class="explanation-template-editor-canvas-types">');
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
 		for(var i=1; i<25; i++){
 			var line = $('<div class="explanation-template-editor-canvas-field-line">')
@@ -208,11 +208,12 @@ jQuery.extend(templateEditor,{
 		});		
 		
 		//Fill the field this template's context
+		typesList.val(templateObject.types.join(', '));
 		label.val(templateObject.label);
 		canvasDiv
 		.append(label)
-		.append(save_btn);
-		
+		.append(save_btn)
+		.append(typesList);
 		var context  = templateObject.context;
 		if(context[0]){
 			context = ($.isArray(context[0]))? context: [context];
@@ -269,10 +270,13 @@ jQuery.extend(templateEditor,{
 	},
 	
 	save_template: function(){
-		var label = $('.explanation-template-label').val();
+		var label = $('.explanation-template-editor-canvas-label').val();
+		var typesList = $('.explanation-template-editor-canvas-types').val();
+		
 		var template_object = {
 				id: label.replace(/ /g,'_').replace('?',''),
-				label: label
+				label: label,
+				types: typesList.replace(/ /g,"").split(',')
 		};
 		var context = [];
 		var canvasField = $('.explanation-template-editor-canvas-field');
