@@ -3,9 +3,8 @@ kbVIE.namespaces.add('explanation','http://ontology.vie.js/explanation/');
 var kbAPI = {};
 
 jQuery.extend(kbAPI, {
-	kbVIE: '',
 	kb: function(){	
-		return this.kbVIE;
+		return kbVIE;
 	},
 	init: function(){
 		return kbVIE;
@@ -211,7 +210,8 @@ jQuery.extend(kbAPI, {
 				'related_elements',
 				'title',
 				'label',
-				'context'
+				'context',
+				'types'
 			]
 		},
 		getAll: function(){	
@@ -253,7 +253,8 @@ jQuery.extend(kbAPI, {
 			var record = {
 				'title': '',
 				'label': '',
-				'context': []
+				'context': [],
+				'types': []
 			};
 			for(var a in attributes){
 				record[a] = attributes[a];
