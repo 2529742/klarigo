@@ -1,133 +1,134 @@
 var history = [];
-var explElementsCounter = 1;
-var predicate = {
-	"main": 'h1',
-	"annotated": '[typeof="Person"],[typeof="Place"],[typeof="City"]',
-	"result": '.view-vieImageSearch-image',
-	"results_set": '#image_container'
-	
-	};
+
 var questions_mappings = {};
+	
+var ESUI = {};
 	
 
 $(window).load(function () {
-	loadSampleKB();	
-	renderSidePanel();
-	var contextMenu = $('<ul id="myMenu" class="contextMenu"/>');
-	$('body')
-	.append(contextMenu)
-	.click(function(event){
+	loadSampleKB();
+	ESUI.init();
+});
+
+jQuery.extend(ESUI,{	
+	init: function(){
+		var self = this;
+		self.renderSidePanel();
+		construct_questions_mappings();
+		indexInterfaceElements(self.options.predicate);
+		self.renderExplControls(self.options.predicate);	
+		//to make the Side panel visible by default
+		$('.slide-out-div-handle').click();
+	},
+
+	refresh: function(){
+		var self = this;
+		construct_questions_mappings();
+		setupExplMenu(self.options.predicate);
+	},
+	
+	renderExplControls: function(predicate){
+		var self = this;
+		/******Create a node to render context menu******/
+		var contextMenu = $('<ul id="myMenu" class="contextMenu"/>');
+		$('body')
+		.append(contextMenu)
+		.click(function(event){
 			event.stopPropagation();
 			if($('.contextMenu').hasClass('show')){
 				$('.contextMenu')
 				.removeClass('show')
 				.hide();
 			}
-	});
-	construct_questions_mappings();
-	indexInterfaceElements();
-	$('.slide-out-div-handle').click();
+		});
+		/************************************************/
+		
+		/******Assign Explanation Menu to the predicated elements******/
+		setupExplMenu(predicate);
+	},
+	
+	renderSidePanel: function(){
+		var self = this;
+		//add to the document's body new elements to control and display explanations
+		var userMode = $('<div id="explanation-usermode"><input type ="checkbox" checked>Advanced user mode</div>');
+		var kbButton = $('<button id="kbButton" class="admin_controls show">KnowledgeBase</button>');
+		var templButton = $('<button id="TEButton" class="admin_controls show">Template Editor</button>');
+		var explDiv = $('<div class="slide-out-div">'+
+						   '<div class="slide-out-div-handle"></div>'+
+						'</div>');
+		$('body').append(explDiv);
+		
+		userMode.find('input')
+		.click(function(){
+			if($(this).attr('checked')){
+				$('.admin_controls').addClass('show');
+				$('.admin_controls').removeClass('hidden');
+			}
+			else{
+				$('.admin_controls').addClass('hidden');
+				$('.admin_controls').removeClass('show');
+			};
+		});
+		userMode.prependTo($('.slide-out-div'));	
+		
+		kbButton
+		.click(function(){
+			self.options.KBeditor();
+		})
+		.prependTo($('.slide-out-div'));	
+		
+		templButton
+		.click(function(){
+			self.options.templateEditor();
+		})
+		.prependTo($('.slide-out-div'));
+		var nav_controls = render_navigation_controls();
+		explDiv.append(nav_controls);
+		explDiv.append('<div class="explanation-block">You can click blue question mark icons near the explainable interface element to request for information related to this element</div>');
+		$('.slide-out-div').tabSlideOut({
+				tabHandle: '.slide-out-div-handle',                     //class of the element that will become your tab
+				pathToTabImage: 'https://github.com/2529742/klarigo/blob/master/css/img/explanation.png?raw=true', //path to the image for the tab //Optionally can be set using css
+				imageHeight: '199px',                     //height of tab image           //Optionally can be set using css
+				imageWidth: '44px',                       //width of tab image            //Optionally can be set using css
+				tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
+				speed: 300,                               //speed of animation
+				action: 'click',                          //options: 'click' or 'hover', action to trigger animation
+				topPos: '0px',                          //position from the top/ use if tabLocation is left or right
+				leftPos: '0px',                          //position from left/ use if tabLocation is bottom or top
+				fixedPosition: true                      //options: true makes it stick(fixed position) on scroll
+		});
+	},
+	
+	/*Options for the ESUI API
+	  templatEditor: a function to open the Template editor 
+	  KBeditr: a function to open the Knowledge Base editor
+	*/
+	options: {
+		predicate: {
+			"main": 'h1',
+			"annotated": '[typeof="Person"],[typeof="Place"],[typeof="City"]',
+			"result": '.view-vieImageSearch-image',
+			"results_set": '#image_container'
+		},
+		templateEditor: function(){
+			templateEditor.open();
+		},
+		KBeditor: function(){
+			explanationEditor.open();
+		}
+	}
 });
 
-function indexInterfaceElements(){
+function setupExplMenu(predicate){
 	for(var type in predicate){
 		eventsFilter(predicate[type]);
 		var explainable = $(predicate[type]);
 		explainable.livequery(function(){
-			var elType = type;
-			for(var t in predicate){
-				if($(this).is(predicate[t])){
-					elType = t;
-				}
-			}
-			var id;
-			if(this.id){
-				id = this.id;
-			}
-			else{
-				id = 'explID'+explElementsCounter++;
-				this.id = id;
-			}
-			var events = [];
-			for(var e in $(this).data('events')){
-				if(e == "click" || e == "ondblclick"){
-					events.push(e);//TODO: exclude system events
-				}
-			};
-			
-			var record = {
-				id: id,
-				events: events,
-				elementType: elType,
-				status: 'added'
-			};
-			//Get data about hidden markup	
-			if(elType == 'annotated'){
-				record.metadata_about = $(this).attr('about');
-				if($(this).attr('typeof')){
-					record.metadata_type = $(this).attr('typeof');
-				}
-			};
-			
-			kbAPI.interfaceKB.addRecord(record);
 			assign_menu(this);
 		});
 	}
 }
 
-
-
-function renderSidePanel(){
-	//add to the document's body new elements to control and display explanations
-	var userMode = $('<div id="explanation-usermode"><input type ="checkbox" checked>Advanced user mode</div>');
-	var kbButton = $('<button id="kbButton" class="admin_controls show">KnowledgeBase</button>');
-	var templButton = $('<button id="TEButton" class="admin_controls show">Template Editor</button>');
-	var explDiv = $('<div class="slide-out-div">'+
-					   '<div class="slide-out-div-handle"></div>'+
-					'</div>');
-	$('body').append(explDiv);
-	
-	userMode.find('input')
-	.click(function(){
-		if($(this).attr('checked')){
-			$('.admin_controls').addClass('show');
-			$('.admin_controls').removeClass('hidden');
-		}
-		else{
-			$('.admin_controls').addClass('hidden');
-			$('.admin_controls').removeClass('show');
-		};
-	});
-	userMode.prependTo($('.slide-out-div'));	
-	
-	kbButton
-	.click(function(){
-		explanationEditor.open();
-	})
-	.prependTo($('.slide-out-div'));	
-	
-	templButton
-	.click(function(){
-		templateEditor.open();
-	})
-	.prependTo($('.slide-out-div'));
-    var nav_controls = render_navigation_controls();
-	explDiv.append(nav_controls);
-	explDiv.append('<div class="explanation-block">You can click blue question mark icons near the explainable interface element to request for information related to this element</div>');
-	$('.slide-out-div').tabSlideOut({
-            tabHandle: '.slide-out-div-handle',                     //class of the element that will become your tab
-            pathToTabImage: 'https://github.com/2529742/klarigo/blob/master/img/explanation.png?raw=true', //path to the image for the tab //Optionally can be set using css
-            imageHeight: '199px',                     //height of tab image           //Optionally can be set using css
-            imageWidth: '44px',                       //width of tab image            //Optionally can be set using css
-            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
-            speed: 300,                               //speed of animation
-            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-            topPos: '0px',                          //position from the top/ use if tabLocation is left or right
-            leftPos: '0px',                          //position from left/ use if tabLocation is bottom or top
-            fixedPosition: true                      //options: true makes it stick(fixed position) on scroll
-    });
-	$('.handle').click();
-}
 
 function assign_menu(element){
 		var explIcon = $('<div class = "explIcon"></div>');
