@@ -1325,7 +1325,7 @@ jQuery.extend(ESUI,{
 		explDiv.append('<div class="explanation-block">You can click blue question mark icons near the explainable interface element to request for information related to this element</div>');
 		$('.slide-out-div').tabSlideOut({
 				tabHandle: '.slide-out-div-handle',                     //class of the element that will become your tab
-				pathToTabImage: 'https://github.com/2529742/klarigo/blob/master/img/explanation.png?raw=true', //path to the image for the tab //Optionally can be set using css
+				pathToTabImage: 'https://github.com/2529742/klarigo/blob/master/css/img/explanation.png?raw=true', //path to the image for the tab //Optionally can be set using css
 				imageHeight: '199px',                     //height of tab image           //Optionally can be set using css
 				imageWidth: '44px',                       //width of tab image            //Optionally can be set using css
 				tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
