@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<project name="klarigo" basedir="." default="all">
+
+    <property name="VERSION" value="1.0"/>
+
+    <property name="DIST_DIR" value="./dist"/>
+    <property name="LIB_DIR" value="./lib"/>
+    <property name="SRC_DIR" value="./src"/>
+    <property name="TMP_DIR" value="./tmp"/>
+    <property name="TOOLS_DIR" value="./utils"/>
+    <property name="YUI" value="${TOOLS_DIR}/yui-compressor/yuicompressor-2.4.7.jar" />
+	
+	<target name="timestamp">
+		<tstamp>
+			<format property="current.time"
+				pattern="yyyyMMddHHmmss" />
+		</tstamp>
+	</target>
+	
+  
+    <target name="clean" description="Tidy up project.">
+        <echo message="Deleting distribution and API documentation"/>
+        <delete dir="${DIST_DIR}"/>
+    </target>
+
+	<target name="init" depends="clean, timestamp">
+        <mkdir dir="${DIST_DIR}" />
+    </target>
+
+    <target name="all" depends="dist"/>
+
+    <target name="dist" depends="init, combine, combine-dep, minimise" />
+
+    <target name="zip" depends="dist">
+        <zip destfile="${DIST_DIR}/klarigo.zip">
+            <zipfileset dir="dist/" includes="*.js"/>
+        </zip>
+    </target>
+
+    <target name="combine" description="combines files into one file">
+        <echo message="Building klarigo.js Distribution" />
+        <concat destfile="${DIST_DIR}/klarigo.js">
+            <string>/*
+
+</string>
+            <fileset dir="." includes="LICENSE"/>
+            <string>*/
+
+</string>
+   		    <fileset dir="${SRC_DIR}" includes="explanationUtils.js"/>
+			<fileset dir="${SRC_DIR}" includes="KB.VIE.js"/>
+   		    <fileset dir="${SRC_DIR}" includes="explanationBuilder.js"/>
+            <fileset dir="${SRC_DIR}" includes="eventHandler.js"/>
+            <fileset dir="${SRC_DIR}" includes="explanationEditor.js"/>
+            <fileset dir="${SRC_DIR}" includes="templateEditor.js"/>
+            <fileset dir="${SRC_DIR}" includes="ESUI.js"/>
+        </concat>
+    </target>
+
+	    <target name="combine-dep" description="combines dependency files into one file">
+        <echo message="Building klarigo-dep.js dependencies" />
+        <concat destfile="${DIST_DIR}/klarigo-dep.js">
+   		    <fileset dir="${LIB_DIR}" includes="stacktrace-0.4.js"/>
+			<fileset dir="${LIB_DIR}" includes="jquery.livequery.js"/>
+   		    <fileset dir="${LIB_DIR}" includes="jquery.rdfquery.js"/>
+            <fileset dir="${LIB_DIR}" includes="underscore.js"/>
+            <fileset dir="${LIB_DIR}" includes="backbone.js"/>
+			<fileset dir="${LIB_DIR}" includes="vie-2.1.0.debug.js"/>
+			<fileset dir="${LIB_DIR}" includes="jquery.tabSlideOut.v1.3.js"/>
+			<fileset dir="${LIB_DIR}" includes="jquery.contextMenu.js"/>
+        </concat>
+    </target>
+
+	
+    <target name="minimise">
+        <echo message="Minimising klarigo.js" />
+
+        <antcall target="minimiseJSFile">
+            <param name="inputFile" value="${DIST_DIR}/klarigo.js" />
+            <param name="outputFile" value="${DIST_DIR}/klarigo-min.js" />
+        </antcall>
+    </target>
+
+
+    <target name="minimiseJSFile">
+        <java jar="${YUI}" fork="true" failonerror="true">
+            <arg line="--type js" />
+            <arg line="-o ${outputFile}" />
+            <arg value="${inputFile}" />
+        </java>
+    </target>
+
+</project>

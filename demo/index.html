@@ -1,57 +1,54 @@
 <html>
 <head>
-		<title>VIE Widget - Image Search</title>
+   <title>VIE Widget - Image Search</title>
     
-    <link href="./lib/jquery.contextMenu.css" media="screen" rel="stylesheet">
-	<link href="./lib/jquery-ui.css" media="screen" rel="stylesheet">
-    <link href="style.css" media="screen" rel="stylesheet">
+
+	<link href="../lib/jquery-ui.css" media="screen" rel="stylesheet">
 	
     <!--  jQuery &amp; jQuery UI -->
-	<script type="text/javascript" src="./lib/jquery-1.7.2.js"></script>
-    <script type="text/javascript" src="./lib/jquery-ui-1.8.16.js"></script>
+	<script type="text/javascript" src="../lib/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="../lib/jquery-ui-1.8.16.js"></script>
 	
-	<script type="text/javascript" src="./lib/stacktrace-0.4.js"></script>
 	
-	<script type="text/javascript" src="./lib/jquery.livequery.js"></script>
-	
-	<script type="text/javascript" src="./lib/jquery.rdfquery.js"></script>
 	
     <!-- jQuery TipTip plugin -->
-    <script type="text/javascript"          src="./utils/tiptip/jquery.tipTip.js"></script>
-    <link rel="stylesheet" type="text/css" href="./utils/tiptip/jquery.tipTip.css" media="screen" />
+    <script type="text/javascript" src="../utils/tiptip/jquery.tipTip.js"></script>
+    <link rel="stylesheet" type="text/css" href="../utils/tiptip/jquery.tipTip.css" media="screen" />
     
-	<!-- jQuery tabSlideOut plugin -->
-	<script type="text/javascript" src="./lib/jquery.tabSlideOut.v1.3.js"></script>
-	
     <!--  VIE dependencies: Underscore &amp; Backbone -->
-    <script type="text/javascript" src="./lib/underscore.js"></script>        
-    <script type="text/javascript" src="./lib/backbone.js"></script>
-      
+	<script type="text/javascript" src="../lib/jquery.rdfquery.js"></script>
+    <script type="text/javascript" src="../lib/underscore.js"></script>        
+    <script type="text/javascript" src="../lib/backbone.js"></script>
+
+	<!--  Klarigo dependencies  -->
+<!-- 	<script type="text/javascript" src="../lib/stacktrace-0.4.js"></script>
+	<script type="text/javascript" src="../lib/jquery.livequery.js"></script>
+	<script type="text/javascript" src="../lib/jquery.tabSlideOut.v1.3.js"></script>	
+	<script type="text/javascript" src="../lib/jquery.contextMenu.js"></script>
+ -->
+    <script type="text/javascript" src="../dist/klarigo-dep.js"></script>
+    <link href="../lib/jquery.contextMenu.css" media="screen" rel="stylesheet">
+	
     <!-- vie.js itself -->
-	<script type="text/javascript" src="./lib/vie-2.1.0.debug.js"></script>
-	<script type="text/javascript" src="./utils/schemaOrg/schema.json"></script>
-	<script type="text/javascript" src="./utils/schemaOrg/wrapper.js"></script>
+	<script type="text/javascript" src="../lib/vie-2.1.0.debug.js"></script>
+	<script type="text/javascript" src="../utils/schemaOrg/schema.json"></script>
+	<script type="text/javascript" src="../utils/schemaOrg/wrapper.js"></script>
 	
     <!--  the current VIE widget -->
-	<script type="text/javascript" src="./js/vie.widget.image_search.js"></script>
-	
-	<!-- context menu plugins -->
-	<script type="text/javascript" src="./lib/jquery.contextMenu.js"></script>
-    
+	<script type="text/javascript" src="vie.widget.image_search.js"></script>
+    <link href="../css/style.css" media="screen" rel="stylesheet">	
     <!-- Explanation system -->
-	<script type="text/javascript" src="./js/explanations/explanationUtils.js"></script>
+<!--<script type="text/javascript" src="./js/explanations/explanationUtils.js"></script>
 	<script type="text/javascript" src="./js/explanations/KB.VIE.js"></script>
-	<link href="explanations.css" media="screen" rel="stylesheet">
-	<script type="text/javascript" src="preload.js"></script>
-	
-	<!--script type="text/javascript" src="./js/explanations/template.js"></script-->
-	<script type="text/javascript" src="./js/explanations/explanationBuilder.js"></script>
+    <script type="text/javascript" src="./js/explanations/explanationBuilder.js"></script>
 	<script type="text/javascript" src="./js/explanations/eventHandler.js"></script>
 	<script type="text/javascript" src="./js/explanations/explanationEditor.js"></script>
 	<script type="text/javascript" src="./js/explanations/templateEditor.js"></script>
 	<script type="text/javascript" src="./js/explanations/ESUI.js"></script>
-	<!--script type="text/javascript" src="./js/explanations/mappings.js"></script-->
-	
+ -->
+	<link href="../css/explanations.css" media="screen" rel="stylesheet">
+    <script type="text/javascript" src="../dist/klarigo.js"></script>
+    <script type="text/javascript" src="preload.js"></script>	
 
 	
     <script type="text/javascript">

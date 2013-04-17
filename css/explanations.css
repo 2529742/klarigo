@@ -1,0 +1,194 @@
+[about] {
+ text-shadow: 0 0 0.2em #87F, 0 0 0.2em #87F;
+ cursor: pointer;
+}
+
+[about]:hover {
+ text-shadow: 0 0 0.2em #8F7, 0 0 0.2em #8F7;
+ cursor: pointer;
+}
+
+h5 {
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1;
+	width: auto;
+}
+
+.slide-out-div {
+  padding: 20px;
+  width: 25%;
+  min-width: 270px;
+  height: 100%;
+  background: #ccc;
+  border: 1px solid #29216d;
+  border-left: 2px solid #289e84;
+}
+
+.slide-out-div-handle{
+    background-image: url("https://github.com/2529742/klarigo/blob/master/img/explanation.png?raw=true");
+}
+
+#explanation-usermode{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+#explanation-usermode input{
+	float: right;
+}
+
+.explanation-navigation{
+	position: absolute;
+	top: 90px;
+	width: 80px;
+}
+
+.explanation-navigation-backward{
+	float: left;
+	margin-right: 30px;
+	font-size: 20;
+	cursor: pointer;
+}
+
+.explanation-navigation-forward{
+	font-size: 20;
+	cursor: pointer;
+}
+
+.explanation-block{
+	word-wrap: break-word;
+	position: absolute;
+	top: 110px;
+	margin-right: 10px;
+	margin-top: 20px;
+}
+
+
+
+.explanation-breakline{
+	width: 100%;
+	border-bottom: 1px solid;
+	margin-top: 20px;
+}
+
+.explIcon {
+	height: 16px;
+	width:16px;
+	background-image: url("https://github.com/2529742/klarigo/blob/master/img/question.png?raw=true");
+	display: inline-block;
+}
+
+/*Explanation knowledge base editor:*/
+
+#explanation_editor {
+	width: 500px;
+}
+
+#interfaceKB, #staticKB, #historyKB{
+	height: auto;
+}
+
+.explanation-record-attribute, .explanation-editor-add{
+	font-size: 11px;
+}
+
+.explanation-record-attribute  textarea{
+	height: 18px;
+}
+
+.explanation-record-delete{
+	cursor: pointer;
+}
+
+.explanation-record-header{
+	padding-left: 100px;
+	padding-bottom: 10px;
+}
+
+/*Template editor:*/
+
+#template_editor{
+	width: 1000px;
+	height: 500px;
+}
+
+.explanation-template-editor-kb{
+	float: left;
+	width: 25%;
+	
+}
+
+.explanation-template-editor-kb-schema{
+	margin-right: 10px;
+	border: 1px solid gray;
+	border-radius: 4px;
+	padding: 10px;
+	height: 419px;
+}
+
+.explanation-template-editor-KB-node{
+	cursor: move;
+}
+
+.explanation-template-editor-canvas{
+	display: inline-block;
+	width: 75%;
+}
+
+.explanation-template-editor-canvas-label{
+	width: 80%;
+	margin-right: 10%;
+}
+
+.explanation-template-editor-canvas-save{
+	width: 10%;
+}
+
+.explanation-template-editor-canvas-field{
+	border: 1px solid gray;
+	border-radius: 4px;
+	padding: 10px;
+	height: 390px;
+}
+
+.explanation-template-editor-canvas-field-line{
+	height: 15px;
+	border-top: 1px dashed gray;
+	border-left: 1px dashed gray;
+	border-right: 1px dashed gray;
+	display: block;
+}
+
+.explanation-template-editor-canvas-field-line:last-child{
+	border: 1px dashed gray;
+}
+
+.explanation-template-editor-canvas-field-line-item{
+	padding-left: 5px;
+	float: left;
+}
+
+
+.explanation-template-editor-canvas-field-line-input{
+	height: 14px;
+	border: none;
+	font-size: 12px;
+	float: left;
+}
+
+/* For collapsing/expanding lists*/
+.hidden{
+	display: none;
+}
+
+.show{
+	display: block;
+}
+
+.item-body{
+	padding-left: 20px;
+
+}
+

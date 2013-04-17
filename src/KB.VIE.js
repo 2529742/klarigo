@@ -211,7 +211,8 @@ jQuery.extend(kbAPI, {
 				'title',
 				'label',
 				'context',
-				'types'
+				'types',
+				'category'
 			]
 		},
 		getAll: function(){	
