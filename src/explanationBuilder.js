@@ -22,6 +22,7 @@ jQuery.extend(explanationBuilder,{
 			var last_record = history[history.length-1];
 			var history_record = last_record;
 			var rootEventID = last_record.get('rootEvent');
+			rootEventID = rootEventID.isEntity? rootEventID.getSubjectUri():rootEventID;
 			var rootEvent = kbAPI.getRecord(rootEventID);
 			do{
 				if(history_record.get('eventType')=='ajax'){
@@ -40,10 +41,13 @@ jQuery.extend(explanationBuilder,{
 					trace.push('<li><b>' + relatedElement + '</b> - ' + history_record.get('eventType') + '</li>');
 				}
 				rootEventID = history_record.get('rootEvent');
+				rootEventID = rootEventID.isEntity? rootEventID.getSubjectUri(): rootEventID;
 				history_record = rootEvent;
 				rootEvent = kbAPI.getRecord(rootEventID);
+				var IDcheck = rootEvent.get('rootEvent');
+				IDcheck = IDcheck.isEntity? IDcheck.getSubjectUri(): IDcheck;
 			}
-			while(rootEventID != rootEvent.get('rootEvent'))
+			while(rootEventID != IDcheck)
 			history_record = rootEvent;
 			relatedElement = history_record.get('element')? $('#'+history_record.get('element'))[0].innerHTML: '';
 			trace.push('<li><b>' + relatedElement + '</b> - ' + history_record.get('eventType') + '</li>');	
