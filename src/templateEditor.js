@@ -82,7 +82,18 @@ jQuery.extend(templateEditor,{
 				var templateObject = {};
 				for(var a in attributes){
 					var attr = attributes[a];
-					templateObject[attr] = template.get(attr);
+					var val = template.get(attr);
+					if(val){
+						val = val.isEntity? val.getSubjectUri(): val;
+						if($.isArray(val)){
+							for(var v in val){
+								if(val[v].isEntity){
+									val[v] = val[v].getSubjectUri();
+								}
+							}
+						}
+					}
+					templateObject[attr] = val;
 				};
 				self.render_editor(dialogEl,templateObject);
 			});
