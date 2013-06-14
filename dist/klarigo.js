@@ -51,7 +51,7 @@ jQuery.extend(kbAPI, {
 	save: function (){},
 
 	getRecord: function(id){
-		id = VIE.Util.isUri? id: "<"+id+">";
+		id = VIE.Util.isUri(id)? id: "<"+id+">";
 		return kbVIE.entities.get(id);
 	},
 	
@@ -185,6 +185,7 @@ jQuery.extend(kbAPI, {
 		},
 		getElementType: function (id){
 			var type = kbVIE.entities.get(id).get('elementType');
+			type = type.isEntity? type.getSubjectUri(): type;
 			return type;
 		},
 		getEvents: function (id){
