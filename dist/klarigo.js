@@ -425,6 +425,7 @@ jQuery.extend(explanationBuilder,{
 	construct_explanation: function(model) {
 		var explanation = $('<div>');
 		var question = model.get('label');
+		question = question.isEntity? question.getSubjectUri(): question;
 		var explantionStructure = kbAPI.templates.getRecord('<'+question+'>');
 		var elementID = model.get('id');
 		elementID = elementID.isEntity? elementID.getSubjectUri(): elementID;
