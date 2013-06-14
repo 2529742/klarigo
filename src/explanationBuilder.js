@@ -91,7 +91,9 @@ jQuery.extend(explanationBuilder,{
 		var explanation = $('<div>');
 		var question = model.get('label');
 		var explantionStructure = kbAPI.templates.getRecord('<'+question+'>');
-		var element = $('#'+model.get('id'))[0];
+		var elementID = model.get('id');
+		elementID = elementID.isEntity? elementID.getSubjectUri(): elementID;
+		var element = $('#'+elementID)[0];
 		var label = explantionStructure.get('label');
 		var context = explantionStructure.get('context');
 		var contextHTML = '';
