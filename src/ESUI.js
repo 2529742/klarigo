@@ -227,7 +227,9 @@ function get_elementRelated_questions(id){
 			var mapping_types = questions_mappings[category][q].types;
 			mapping_types = $.isArray(mapping_types)? mapping_types: [mapping_types];
 			for(var i = 0; i < mapping_types.length; i++){
-				if(mapping_types[i] == type){
+				var mapping_type = mapping_types[i];
+				mapping_type = mapping_type.isEntity? mapping_type.getSubjectUri(): mapping_type;
+				if(mapping_type == type){
 					questions.push(q);
 				}
 			}
