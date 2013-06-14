@@ -73,6 +73,7 @@ jQuery.extend(templateEditor,{
 		var templates = kbAPI.templates.getAll();
 		$(templates).each(function(){
 			var name = this.get('id');
+			name = name.isEntity? name.getSubjectUri(): name;
 			var t = $('<li style="cursor:pointer;text-decoration: underline;color: darkblue;">' + name + '</li>');
 			t.click(function(){
 				var id = '<'+$(this).text()+'>';
