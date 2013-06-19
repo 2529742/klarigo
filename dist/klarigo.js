@@ -1116,7 +1116,8 @@ jQuery.extend(templateEditor,{
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">')
 		.css({'float':'left'})
 		.append('<h4>Template</h4>');
-		var label = $('<input class="explanation-template-editor-canvas-label">')
+		var label = $('<input class="explanation-template-editor-canvas-label">');
+		var category = $('<input class="explanation-template-editor-canvas-category" style="visibility:hidden;">');
 		var typesList = $('<input class="explanation-template-editor-canvas-types">');
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
 		for(var i=1; i<25; i++){
@@ -1152,10 +1153,13 @@ jQuery.extend(templateEditor,{
 			typesList.val(templateObject.types);
 		}
 		label.val(templateObject.label);
+		category.val(templateObject.category);
+		
 		canvasDiv
 		.append(label)
 		.append(save_btn)
-		.append(typesList);
+		.append(typesList)
+		.append(category);
 		var context  = templateObject.context;
 		if(context){
 			context = ($.isArray(context[0]))? context: [context];
@@ -1214,6 +1218,7 @@ jQuery.extend(templateEditor,{
 	
 	save_template: function(){
 		var label = $('.explanation-template-editor-canvas-label').val();
+		var category = $('.explanation-template-editor-canvas-category').val();
 		if(label==''){
 			alert('Please give a valide');
 		}
@@ -1223,7 +1228,8 @@ jQuery.extend(templateEditor,{
 		var template_object = {
 				id: label.replace(/ /g,'_').replace('?',''),
 				label: label,
-				types: types
+				types: types,
+				category: category
 		};
 		var context = [];
 		var canvasField = $('.explanation-template-editor-canvas-field');
@@ -1276,7 +1282,7 @@ jQuery.extend(ESUI,{
 		indexInterfaceElements(self.options.predicate);
 		self.renderExplControls(self.options.predicate);	
 		//to make the Side panel visible by default
-		$('.slide-out-div-handle').click();
+		//$('.slide-out-div-handle').click();
 	},
 
 	refresh: function(){
@@ -1378,10 +1384,14 @@ jQuery.extend(ESUI,{
 });
 
 function setupExplMenu(predicate){
+	$('.explIcon').remove();
 	for(var type in predicate){
 		eventsFilter(predicate[type]);
 		var explainable = $(predicate[type]);
 		explainable.livequery(function(){
+			if($(this).next().is('.explIcon')){
+				$(this).next().remove();
+			}
 			assign_menu(this);
 		});
 	}
@@ -1451,7 +1461,7 @@ function render_questions(element,questions,target){
 			$('.explanation-block').empty();
 			$('.explanation-block').append(explanation);
 			if(!$('.slide-out-div').hasClass('open')){
-				$('.handle').click();
+				$('.slide-out-div-handle').click();
 			}
 		});
 		target.append(li);

@@ -199,7 +199,8 @@ jQuery.extend(templateEditor,{
 		var canvasDiv = $('<div class="explanation-template-editor-canvas">')
 		.css({'float':'left'})
 		.append('<h4>Template</h4>');
-		var label = $('<input class="explanation-template-editor-canvas-label">')
+		var label = $('<input class="explanation-template-editor-canvas-label">');
+		var category = $('<input class="explanation-template-editor-canvas-category" style="visibility:hidden;">');
 		var typesList = $('<input class="explanation-template-editor-canvas-types">');
 		var canvasField = $('<div class="explanation-template-editor-canvas-field">');
 		for(var i=1; i<25; i++){
@@ -235,10 +236,13 @@ jQuery.extend(templateEditor,{
 			typesList.val(templateObject.types);
 		}
 		label.val(templateObject.label);
+		category.val(templateObject.category);
+		
 		canvasDiv
 		.append(label)
 		.append(save_btn)
-		.append(typesList);
+		.append(typesList)
+		.append(category);
 		var context  = templateObject.context;
 		if(context){
 			context = ($.isArray(context[0]))? context: [context];
@@ -297,6 +301,7 @@ jQuery.extend(templateEditor,{
 	
 	save_template: function(){
 		var label = $('.explanation-template-editor-canvas-label').val();
+		var category = $('.explanation-template-editor-canvas-category').val();
 		if(label==''){
 			alert('Please give a valide');
 		}
@@ -306,7 +311,8 @@ jQuery.extend(templateEditor,{
 		var template_object = {
 				id: label.replace(/ /g,'_').replace('?',''),
 				label: label,
-				types: types
+				types: types,
+				category: category
 		};
 		var context = [];
 		var canvasField = $('.explanation-template-editor-canvas-field');
